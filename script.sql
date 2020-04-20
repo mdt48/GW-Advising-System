@@ -24,7 +24,7 @@ CREATE TABLE form(
   	`fid` int,
 	`cid` int, 
 	PRIMARY KEY(`fid`),
-	FOREIGN KEY (`cid`) REFERENCES donotshowerror(`cid`),
+	FOREIGN KEY (`cid`) REFERENCES course(`cid`),
 	FOREIGN KEY (`uid`) REFERENCES student(`uid`)
 );
 
