@@ -77,6 +77,7 @@ CREATE TABLE degree (
   gpa decimal(3,2),
   major varchar(256),
   yearGrad year,
+  primary key(degType, major,uid),
   FOREIGN KEY (uid) REFERENCES applicant (uid)
 );
 
@@ -85,6 +86,7 @@ CREATE TABLE examScore (
   examSubject varchar(256),
   score int,
   yearTake year,
+  PRIMARY KEY (uid,examSubject),
   FOREIGN KEY (uid) REFERENCES applicant (uid)
 );
 
@@ -108,7 +110,7 @@ CREATE TABLE recReview (
   rating int,
   generic bool,
   credible bool,
-  PRIMARY KEY (recId),
+  PRIMARY KEY (uid,studentUid, recId),
   FOREIGN KEY (uid) REFERENCES reviewForm (uid),
   FOREIGN KEY (studentUid) REFERENCES reviewForm (studentUid)
 );
@@ -120,6 +122,7 @@ CREATE TABLE reviewForm (
   gas int,
   gasComm varchar(255),
   reasonReject char,
+  PRIMARY KEY (uid, studentuid),
   FOREIGN KEY (uid) REFERENCES faculty (uid),
   FOREIGN KEY (studentuid) REFERENCES applicant (uid)
 );
@@ -164,33 +167,34 @@ CREATE TABLE schedule (
 	start_time      DECIMAL(30,2),
 	end_time        DECIMAL(30,2),
 	room            VARCHAR(15),
-	PRIMARY KEY (year,section,semester,day),
-	FOREIGN KEY (cid) references course(cid)
-
+	PRIMARY KEY (cid, department, year, section, semester),
+	FOREIGN KEY (cid, department) references course(cid, department)
 );
 
 CREATE TABLE takes (
         cid            int,
-        dept            varchar(32),
+        department            varchar(32),
         year            CHAR(4),
         section         INT(2),
         semester        VARCHAR(10),
         uid            int,
         grade           CHAR(2),
-        FOREIGN KEY (uid) references person(uid),
-        FOREIGN KEY (year, section, semester) references schedule( year, section, semester),
-        FOREIGN KEY (cid, dept) references course(cid, department)
+        PRIMARY KEY (uid, cid, department, year, section, semester),
+        FOREIGN KEY (`uid`) references student(`uid`),
+        FOREIGN KEY (cid, department, year, section, semester) references schedule(cid, department, year, section, semester)
 );
 
 CREATE TABLE teaches (
 
         cid            int,
-        dept		varchar(32),
+        department		varchar(32),
         year            CHAR(4),
         section         INT(2),
         semester       VARCHAR(10),
         uid            int,
-        FOREIGN KEY (year, section, semester) references schedule(year, section, semester),
-        FOREIGN KEY (cid, dept) references course(cid, department)
+        PRIMARY KEY (cid, department, year, section, semester),
+        FOREIGN KEY (cid, department, year, section, semester) references schedule(cid, department, year, section, semester)
+
 
 );
+SET FOREIGN_KEY_CHECKS = 1;
