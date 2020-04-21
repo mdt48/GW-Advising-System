@@ -1,0 +1,9 @@
+DELETE FROM admin;
+DELETE FROM takes;
+DELETE FROM teaches;
+DELETE FROM prereqs;
+DELETE FROM faculty;
+DELETE FROM student;
+DELETE FROM schedule;
+DELETE FROM course;
+DELETE FROM person;
