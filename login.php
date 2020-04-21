@@ -153,7 +153,6 @@
 				</div>
 			</div>
 		</header>
-
 	<?php }?>
 
 </body>

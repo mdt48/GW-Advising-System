@@ -212,7 +212,6 @@ insert into applicant values (55555555, 'Music', 'Member of The Beatles, formerl
 insert into degree values (55555555, 'BA', 'Berkley', '4.0', 'Boyband', 1960);
 insert into degree values (55555555, 'BA', 'Columbia', '3.5', 'Rocket Science', 1969);
 
-
 insert into examScore values (55555555, 'total', 340, 1980);
 insert into examScore values (55555555, 'verbal', 170, 1980);
 insert into examScore values (55555555, 'quantitative', 170, 1980);

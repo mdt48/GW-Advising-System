@@ -255,8 +255,8 @@ if (isset($_POST['submit']))
             }
         }
     }
-  //  echo "<script>window.location.href='index.php';</script>";
-    //exit;
+    echo "<script>window.location.href='index.php';</script>";
+    exit;
     mysqli_close($dbc);
 }
 ?>

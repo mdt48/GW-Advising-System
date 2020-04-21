@@ -55,7 +55,7 @@
 		
 					$data = mysqli_query($dbc, $query);
 		
-					// If The log-in is OK 
+					//If The log-in is OK 
 					if (mysqli_num_rows($data) == 0) {
 						$queryAdd = "INSERT INTO `person` (username, password, email) values ('$user_username', '$user_password', '$user_email');";
 						
