@@ -12,7 +12,7 @@
 <?php 
 	session_start();
 	$uid = $_SESSION['uid'];
-	$title = $_SESSION['title'];
+	$title = $_SESSION['type'];
 
 
 ?>
@@ -20,11 +20,10 @@
 	<script> 
 		window.onload = function() {
             var uType = '<?php echo $title;?>';
-         
-			if (uType === 'admin'){	
-			    $('.gs').hide();
+			if (uType === 0){	
+			    $('.adm').hide();
 			} else {
-                $('.adm').hide();
+                $('.gs').hide();
             }
 
 		}; 
@@ -74,8 +73,8 @@
 	  </nav>
 	  <form method="post">
 	  <?php
-	  		$title = $_SESSION['title'];
-			if(strcmp($title,"admin")==0){
+	  		
+			if($title == 0){
 				echo "
 						<button type='submit' class='btn btn-primary btn-md float-left f1' id='reset' name='reset' style='margin-left:20px; margin-top:20px'>Reset Data</button>
 						";

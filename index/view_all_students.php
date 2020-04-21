@@ -14,7 +14,7 @@
 </head>
 <?php 
 	$uid = $_SESSION['uid'];
-	$title = $_SESSION['title'];
+	$title = $_SESSION['type'];
 ?>
 <body id="b"> 
 	<script> 
@@ -98,18 +98,16 @@
 			<?php
 				//UID will be from session, change once login completed
 				// $UID = $_SESSION['uid'];
-				if (strcmp($title, "gs") == 0) {
-					$query = "select * from student";
+				if ($title == 1) {
+					$query = "select * from student join people on student.uid = people.uid ";
 				} else {
-					$query = "select * from student where advisoruid = '$uid'";
+					$query = "select * from student join people on student.uid = people.uid where advisoruid = '$uid'";
 				}
-				
-
 				if ($result = $dbc->query($query)){
 					if ($nr = $result->num_rows){
 						$i = 1;
+						
 						while ($row = $result->fetch_object()){
-							
 							// only show if current student						
 								echo "<tr class= 'tab_row'>";
 									echo "<th  scope='row'>{$row->uid}</th>";
@@ -155,7 +153,7 @@
 											echo "<td>N/A for Masters Students</td>";
 										}
 										
-										if (strcmp($title, "gs") == 0) {
+										if ($title == 1) {
 											if (strcmp($row->grad_status, "f1") == 0 && $row->audited){
 												echo
 												"<td> 
@@ -178,11 +176,11 @@
 														Must be GS for Graduation Approval
 													</td>";
 										}
-										$q = "select uid, sfname, slname from staff where title='fa'";
+										$q = "select staff.uid, fname, lname from people join staff on people.uid = staff.uid where type = 4";
 												
-										$result2 = $dbc->query($q);
-									
-									if (strcmp($title, "gs") == 0) {	
+										//$result2 = $dbc->query($q);
+								if ($result2 = $dbc->query($q)){	
+									if ($title == 1) {	
 									 if ($row->grad_year == null) {
 										echo "<td>";
 										
@@ -193,7 +191,7 @@
 													echo "<ul class='dropdown-menu' role='menu' aria-labelledby='menu1'>";
 													while ($row2 = $result2->fetch_object()) {
 														$id = $row2->uid;
-														$name = $row2->sfname . " " . $row2->slname;
+														$name = $row2->fname . " " . $row2->lname;
 														
 														echo "<a onclick='assignAdvisor({$row->uid}, {$id})' data-value='$id' href='#'>$name</a>";
 														
@@ -207,6 +205,7 @@
 									} else {
 										"<td> Cant assign advisor if FA</td>";
 									}
+								}
 
 								echo "</tr>";
 							$i++;

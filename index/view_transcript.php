@@ -18,28 +18,6 @@ session_start();
 	} 
 ?>
 <body> 
-	<!-- <script> 
-		window.onload = function() {
-			var uType = '<?php echo $title;?>';
-			switch (uType) {
-				case 'masters':
-					$('.adm').hide();
-					$('.phd').hide();
-					$('.gs').hide();
-					$('.fa').hide();
-					$('.alumn').hide();
-					break;
-				case 'Phd':
-					$('.grad').hide();
-					$('.adm').hide();
-					$('.gs').hide();
-					$('.fa').hide();
-					$('.alumn').hide();
-					break;
-			}
-
-		}; 
-	</script>  -->
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<a class="navbar-brand" index="test" href="./student_home.php">Home</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -122,10 +100,10 @@ session_start();
 			  $credit_sum = 0.0;
 				while($row = mysqli_fetch_array($result)){
 					$cid = $row['cid'];
-					$dept = $row['department'];
+					$dept = $row['subject'];
 					$grade = $row['grade'];
 
-					$query = "SELECT credit FROM donotshowerror WHERE department='$dept' AND cid='$cid';";
+					$query = "SELECT credit FROM course WHERE department='$dept' AND cid='$cid';";
 					$credit_res = mysqli_query($dbc, $query);
 					$credit_row = mysqli_fetch_array($credit_res);
 					$credit = $credit_row['credit'];

@@ -76,7 +76,8 @@ function viewF1(id, type){
         type: "POST",
         data: {uid: id, type: "f"},
         success: function(data){
-            var d = $.parseJSON(data);
+            console.log(data);
+            var d = JSON.parse(data);
             addElement({pID:"z", tag: "tbody", id: "tbody"});
             for (var i = 0; i < d.length; i++){
                 var dynID = "tr" + i.toString();
@@ -314,7 +315,10 @@ function getLabelText(label) {
             return "Address: ";
             break;
         case "Title":
-            return "Titel: ";
+            return "Title: ";
+            break;
+        case "pass":
+            return "Password: ";
             break;
     }
 }

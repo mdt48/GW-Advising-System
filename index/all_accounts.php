@@ -15,7 +15,7 @@
 	session_start();
 	$dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 	$uid = $_SESSION['uid'];
-	$title = $_SESSION['title'];
+	$title = $_SESSION['type'];
 ?>
 <body id="body"> 
 	<script> 
@@ -23,9 +23,9 @@
             var uType = '<?php echo $title;?>';
          
 			if (uType === 'admin'){	
-			    $('.gs').hide();
+			    $('.adm').hide();
 			} else {
-                $('.adm').hide();
+                $('.gs').hide();
             }
 
 		}; 
@@ -102,7 +102,7 @@
 				//UID will be from session, change once login completed
 				// $UID = $_SESSION['uid'];
 				
-				$query = "select * from student";
+				$query = "select * from people join student on student.uid = people.uid";
 				// print($query);
 				if ($result = $dbc->query($query)){
 					if ($nr = $result->num_rows){
@@ -129,6 +129,7 @@
 											}
 										}
 
+									
 										if (strcmp($row->program, "phd")== 0) {
 											if (!$row->thesis){
 												
@@ -164,34 +165,42 @@
 											echo
 											"<td> N/A for Alumni</td>";
 										}
+
+
+										$q = "select staff.uid, type,  fname, lname from people join staff on people.uid = staff.uid";
+
+										
+										if ($result2 = $dbc->query($q)){	
+											 if ($row->grad_year == null) {
+												echo "<td>";
+												
+													echo "<div class='dropdown'>";
+														
+															echo "<button class='btn btn-primary dropdown-toggle' id='menu1' type='button' data-toggle='dropdown'>Set Advisor";
+															echo "<span class='caret'></span></button>";
+															echo "<ul class='dropdown-menu' role='menu' aria-labelledby='menu1'>";
+															while ($row2 = $result2->fetch_object()) {
+																if ($row2->type == 1 || $row2->type == 0) {
+																	continue;
+																}
+																$id = $row2->uid;
+																$name = $row2->fname . " " . $row2->lname;
+																
+																echo "<a onclick='assignAdvisor({$row->uid}, {$id})' data-value='$id' href='#'>$name</a>";
+																
+															}
+															echo "</ul>";
+															echo "</div>";
+														echo "</td>";
+											} else {
+												echo "<td> N/A for Alumni</td>";
+											}
+											
+										}
+
 										echo "<td><button type='submit id='udetails' onclick='redirect({$row->uid}, \"{$row->program}\");' class='btn btn-primary btn-md float-left f1' >Edit User Details</li></button></td>";
 
-										$q = "select uid, sfname, slname from staff where title='fa'";
-												
-										$result2 = $dbc->query($q);
 										
-									 if ($row->grad_year == null) {
-										echo "<td>";
-										
-										echo "<div class='dropdown'>";
-											
-												echo "<button class='btn btn-primary dropdown-toggle' id='menu1' type='button' data-toggle='dropdown'>Set Advisor";
-												echo "<span class='caret'></span></button>";
-												echo "<ul class='dropdown-menu' role='menu' aria-labelledby='menu1'>";
-												while ($row2 = $result2->fetch_object()) {
-													$id = $row2->uid;
-													$name = $row2->sfname . " " . $row2->slname;
-													
-													echo "<a onclick='assignAdvisor({$row->uid}, {$id})' data-value='$id' href='#'>$name</a>";
-													
-												}
-												echo "</ul>";
-												echo "</div>";
-											echo "</td>";
-										} 
-										else {
-											"<td> N/A for Alumni</td>";
-										}
 							$i++;
 						}
 					}
@@ -219,7 +228,7 @@
 				//UID will be from session, change once login completed
 				// $UID = $_SESSION['uid'];
 				
-				$query = "select * from staff";
+				$query = "select * from staff join people on staff.uid = people.uid";
 				// print($query);
 				if ($result = $dbc->query($query)){
 					if ($nr = $result->num_rows){
@@ -228,12 +237,12 @@
 							// only show if current student							
 								echo "<tr class='tab_row'>";
 									echo "<th scope='row'>{$row->uid}</th>";
-										echo "<td>{$row->sfname} {$row->slname}</td>";
-										echo "<td>{$row->title}</td>";
+										echo "<td>{$row->fname} {$row->lname}</td>";
+										echo "<td>{$row->type}</td>";
 										echo "<td>{$row->department}</td>";
 										echo "<td>{$row->address}</td>";
 										echo "<td>{$row->email}</td>";
-										echo "<td><button type='submit id='udetails' class='btn btn-primary btn-md float-left f1' onclick='redirect({$row->uid}, \"{$row->title}\");'>Edit User Details</li></button></td>";
+										echo "<td><button type='submit id='udetails' class='btn btn-primary btn-md float-left f1' onclick='redirect({$row->uid}, \"{$row->type}\");'>Edit User Details</li></button></td>";
 						}
 					}
 				}

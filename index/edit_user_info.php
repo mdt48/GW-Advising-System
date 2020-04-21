@@ -8,6 +8,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
+	<script src="./functions.js" ></script>
 </head>
 <?php 
 session_start();
@@ -24,7 +25,7 @@ session_start();
 		$title = $_SESSION['program'];
 		$home_link = "./student_home.php";
 	} else {
-		$title = $_SESSION['title'];
+		$title = $_SESSION['type'];
 		$home_link = "./staff_home.php";
     }
 ?>
@@ -74,15 +75,6 @@ session_start();
 
 <script type="text/javascript"> 
 			$(document).ready(function(){
-				// let tab1 = document.getElementById("tab1");
-
-				// let tab2 = document.getElementById("tab2");
-
-				// tab1.style.display = "none";
-				// tab2.style.display = "none";
-
-				// document.getElementsByTagName('h1')[0].style.display = 'none';
-				// document.getElementsByTagName('h1')[1].style.display = 'none';
 				var type = <?php echo json_encode($title);?>;
 
 				$.ajax({
@@ -114,16 +106,18 @@ session_start();
 								
 								
 								var pholder = data[0][k];
-								console.log(data);
+								console.log("key" + k);
 								if (!pholder) {
 									pholder = "No";
+								}
+								if (k === "pass"){
+									console.log("hi");
+									document.getElementById(i).setAttribute("type", "password");
 								}
 								document.getElementById(i).setAttribute('placeholder', pholder);
 								document.getElementById(i).setAttribute('onkeypress', "return (event.charCode > 64 && event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)");
 							}
 							document.getElementById(0).setAttribute('readonly', true);
-							//var placeholder = document.getElementById(0).placeholder;
-							// uid
 							
                             
                                                 
@@ -151,11 +145,11 @@ session_start();
 									success: function(data){
 										alert("Successfully updated");
                                         event.preventDefault();
-                                        if (type === "masters" || type === "phd"){
-                                            location.href = "./student_home.php";
+                                        if (type === 4 || type === 1){
+                                            location.href = "./staff_home.php";
                                         }
                                         else {
-                                            location.href = "./staff_home.php";
+                                            location.href = "./student_home.php";
                                         }
 							            
 									}
@@ -167,69 +161,69 @@ session_start();
 					});
 			});
 
-			function addElement({parent, pID, tag, id, scope, inner, cls, type, fr}={}) {
-				if (parent == null){
-					var parent = document.getElementById(pID);
-				}
+			// function addElement({parent, pID, tag, id, scope, inner, cls, type, fr}={}) {
+			// 	if (parent == null){
+			// 		var parent = document.getElementById(pID);
+			// 	}
 				
-				var child = document.createElement(tag);
-				if (cls != null){
-					child.setAttribute('class', cls);
-				}
-				if (id != null){
-					child.setAttribute('id', id);
-				}
-				if (scope != null){
-					child.setAttribute('scope', scope);
-				}
-				if (inner != null){
-					child.innerHTML = inner;
-				}
-				if (fr != null){
-					child.setAttribute('for', fr);
-				}
-				parent.appendChild(child);
-				return;
-			}
+			// 	var child = document.createElement(tag);
+			// 	if (cls != null){
+			// 		child.setAttribute('class', cls);
+			// 	}
+			// 	if (id != null){
+			// 		child.setAttribute('id', id);
+			// 	}
+			// 	if (scope != null){
+			// 		child.setAttribute('scope', scope);
+			// 	}
+			// 	if (inner != null){
+			// 		child.innerHTML = inner;
+			// 	}
+			// 	if (fr != null){
+			// 		child.setAttribute('for', fr);
+			// 	}
+			// 	parent.appendChild(child);
+			// 	return;
+			// }
 
-			function getLabelText(label) {
-				switch (label) {
-					case "uid":
-						return "UID: ";
-						break;
-					case "uname":
-						return "Username: ";
-						break;
-					case "fname":
-						return "First Name: ";
-						break;
-					case "lname":
-						return "Last Name: ";
-						break;
-					case "email":
-						return "Email: ";
-						break;
-					case "grad_status":
-						return "Grad Status: ";
-						break;
-					case "thesis":
-						return "Thesis: ";
-						break;
-					case "audited":
-						return "Audited: ";
-						break;
-					case "program":
-						return "Program: ";
-						break;
-					case "dep":
-						return "Department: ";
-						break;
-					case "add":
-						return "Address: ";
-						break;
-					case "Title":
-						return "Titel: ";
-						break;
-				}
-			}
+			// function getLabelText(label) {
+			// 	switch (label) {
+			// 		case "uid":
+			// 			return "UID: ";
+			// 			break;
+			// 		case "uname":
+			// 			return "Username: ";
+			// 			break;
+			// 		case "fname":
+			// 			return "First Name: ";
+			// 			break;
+			// 		case "lname":
+			// 			return "Last Name: ";
+			// 			break;
+			// 		case "email":
+			// 			return "Email: ";
+			// 			break;
+			// 		case "grad_status":
+			// 			return "Grad Status: ";
+			// 			break;
+			// 		case "thesis":
+			// 			return "Thesis: ";
+			// 			break;
+			// 		case "audited":
+			// 			return "Audited: ";
+			// 			break;
+			// 		case "program":
+			// 			return "Program: ";
+			// 			break;
+			// 		case "dep":
+			// 			return "Department: ";
+			// 			break;
+			// 		case "add":
+			// 			return "Address: ";
+			// 			break;
+			// 		case "Title":
+			// 			return "Titel: ";
+			// 			break;
+			// 	}
+			// }
 </script>
