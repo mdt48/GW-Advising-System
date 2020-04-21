@@ -25,7 +25,7 @@
 
 			if (!empty($user_username) && !empty($user_password)) {
                 
-				$query = "select username, gwid from users where username = '$user_username' and userPassword = '$user_password'";
+				$query = "select username, uid from person where username = '$user_username' and password = '$user_password'";
 						
 				$data = mysqli_query($dbc, $query);
 		
@@ -35,7 +35,7 @@
 				  $row = mysqli_fetch_array($data);
 				  
 				  $_SESSION['username'] = $user_username;
-				  $_SESSION['gwid'] = $row['gwid'];
+				  $_SESSION['uid'] = $row['uid'];
 				  
 				  $home_url = "index.php";
 				  
@@ -43,7 +43,7 @@
 				}
 				else {
 				  // The username/password are incorrect so set an error message
-				  $query = "select username from users where username = '$user_username'";
+				  $query = "select username from person where username = '$user_username'";
 						
 				  $data = mysqli_query($dbc, $query);
 
