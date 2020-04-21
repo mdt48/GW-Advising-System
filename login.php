@@ -15,7 +15,7 @@
 	//clear error message
 	$error_msg = "";
 
-	if (!(isset($_SESSION['username']))) {
+	if (!(isset($_SESSION['uid']))) {
 		if (isset($_POST['submit'])) {
 			$dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
@@ -34,7 +34,6 @@
 							
 				  $row = mysqli_fetch_array($data);
 				  
-				  $_SESSION['username'] = $user_username;
 				  $_SESSION['uid'] = $row['uid'];
 				  
 				  $home_url = "index.php";
@@ -60,7 +59,7 @@
 			}
 		}
 	}
-	if (empty($_SESSION['username'])) {
+	if (empty($_SESSION['uid'])) {
 ?>
 
 <body data-gr-c-s-loaded = "true">

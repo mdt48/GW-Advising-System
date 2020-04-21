@@ -1,4 +1,3 @@
-use phase2;
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS student CASCADE;
 DROP TABLE IF EXISTS form CASCADE;
@@ -73,7 +72,7 @@ CREATE TABLE applicant (
   `admissionSemester` varchar(10),
   `adv` int,
   primary key (`uid`),
-  foreign key (`uid`) references person(`uid`)
+  foreign key (`uid`) references person (`uid`)
 );
 
 CREATE TABLE degree (
@@ -206,9 +205,9 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 
 -- this is the data for the apps side
-insert into person (uid, username, email, birthDate, password, ssn, fname, lname, address) values (111111111, 'jlennon', 'jlennon@gmail.com', '1940-10-09', '1234', 55555555, 'John', 'Lennon', '72nd St & Central Park West, New York, NY, 10023');
+insert into person (ssn, username, email, birthDate, password, uid, fname, lname, address) values (111111111, 'jlennon', 'jlennon@gmail.com', '1940-10-09', '1234', 55555555, 'John', 'Lennon', '72nd St & Central Park West, New York, NY, 10023');
 
-insert into applicant values (55555555, 'Music', 'Member of The Beatles, formerly', 'md', 2, 1, 2020, 'fall');
+insert into applicant values (55555555, 'Music', 'Member of The Beatles, formerly', 'md', 2, 1, 2020, 'fall', null);
 
 insert into degree values (55555555, 'BA', 'Berkley', '4.0', 'Boyband', 1960);
 insert into degree values (55555555, 'BA', 'Columbia', '3.5', 'Rocket Science', 1969);
@@ -222,7 +221,7 @@ insert into recs (uid, recName, job, relation, email, content, org) values (5555
 insert into recs (uid, recName, job, relation, email, content, org) values (55555555, 'Freddy Mercury', 'Rock Star', 'Acquaintance', 'freddomercury@hotmail.com', 'Every time we work together this man leaves me absolutely speechless.', 'The stage');
 insert into recs (uid, recName, job, relation, email, content, org) values (55555555, 'Yono Oko', 'Artist', 'Significant other', 'yo@gmail.com', 'Quality man, you would be lucky to have him in your program.', 'Art');
 
-insert into person (uid, username, email, birthDate, password, ssn, fname, lname, address) values (222111111, 'rstarr', 'rstarr@gmail.com', '1940-07-07', '1234', 66666666, 'Ringo', 'Starr', '2 Glynde Mews, Chelsea, London SW3 1SB, United Kingdom');
+insert into person (ssn, username, email, birthDate, password, uid, fname, lname, address) values (222111111, 'rstarr', 'rstarr@gmail.com', '1940-07-07', '1234', 66666666, 'Ringo', 'Starr', '2 Glynde Mews, Chelsea, London SW3 1SB, United Kingdom');
 
 insert into applicant (uid, aoi, appExp, degProgram, appStatus, transcript, admissionYear, admissionSemester) values (66666666, 'Music', 'Member of The Beatles, formerly', 'md', 1, 1, 2020, 'fall');
 
@@ -237,16 +236,16 @@ insert into recs (uid, recName, job, relation, email, content, org) values (6666
 insert into recs (uid, email) values (66666666, 'madonna@gmail.com');
 
 -- staff
-insert into person (fname, lname, uid, username, userPassword) values ('Bhagi', 'Narahari', 1, 'bnarahari', '1234');
-insert into person (fname, lname, uid, username, userPassword) values ('Admin', 'Admin', 2, 'admin', '1234');
-insert into person (fname, lname, uid, username, userPassword) values ('Gabe', 'Parmer', 3, 'gparmer', '1234');
-insert into person (fname, lname, uid, username, userPassword) values ('Tim', 'Wood', 4, 'twood', '1234');
-insert into person (fname, lname, uid, username, userPassword) values ('Shelly', 'Heller', 5, 'sheller', '1234');
-insert into person (fname, lname, uid, username, userPassword) values ('Sarah', 'Morin', 6, 'smorin', '1234');
-insert into person (fname, lname, uid, username, userPassword) values ('Kevin', 'Deems', 7, 'kdeems', '1234');
-insert into person (fname, lname, uid, username, userPassword) values ('Graduate', 'Secretary', 8, 'gs', '1234');
-insert into person (fname, lname, uid, username, userPassword) values ('Hyeong-Ah', 'Choi', 9, 'hchoi', '1234');
-insert into person (fname, lname, uid, username, userPassword) values ('Robert', 'Pless', 10, 'rpless', '1234');
+insert into person (fname, lname, uid, username, password) values ('Bhagi', 'Narahari', 1, 'bnarahari', '1234');
+insert into person (fname, lname, uid, username, password) values ('Admin', 'Admin', 2, 'admin', '1234');
+insert into person (fname, lname, uid, username, password) values ('Gabe', 'Parmer', 3, 'gparmer', '1234');
+insert into person (fname, lname, uid, username, password) values ('Tim', 'Wood', 4, 'twood', '1234');
+insert into person (fname, lname, uid, username, password) values ('Shelly', 'Heller', 5, 'sheller', '1234');
+insert into person (fname, lname, uid, username, password) values ('Sarah', 'Morin', 6, 'smorin', '1234');
+insert into person (fname, lname, uid, username, password) values ('Kevin', 'Deems', 7, 'kdeems', '1234');
+insert into person (fname, lname, uid, username, password) values ('Graduate', 'Secretary', 8, 'gs', '1234');
+insert into person (fname, lname, uid, username, password) values ('Hyeong-Ah', 'Choi', 9, 'hchoi', '1234');
+insert into person (fname, lname, uid, username, password) values ('Robert', 'Pless', 10, 'rpless', '1234');
 
 insert into staff (uid, type) values (1, 9);
 insert into staff (uid, type) values (2, 0);

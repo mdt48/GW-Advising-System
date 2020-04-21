@@ -70,240 +70,193 @@ $rec3Name = mysqli_real_escape_string($dbc,$_POST['rec3Name']);
 $rec3Email = mysqli_real_escape_string($dbc,$_POST['rec3Email']);
 
 
-$gwid = $_SESSION['gwid'];
+$uid = $_SESSION['uid'];
 
 if (isset($_POST['submit']))
 {
     
     //INSERT
-    if ($result = $dbc->query("SELECT gwid FROM users WHERE gwid = '$gwid'"))
+    if ($result = $dbc->query("SELECT uid FROM person WHERE uid = '$uid'"))
     {
-        $usersql = "UPDATE users SET fname = '$fname', lname = '$lname', ssn = '$SSN', birthDate = '$birthdate', userAddress = '$addr' WHERE gwid = '$gwid'";
+        $usersql = "UPDATE person SET fname = '$fname', lname = '$lname', ssn = '$SSN', birthDate = '$birthdate', address = '$addr' WHERE uid = '$uid'";
         if (mysqli_query($dbc, $usersql) == false)
         {
             echo "info was not inserted into user, please try again";
         }
     }
     //APPLICANT
-    $applicantsql = "INSERT INTO applicant (gwid, aoi, appExp, admissionYear, admissionSemester, degProgram, appStatus, transcript) VALUES ('$gwid', '$aoi', '$workExp', '$appYear', '$appSem', '$program', '1', '0')";
+    $applicantsql = "INSERT INTO applicant (uid, aoi, appExp, admissionYear, admissionSemester, degProgram, appStatus, transcript) VALUES ('$uid', '$aoi', '$workExp', '$appYear', '$appSem', '$program', '1', '0')";
     if (mysqli_query($dbc, $applicantsql) == false)
     {
         echo "info was not inserted into user, please try again";
     }
-    //GRE
-    if (is_null('$total'))
-    {
-        echo "this entry/part of the entry is empty, not added to table";
-    }
-    else
-    {
-        $query = "SELECT gwid FROM applicant WHERE gwid = '$gwid'";
-        $data = mysqli_query($dbc, $query);
-        if (mysqli_num_rows($data) != 0){
-            $gretotalsql = "INSERT INTO examScore (gwid, examSubject, score, yearTake) VALUES ('$gwid', 'total', '$total', '$greYearTaken')";
+    else {
+        //GRE
+        if (is_null('$total'))
+        {
+            echo "this entry/part of the entry is empty, not added to table";
+        }
+        else
+        {
+            $gretotalsql = "INSERT INTO examScore (uid, examSubject, score, yearTake) VALUES ('$uid', 'total', '$total', '$greYearTaken')";
             $dbc->query($gretotalsql);
         }
-    }
-
-    if (is_null('$verbal'))
-    {
-        echo "this entry/part of the entry is empty, not added to table";
-    }
-    else
-    {
-        $query = "SELECT gwid FROM applicant WHERE gwid = '$gwid'";
-        $data = mysqli_query($dbc, $query);
-        if (mysqli_num_rows($data) != 0){
-            $greverbalsql = "INSERT INTO examScore (gwid, examSubject, score, yearTake) VALUES ('$gwid', 'verbal', '$verbal', '$greYearTaken')";
+        
+        if (is_null('$verbal'))
+        {
+            echo "this entry/part of the entry is empty, not added to table";
+        }
+        else
+        {
+            $greverbalsql = "INSERT INTO examScore (uid, examSubject, score, yearTake) VALUES ('$uid', 'verbal', '$verbal', '$greYearTaken')";
             $dbc->query($greverbalsql);
         }
-    }
-
-    if (is_null('$quant'))
-    {
-        echo "this entry/part of the entry is empty, not added to table";
-    }
-    else
-    {
-        $query = "SELECT gwid FROM applicant WHERE gwid = '$gwid'";
-        $data = mysqli_query($dbc, $query);
-        if (mysqli_num_rows($data) != 0){
-            $grequantsql = "INSERT INTO examScore (gwid, examSubject, score, yearTake) VALUES ('$gwid', 'quantitative', '$quant', '$greYearTaken')";
+   
+        if (is_null('$quant'))
+        {
+            echo "this entry/part of the entry is empty, not added to table";
+        }
+        else
+        {
+            $grequantsql = "INSERT INTO examScore (uid, examSubject, score, yearTake) VALUES ('$uid', 'quantitative', '$quant', '$greYearTaken')";
             $dbc->query($grequantsql);
         }
-    }
-    //GRE SUBJECTS
-    if (is_null('$subj1') || is_null('$subjScore1'))
-    {
-        echo "this entry/part of the entry is empty, not added to table";
-    }
-    else
-    {
-        $query = "SELECT gwid FROM applicant WHERE gwid = '$gwid'";
-        $data = mysqli_query($dbc, $query);
-        if (mysqli_num_rows($data) != 0){
-            $subj1sql = "INSERT INTO examScore (gwid, examSubject, score, yearTake) VALUES ('$gwid', '$subj1', '$subjScore1', '$subjYearTaken1')";
+        //GRE SUBJECTS
+        if (is_null('$subj1') || is_null('$subjScore1'))
+        {
+            echo "this entry/part of the entry is empty, not added to table";
+        }
+        else
+        {
+            $subj1sql = "INSERT INTO examScore (uid, examSubject, score, yearTake) VALUES ('$uid', '$subj1', '$subjScore1', '$subjYearTaken1')";
             $dbc->query($subj1sql);
         }
-    }
-
-    if (is_null('$subj2') || is_null('$subjScore2'))
-    {
-        echo "this entry/part of the entry is empty, not added to table";
-    }
-    else
-    {
-        $query = "SELECT gwid FROM applicant WHERE gwid = '$gwid'";
-        $data = mysqli_query($dbc, $query);
-        if (mysqli_num_rows($data) != 0){
+        
+        if (is_null('$subj2') || is_null('$subjScore2'))
+        {
+            echo "this entry/part of the entry is empty, not added to table";
+        }
+        else
+        {
             $subj2sql = "INSERT INTO examScore (gwid, examSubject, score, yearTake) VALUES ('$gwid', '$subj2', '$subjScore2', '$subjYearTaken2')";
             $dbc->query($subj2sql);
         }
-    }
-
-    if (is_null('$subj3') || is_null('$subjScore3'))
-    {
-        echo "this entry/part of the entry is empty, not added to table";
-    }
-    else
-    {
-        $query = "SELECT gwid FROM applicant WHERE gwid = '$gwid'";
-        $data = mysqli_query($dbc, $query);
-        if (mysqli_num_rows($data) != 0){
+        
+        if (is_null('$subj3') || is_null('$subjScore3'))
+        {
+            echo "this entry/part of the entry is empty, not added to table";
+        }
+        else
+        {
             $subj3sql = "INSERT INTO examScore (gwid, examSubject, score, yearTake) VALUES ('$gwid', '$subj3', '$subjScore3', '$subjYearTaken3')";
             $dbc->query($subj3sql);
+    
         }
-    }
-
-    if (is_null('$subj4') || is_null('$subjScore4'))
-    {
-        echo "this entry/part of the entry is empty, not added to table";
-    }
-    else
-    {
-        $query = "SELECT gwid FROM applicant WHERE gwid = '$gwid'";
-        $data = mysqli_query($dbc, $query);
-        if (mysqli_num_rows($data) != 0){
+        if (is_null('$subj4') || is_null('$subjScore4'))
+        {
+            echo "this entry/part of the entry is empty, not added to table";
+        }
+        else
+        {
             $subj4sql = "INSERT INTO examScore (gwid, examSubject, score, yearTake) VALUES ('$gwid', '$subj4', '$subjScore4', '$subjYearTaken4')";
             $dbc->query($subj4sql);
         }
-    }
-
-    if (is_null('$subj5') || is_null('$subjScore5'))
-    {
-        echo "this entry/part of the entry is empty, not added to table";
-    }
-    else
-    {
-        $query = "SELECT gwid FROM applicant WHERE gwid = '$gwid'";
-        $data = mysqli_query($dbc, $query);
-        if (mysqli_num_rows($data) != 0){
+        if (is_null('$subj5') || is_null('$subjScore5'))
+        {
+            echo "this entry/part of the entry is empty, not added to table";
+        }
+        else
+        {
             $subj5sql = "INSERT INTO examScore (gwid, examSubject, score, yearTake) VALUES ('$gwid', '$subj5', '$subjScore5', '$subjYearTaken5')";
             $dbc->query($subj5sql);
         }
-    }
 
-    if (is_null('$subj6') || is_null('$subjScore6'))
-    {
-        echo "this entry/part of the entry is empty, not added to table";
-    }
-    else
-    {
-        $query = "SELECT gwid FROM applicant WHERE gwid = '$gwid'";
-        $data = mysqli_query($dbc, $query);
-        if (mysqli_num_rows($data) != 0){
+
+        if (is_null('$subj6') || is_null('$subjScore6'))
+        {
+            echo "this entry/part of the entry is empty, not added to table";
+        }
+        else
+        {
             $subj6sql = "INSERT INTO examScore (gwid, examSubject, score, yearTake) VALUES ('$gwid', '$subj6', '$subjScore6', '$subjYearTaken6')";
             $dbc->query($subj6sql);
         }
-    }
 
-    if (is_null('$subj7') || is_null('$subjScore7'))
-    {
-        echo "this entry/part of the entry is empty, not added to table";
-    }
-    else
-    {
-        $query = "SELECT gwid FROM applicant WHERE gwid = '$gwid'";
-        $data = mysqli_query($dbc, $query);
-        if (mysqli_num_rows($data) != 0){
+        if (is_null('$subj7') || is_null('$subjScore7'))
+        {
+            echo "this entry/part of the entry is empty, not added to table";
+        }
+        else
+        {
             $subj7sql = "INSERT INTO examScore (gwid, examSubject, score, yearTake) VALUES ('$gwid', '$subj7', '$subjScore7', '$subjYearTaken7')";
             $dbc->query($subj7sql);
         }
-    }
 
-    //PRIOR DEGREE
-    if (is_null('$pdMajor1') || is_null('$pdGPA1') || is_null('$pdCollege1'))
-    {
-        echo "this entry/part of the entry is empty, not added to table";
-    }
-    else
-    {
-        $query = "SELECT gwid FROM applicant WHERE gwid = '$gwid'";
-        $data = mysqli_query($dbc, $query);
-        if (mysqli_num_rows($data) != 0){
+        //PRIOR DEGREE
+        if (is_null('$pdMajor1') || is_null('$pdGPA1') || is_null('$pdCollege1'))
+        {
+            echo "this entry/part of the entry is empty, not added to table";
+        }
+        else
+        {
             $pd1sql = "INSERT INTO degree (gwid, degType, school, gpa, major, yearGrad) VALUES ('$gwid', '$pdType1', '$pdCollege1', '$pdGPA1', '$pdMajor1', '$pdYear1')";
             $dbc->query($pd1sql);
         }
-    }
 
-    if (is_null('$pdMajor2') || is_null('$pdGPA2') || is_null('$pdCollege2'))
-    {
-        echo "this entry/part of the entry is empty, not added to table";
-    }
-    else
-    {
-        $query = "SELECT gwid FROM applicant WHERE gwid = '$gwid'";
-        $data = mysqli_query($dbc, $query);
-        if (mysqli_num_rows($data) != 0){
+        if (is_null('$pdMajor2') || is_null('$pdGPA2') || is_null('$pdCollege2'))
+        {
+            echo "this entry/part of the entry is empty, not added to table";
+        }
+        else
+        {
             $pd2sql = "INSERT INTO degree (gwid, degType, school, gpa, major, yearGrad) VALUES ('$gwid', '$pdType2', '$pdCollege2', '$pdGPA2', '$pdMajor2', '$pdYear2')";
             $dbc->query($pd2sql);
         }
-    }
 
-    //RECS
-    $rec1sql = "INSERT INTO recs (gwid, email) VALUES ('$gwid', '$rec1Email')";
-    if (mysqli_query($dbc, $rec1sql) == false)
-    {
-        echo "rec1 was not inserted into recs, please try again";
-    }
-    $rec2sql = "INSERT INTO recs (gwid, email) VALUES ('$gwid', '$rec2Email')";
-    if (mysqli_query($dbc, $rec2sql) == false)
-    {
-        echo "rec2 was not inserted into recs, please try again";
-    }
-    $rec3sql = "INSERT INTO recs (gwid, email) VALUES ('$gwid', '$rec3Email')";
-    if (mysqli_query($dbc, $rec3sql) == false)
-    {
-        echo "rec3 was not inserted into recs, please try again";
-    }
-
-    if ($result = $dbc->query("SELECT recId FROM recs WHERE gwid = '$gwid' AND email = '$rec1Email'"))
-    {
-        while ($row = $result->fetch_object())
+        //THIS PART NEEDS TO BE CHANGE
+        $rec1sql = "INSERT INTO recs (gwid, email) VALUES ('$gwid', '$rec1Email')";
+        if (mysqli_query($dbc, $rec1sql) == false)
         {
-            $msg = "You have been asked to send a recommendation letter for " . $fname . " " . $lname . ". Your recID is " . $row->recId . ". Please click on the link to fill out the recommendation form." . "http://gwupyterhub.seas.gwu.edu/~sp20DBp1-git-happens/git-happens/recommendation.html";
-            mail($rec1Email, "GW Graduate Program Letter of Recommendation Request", $msg);
+            echo "rec1 was not inserted into recs, please try again";
+        }
+        $rec2sql = "INSERT INTO recs (gwid, email) VALUES ('$gwid', '$rec2Email')";
+        if (mysqli_query($dbc, $rec2sql) == false)
+        {
+            echo "rec2 was not inserted into recs, please try again";
+        }
+        $rec3sql = "INSERT INTO recs (gwid, email) VALUES ('$gwid', '$rec3Email')";
+        if (mysqli_query($dbc, $rec3sql) == false)
+        {
+            echo "rec3 was not inserted into recs, please try again";
+        }
+
+        if ($result = $dbc->query("SELECT recId FROM recs WHERE gwid = '$gwid' AND email = '$rec1Email'"))
+        {
+            while ($row = $result->fetch_object())
+            {
+                $msg = "You have been asked to send a recommendation letter for " . $fname . " " . $lname . ". Your recID is " . $row->recId . ". Please click on the link to fill out the recommendation form." . "http://gwupyterhub.seas.gwu.edu/~sp20DBp1-git-happens/git-happens/recommendation.html";
+                mail($rec1Email, "GW Graduate Program Letter of Recommendation Request", $msg);
+            }
+        }
+        if ($result = $dbc->query("SELECT recId FROM recs WHERE gwid = '$gwid' AND email = '$rec2Email'"))
+        {
+            while ($row = $result->fetch_object())
+            {
+                $msg = "You have been asked to send a recommendation letter for " . $fname . " " . $lname . ". Your recID is " . $row->recId . ". Please click on the link to fill out the recommendation form." . "http://gwupyterhub.seas.gwu.edu/~sp20DBp1-git-happens/git-happens/recommendation.html";
+                mail($rec2Email, "GW Graduate Program Letter of Recommendation Request", $msg);
+            }
+        }
+        if ($result = $dbc->query("SELECT recId FROM recs WHERE gwid = '$gwid' AND email = '$rec3Email'"))
+        {
+            while ($row = $result->fetch_object())
+            {
+                $msg = "You have been asked to send a recommendation letter for " . $fname . " " . $lname . ". Your recID is " . $row->recId .  "Please click on the link to fill out the recommendation form." . "http://gwupyterhub.seas.gwu.edu/~sp20DBp1-git-happens/git-happens/recommendation.html";
+                mail($rec3Email, "GW Graduate Program Letter of Recommendation Request", $msg);
+            }
         }
     }
-    if ($result = $dbc->query("SELECT recId FROM recs WHERE gwid = '$gwid' AND email = '$rec2Email'"))
-    {
-        while ($row = $result->fetch_object())
-        {
-            $msg = "You have been asked to send a recommendation letter for " . $fname . " " . $lname . ". Your recID is " . $row->recId . ". Please click on the link to fill out the recommendation form." . "http://gwupyterhub.seas.gwu.edu/~sp20DBp1-git-happens/git-happens/recommendation.html";
-            mail($rec2Email, "GW Graduate Program Letter of Recommendation Request", $msg);
-        }
-    }
-    if ($result = $dbc->query("SELECT recId FROM recs WHERE gwid = '$gwid' AND email = '$rec3Email'"))
-    {
-        while ($row = $result->fetch_object())
-        {
-            $msg = "You have been asked to send a recommendation letter for " . $fname . " " . $lname . ". Your recID is " . $row->recId .  "Please click on the link to fill out the recommendation form." . "http://gwupyterhub.seas.gwu.edu/~sp20DBp1-git-happens/git-happens/recommendation.html";
-            mail($rec3Email, "GW Graduate Program Letter of Recommendation Request", $msg);
-        }
-    }
-
-    echo "<script>window.location.href='index.php';</script>";
-    exit;
+  //  echo "<script>window.location.href='index.php';</script>";
+    //exit;
     mysqli_close($dbc);
 }
 ?>
