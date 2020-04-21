@@ -1,10 +1,11 @@
+use phase2;
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS student CASCADE;
 DROP TABLE IF EXISTS form CASCADE;
 DROP TABLE IF EXISTS staff CASCADE;
 DROP TABLE IF EXISTS transcript CASCADE;
 DROP TABLE IF EXISTS course CASCADE;
-DROP TABLE IF EXISTS person CASCADE;
+DROP TABLE IF EXISTS people CASCADE;
 DROP TABLE IF EXISTS applicant CASCADE;
 DROP TABLE IF EXISTS degree CASCADE;
 DROP TABLE IF EXISTS examScore CASCADE;
@@ -16,6 +17,8 @@ DROP TABLE IF EXISTS transcript CASCADE;
 DROP TABLE IF EXISTS schedule CASCADE;
 DROP TABLE IF EXISTS takes cascade;
 DROP TABLE IF EXISTS teaches;
+DROP TABLE IF EXISTS people;
+
 
 CREATE TABLE form(
 	`uid` int, 
@@ -27,7 +30,7 @@ CREATE TABLE form(
 	FOREIGN KEY (`uid`) REFERENCES student(`uid`)
 );
 
-CREATE TABLE person (
+CREATE TABLE people (
   `uid` int AUTO_INCREMENT,
   `username` VARCHAR(32),
   `password` VARCHAR(40),
@@ -43,13 +46,15 @@ CREATE TABLE person (
 CREATE TABLE student(
   `uid` int,
   `grad_status` varchar(32),
+  
   `thesis` boolean,
   `audited` boolean,
   `advisoruid` int,
   `program` VARCHAR(32),
   `grad_year` int,
+  `department` varchar(32),
   primary key (`uid`),
-  foreign key (`uid`) references person(`uid`)
+  foreign key (`uid`) references people(`uid`)
 );
 
 CREATE TABLE staff(
@@ -58,7 +63,7 @@ CREATE TABLE staff(
   `department` VARCHAR(32),
   `yearsWorking` int,
   primary key (`uid`),
-  foreign key (`uid`) references person(`uid`)
+  foreign key (`uid`) references people(`uid`)
 );
 
 CREATE TABLE applicant (
@@ -72,7 +77,7 @@ CREATE TABLE applicant (
   `admissionSemester` varchar(10),
   `adv` int,
   primary key (`uid`),
-  foreign key (`uid`) references person (`uid`)
+  foreign key (`uid`) references people(`uid`)
 );
 
 CREATE TABLE degree (
@@ -203,14 +208,71 @@ CREATE TABLE teaches (
 
 SET FOREIGN_KEY_CHECKS = 1;
 
+-- students
+-- INSERT INTO people VALUES (55555555 ,'paul','pass','Paul','McCartney','addr','email','2000-09-28', 99999999);
+-- INSERT INTO people VALUES (66666666 ,'george','pass','George','Harrison','addr','email','2000-09-28', 99998999);
+-- INSERT INTO people VALUES (77777777 ,'eric','pass','Eric','Clapton','addr','email','2000-09-28', 99999996);
+
+-- INSERT INTO student VALUES (55555555 , 0, null, null, 10, 'masters', null, "CSCI");
+-- INSERT INTO student VALUES (66666666 , 0, null, null, 20, 'masters', null, "CSCI");
+-- INSERT INTO student VALUES (77777777 , 0, null, null, 10, 'masters', 2014, "CSCI");
+
+-- courses 
+INSERT INTO course VALUES (6221,'CSCI','SW Paradigms',3);
+INSERT INTO course VALUES (6461,'CSCI','Computer Architecture',3);
+INSERT INTO course VALUES (6212,'CSCI','Algorithms',3);
+INSERT INTO course VALUES (6220,'CSCI','Machine Learning',3);
+INSERT INTO course VALUES (6232,'CSCI','Networks 1',3);
+INSERT INTO course VALUES (6233,'CSCI','Networks 2',3);
+INSERT INTO course VALUES (6241,'CSCI','Database 1',3);
+INSERT INTO course VALUES (6242,'CSCI','Database 2',3);
+INSERT INTO course VALUES (6246,'CSCI','Compilers',3);
+INSERT INTO course VALUES (6260,'CSCI','Multimedia',3);
+INSERT INTO course VALUES (6251,'CSCI','Cloud Computing',3);
+INSERT INTO course VALUES (6254,'CSCI','SW Engineering',3);
+INSERT INTO course VALUES (6262,'CSCI','Graphics 1',3);
+INSERT INTO course VALUES (6283,'CSCI','Security 1',3);
+INSERT INTO course VALUES (6284,'CSCI','Cryptography',3);
+INSERT INTO course VALUES (6286,'CSCI','Network Security',3);
+INSERT INTO course VALUES (6325,'CSCI','Algorithms 2',3);
+INSERT INTO course VALUES (6339,'CSCI','Embedded Systems',3);
+INSERT INTO course VALUES (6384,'CSCI','Cryptography 2',3);
+INSERT INTO course VALUES (6241,'ECE','Communication Theory',3);
+INSERT INTO course VALUES (6242,'ECE','Information Theory',2);
+INSERT INTO course VALUES (6210,'MATH','Logic',2);
+
+-- student trans
+INSERT INTO transcript VALUES (14,55555555,'CSCI',6221,'A',2019,'MS', 0);
+INSERT INTO transcript VALUES (15,55555555,'CSCI',6212,'A',2019,'MS',0);
+INSERT INTO transcript VALUES (16,55555555,'CSCI',6461,'A',2019,'MS',0);
+INSERT INTO transcript VALUES (17,55555555,'CSCI',6232,'A',2019,'MS',0);
+INSERT INTO transcript VALUES (18,55555555,'CSCI',6233,'A',2019,'MS',0);
+INSERT INTO transcript VALUES (19,55555555,'CSCI',6241,'B',2019,'MS',0);
+INSERT INTO transcript VALUES (20,55555555,'CSCI',6246,'B',2019,'MS',0);
+INSERT INTO transcript VALUES (21,55555555,'CSCI',6262,'B',2019,'MS',0);
+INSERT INTO transcript VALUES (22,55555555,'CSCI',6283,'B',2019,'MS',0);
+INSERT INTO transcript VALUES (23,55555555,'CSCI',6242,'B',2019,'MS',0);
+
+-- staff
+-- insert into people values (10, 'B', 'pass', 'B', 'Narahari', 'address', 'email@gwu.edu','2000-09-28', 89999999);
+-- insert into people values (20, 'G', 'pass', 'G', 'Parmer', 'address', 'email@gwu.edu', '2000-09-28', 99959999);
+-- insert into people values (30, 'gs', 'pass', 'GS', 'GS', 'address', 'email@gwu.edu', '2000-09-28', 99950999);
+-- insert into people values (40, 'admin', 'pass', 'admin', 'admin', 'address', 'email@gwu.edu', '2000-09-28', 39950999);
+
+-- INSERT INTO staff VALUES (10 , 4, 'CSCI', 4);
+-- INSERT INTO staff VALUES (20 , 4, 'CSCI', 4);
+-- INSERT INTO staff VALUES (30 , 1, 'CSCI', 4);
+-- INSERT INTO staff VALUES (40 , 0, 'CSCI', 4);
+
+
 
 -- this is the data for the apps side
-insert into person (ssn, username, email, birthDate, password, uid, fname, lname, address) values (111111111, 'jlennon', 'jlennon@gmail.com', '1940-10-09', '1234', 55555555, 'John', 'Lennon', '72nd St & Central Park West, New York, NY, 10023');
+insert into people (ssn, username, email, birthDate, password, uid, fname, lname, address) values (111111111, 'jlennon', 'jlennon@gmail.com', '1940-10-09', '1234', 55555554, 'John', 'Lennon', '72nd St & Central Park West, New York, NY, 10023');
 
-insert into applicant values (55555555, 'Music', 'Member of The Beatles, formerly', 'md', 2, 1, 2020, 'fall', null);
+insert into applicant values (55555554, 'Music', 'Member of The Beatles, formerly', 'md', 2, 1, 2020, 'fall', null);
 
-insert into degree values (55555555, 'BA', 'Berkley', '4.0', 'Boyband', 1960);
-insert into degree values (55555555, 'BA', 'Columbia', '3.5', 'Rocket Science', 1969);
+insert into degree values (55555554, 'BA', 'Berkley', '4.0', 'Boyband', 1960);
+insert into degree values (55555554, 'BA', 'Columbia', '3.5', 'Rocket Science', 1969);
 
 
 insert into examScore values (55555555, 'total', 340, 1980);
@@ -221,7 +283,7 @@ insert into recs (uid, recName, job, relation, email, content, org) values (5555
 insert into recs (uid, recName, job, relation, email, content, org) values (55555555, 'Freddy Mercury', 'Rock Star', 'Acquaintance', 'freddomercury@hotmail.com', 'Every time we work together this man leaves me absolutely speechless.', 'The stage');
 insert into recs (uid, recName, job, relation, email, content, org) values (55555555, 'Yono Oko', 'Artist', 'Significant other', 'yo@gmail.com', 'Quality man, you would be lucky to have him in your program.', 'Art');
 
-insert into person (ssn, username, email, birthDate, password, uid, fname, lname, address) values (222111111, 'rstarr', 'rstarr@gmail.com', '1940-07-07', '1234', 66666666, 'Ringo', 'Starr', '2 Glynde Mews, Chelsea, London SW3 1SB, United Kingdom');
+insert into people (ssn, username, email, birthDate, password, uid, fname, lname, address) values (222111111, 'rstarr', 'rstarr@gmail.com', '1940-07-07', '1234', 66666666, 'Ringo', 'Starr', '2 Glynde Mews, Chelsea, London SW3 1SB, United Kingdom');
 
 insert into applicant (uid, aoi, appExp, degProgram, appStatus, transcript, admissionYear, admissionSemester) values (66666666, 'Music', 'Member of The Beatles, formerly', 'md', 1, 1, 2020, 'fall');
 
@@ -236,16 +298,16 @@ insert into recs (uid, recName, job, relation, email, content, org) values (6666
 insert into recs (uid, email) values (66666666, 'madonna@gmail.com');
 
 -- staff
-insert into person (fname, lname, uid, username, password) values ('Bhagi', 'Narahari', 1, 'bnarahari', '1234');
-insert into person (fname, lname, uid, username, password) values ('Admin', 'Admin', 2, 'admin', '1234');
-insert into person (fname, lname, uid, username, password) values ('Gabe', 'Parmer', 3, 'gparmer', '1234');
-insert into person (fname, lname, uid, username, password) values ('Tim', 'Wood', 4, 'twood', '1234');
-insert into person (fname, lname, uid, username, password) values ('Shelly', 'Heller', 5, 'sheller', '1234');
-insert into person (fname, lname, uid, username, password) values ('Sarah', 'Morin', 6, 'smorin', '1234');
-insert into person (fname, lname, uid, username, password) values ('Kevin', 'Deems', 7, 'kdeems', '1234');
-insert into person (fname, lname, uid, username, password) values ('Graduate', 'Secretary', 8, 'gs', '1234');
-insert into person (fname, lname, uid, username, password) values ('Hyeong-Ah', 'Choi', 9, 'hchoi', '1234');
-insert into person (fname, lname, uid, username, password) values ('Robert', 'Pless', 10, 'rpless', '1234');
+insert into people (fname, lname, uid, username, password) values ('Bhagi', 'Narahari', 1, 'bnarahari', '1234');
+insert into people (fname, lname, uid, username, password) values ('Admin', 'Admin', 2, 'admin', '1234');
+insert into people (fname, lname, uid, username, password) values ('Gabe', 'Parmer', 3, 'gparmer', '1234');
+insert into people (fname, lname, uid, username, password) values ('Tim', 'Wood', 4, 'twood', '1234');
+insert into people (fname, lname, uid, username, password) values ('Shelly', 'Heller', 5, 'sheller', '1234');
+insert into people (fname, lname, uid, username, password) values ('Sarah', 'Morin', 6, 'smorin', '1234');
+insert into people (fname, lname, uid, username, password) values ('Kevin', 'Deems', 7, 'kdeems', '1234');
+insert into people (fname, lname, uid, username, password) values ('Graduate', 'Secretary', 8, 'gs', '1234');
+insert into people (fname, lname, uid, username, password) values ('Hyeong-Ah', 'Choi', 9, 'hchoi', '1234');
+insert into people (fname, lname, uid, username, password) values ('Robert', 'Pless', 10, 'rpless', '1234');
 
 insert into staff (uid, type) values (1, 9);
 insert into staff (uid, type) values (2, 0);
