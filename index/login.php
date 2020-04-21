@@ -25,6 +25,7 @@ if (!empty($user_username) && !empty($user_password)) {
 
     $query = "SELECT program FROM student WHERE uid = '$uid'" ;
     $data = mysqli_query($dbc, $query);
+    
     // if student
     if (mysqli_num_rows($data) == 1) {
       $row = mysqli_fetch_assoc($data); 
