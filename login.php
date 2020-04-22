@@ -34,13 +34,13 @@ if (!empty($user_username) && !empty($user_password)) {
         $_SESSION['alumn'] = "true";
         print_r($_SESSION);
       } 
-      echo "<script>location.href='student_home.php'</script>";
+      echo "<script>location.href='index.php'</script>";
     } else {
       $query = "SELECT type FROM staff WHERE uid = '$uid'" ;
       $data = mysqli_query($dbc, $query);
       $row = mysqli_fetch_assoc($data); 
       $_SESSION['type'] = $row['type'];
-      echo "<script>location.href='staff_home.php'</script>";
+      echo "<script>location.href='index.php'</script>";
     }
   } else {
 	  // The username/password are incorrect so set an error message
