@@ -260,7 +260,7 @@ insert into examScore values (66666666, 'quantitative', 170, 1983);
 
 insert into recs (uid, recName, job, relation, email, content, org) values (66666666, 'Daffy Duck', 'Duck', 'Acquaintance', 'dduck@aol.com', 'Not a rabbit, cannot complain', 'Toons');
 insert into recs (uid, recName, job, relation, email, content, org) values (66666666, 'Rogger Rabbit', 'Rock Star', 'Employer', 'rrabbit@hotmail.com', 'Wonderful man.', 'Wouldnt you like to know');
-insert into recs (uid, email) values (66666666, 'madonna@gmail.com');
+--insert into recs (uid, email) values (66666666, 'madonna@gmail.com');
 
 -- staff
 insert into people (fname, lname, uid, username, password) values ('Bhagi', 'Narahari', 1, 'bnarahari', '1234');
@@ -288,6 +288,8 @@ insert into staff (uid, type) values (10, 2);
 
 INSERT into people (uid, username, password, fname, lname) values (77777777, 'eclapton', '1234', 'Eric', 'Clapton');
 INSERT into student values (77777777, 'alumni', 1, 1, 6, 'masters', 2014, 'CS');
+
+insert into people (username, password) values ('mom', 'mom');
 
 -- student trans
 INSERT INTO transcript VALUES (1,77777777,'CSCI',6221,'B',2014,'MS', 0);
