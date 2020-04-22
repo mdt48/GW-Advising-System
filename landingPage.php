@@ -20,7 +20,7 @@
 					</a>
 				</li>
 				<li class = "nav item">
-					<a class = "nav-link" href = "login.php">Login</a>
+					<a class = "nav-link" href = "login.html">Login</a>
 				</li>
 				<li class = "nav item">
 					<a class = "nav-link" href = "createAcc.php">Create an Account</a>
@@ -40,7 +40,7 @@
 				click the button below to begin your future as a GW graduate student
 				</p>
 				<p class = "lead" > <em><center></em></p>
-				<a class = "btn btn-light btn-lg" href = "login.php">Apply Here!</a>
+				<a class = "btn btn-light btn-lg" href = "login.html">Apply Here!</a>
 			</div>
 		</div>
 	</div>
