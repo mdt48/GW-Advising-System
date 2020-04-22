@@ -1,5 +1,9 @@
 <?php
-    session_start();
+    session_start(); 
     session_destroy();
-    echo 'Session was destroyed';
+    
+    $home_url = 'landingPage.php';
+    header('Location: ' . $home_url);
+  
+    $mysqli->close();
 ?>

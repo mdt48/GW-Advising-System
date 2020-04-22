@@ -46,7 +46,7 @@
 	</div>
 </header>
 <em><center></em>
-				<a class = "btn" href = "reset.php">Reset Db</a>
+				<a class = "btn" href = "reset.php">Reset DB</a>
 
 </body>
 </html>

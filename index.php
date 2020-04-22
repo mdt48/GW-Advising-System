@@ -103,25 +103,78 @@
 			$data = mysqli_query($dbc, $query);
 			if (mysqli_num_rows($data) == 1) {				
 				$row = mysqli_fetch_array($data);
-				
-				echo 'type is: '.$row['type'];
-				if ($row['type'] == 3) {
-					echo '<a href="queue.php"><h1>Applications to review</h1></a>';
+				//admin
+				if ($row['type'] == 0) {
+					echo '<a href="admin.php"><h1>Add Users</h1></a><br/>';
+					//echo '<a href="view_all_accounts.php"><h1>View all Accounts</h1></a><br/>';
+					echo '<a href="grades.php"><h1>View Grades</h1></a><br/>';
+					echo '<a href="view-student-transcripts.php"><h1>View Transcripts</h1></a><br/>';
+					echo '<a href="view-classes.php"><h1>View Classes</h1></a><br/>';
+					echo '<a href="edit_user_info.php"><h1>Edit User Info</h1></a><br/>';
 				}
+				//gs
+				else if ($row['type'] == 1) {
+					echo '<a href="queue.php"><h1>Applications to review</h1></a><br/>';
+
+					echo '<a href="view_transcript.php"><h1>View Transcript</h1></a><br/>';
+					echo '<a href="grades.php"><h1>View Grades</h1></a><br/>';
+					echo '<a href="view-classes.php"><h1>View Classes</h1></a><br/>';
+					echo '<a href="edit_user_info.php"><h1>Edit User Info</h1></a><br/>';
+					
+				}
+				//cac
 				else if ($row['type'] == 2) {
 					echo '<a href="queue.php"><h1>Applications to review</h1></a>';
 				}
-				else if ($row['type'] == 1) {
-					echo '<a href="queue.php"><h1>Applications to review </h1></a>';
+				//fr
+				else if ($row['type'] == 3) {
+					echo '<a href="queue.php"><h1>Applications to review</h1></a>';
 				}
-				else if ($row['type'] == 0) {
-					echo '<a href="admin.php"><h1>Add people</h1></a>';
+				//fa
+				else if ($row['type'] == 4) {
+					echo '<a href="view_all_students.php"><h1>View All Students</h1></a><br/>';
+					echo '<a href="edit_user_info.php"><h1>Edit User Info</h1></a><br/>';
+				}
+				//fi
+				else if ($row['type'] == 5) {
+					echo '<a href="grades.php"><h1>View Grades</h1></a><br/>';
+					echo '<a href="view-student-transcripts.php"><h1>View Student Transcripts</h1></a><br/>';
+				}
+				//fr&a
+				else if ($row['type'] == 6) {
+					echo '<a href="queue.php"><h1>Applications to review</h1></a>';					
+					echo '<a href="view_all_students.php"><h1>View All Students</h1></a><br/>';
+					echo '<a href="edit_user_info.php"><h1>Edit User Info</h1></a><br/>';
+				}
+				//fr&i
+				else if ($row['type'] == 7) {
+					echo '<a href="queue.php"><h1>Applications to review</h1></a>';
+					echo '<a href="grades.php"><h1>View Grades</h1></a><br/>';
+					echo '<a href="view-student-transcripts.php"><h1>View Student Transcripts</h1></a><br/>';
+				}
+				//fi&a
+				else if ($row['type'] == 8) {
+					echo '<a href="view_all_students.php"><h1>View All Students</h1></a><br/>';
+					echo '<a href="edit_user_info.php"><h1>Edit User Info</h1></a><br/>';
+					echo '<a href="grades.php"><h1>View Grades</h1></a><br/>';
+					echo '<a href="view-student-transcripts.php"><h1>View Student Transcripts</h1></a><br/>';
+				}
+				//all three
+				else if ($row['type'] == 9) {
+					echo '<a href="queue.php"><h1>Applications to review</h1></a>';
+					echo '<a href="view_all_students.php"><h1>View All Students</h1></a><br/>';
+					echo '<a href="edit_user_info.php"><h1>Edit User Info</h1></a><br/>';
+					echo '<a href="grades.php"><h1>View Grades</h1></a><br/>';
+					echo '<a href="view-student-transcripts.php"><h1>View Student Transcripts</h1></a><br/>';
 				}
 			}
 
 		}
 		else {
-			echo 'Student';
+			echo '<a href="view-transcript.php"><h1>View Transcript</h1></a><br/>';
+			echo '<a href="edit_user_info.php"><h1>Edit User Info</h1></a><br/>';
+			echo '<a href="register.php"><h1>Register</h1></a><br/>';
+			echo '<a href="view-classes.php"><h1>View Classes</h1></a><br/>';
 		}
 	}
 	?>
