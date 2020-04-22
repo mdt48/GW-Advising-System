@@ -1,4 +1,3 @@
-use phase2;
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS student CASCADE;
 DROP TABLE IF EXISTS form CASCADE;
@@ -46,7 +45,6 @@ CREATE TABLE people (
 CREATE TABLE student(
   `uid` int,
   `grad_status` varchar(32),
-  
   `thesis` boolean,
   `audited` boolean,
   `advisoruid` int,
@@ -208,15 +206,6 @@ CREATE TABLE teaches (
 
 SET FOREIGN_KEY_CHECKS = 1;
 
--- students
--- INSERT INTO people VALUES (55555555 ,'paul','pass','Paul','McCartney','addr','email','2000-09-28', 99999999);
--- INSERT INTO people VALUES (66666666 ,'george','pass','George','Harrison','addr','email','2000-09-28', 99998999);
--- INSERT INTO people VALUES (77777777 ,'eric','pass','Eric','Clapton','addr','email','2000-09-28', 99999996);
-
--- INSERT INTO student VALUES (55555555 , 0, null, null, 10, 'masters', null, "CSCI");
--- INSERT INTO student VALUES (66666666 , 0, null, null, 20, 'masters', null, "CSCI");
--- INSERT INTO student VALUES (77777777 , 0, null, null, 10, 'masters', 2014, "CSCI");
-
 -- courses 
 INSERT INTO course VALUES (6221,'CSCI','SW Paradigms',3);
 INSERT INTO course VALUES (6461,'CSCI','Computer Architecture',3);
@@ -241,38 +230,14 @@ INSERT INTO course VALUES (6241,'ECE','Communication Theory',3);
 INSERT INTO course VALUES (6242,'ECE','Information Theory',2);
 INSERT INTO course VALUES (6210,'MATH','Logic',2);
 
--- student trans
-INSERT INTO transcript VALUES (14,55555555,'CSCI',6221,'A',2019,'MS', 0);
-INSERT INTO transcript VALUES (15,55555555,'CSCI',6212,'A',2019,'MS',0);
-INSERT INTO transcript VALUES (16,55555555,'CSCI',6461,'A',2019,'MS',0);
-INSERT INTO transcript VALUES (17,55555555,'CSCI',6232,'A',2019,'MS',0);
-INSERT INTO transcript VALUES (18,55555555,'CSCI',6233,'A',2019,'MS',0);
-INSERT INTO transcript VALUES (19,55555555,'CSCI',6241,'B',2019,'MS',0);
-INSERT INTO transcript VALUES (20,55555555,'CSCI',6246,'B',2019,'MS',0);
-INSERT INTO transcript VALUES (21,55555555,'CSCI',6262,'B',2019,'MS',0);
-INSERT INTO transcript VALUES (22,55555555,'CSCI',6283,'B',2019,'MS',0);
-INSERT INTO transcript VALUES (23,55555555,'CSCI',6242,'B',2019,'MS',0);
-
--- staff
--- insert into people values (10, 'B', 'pass', 'B', 'Narahari', 'address', 'email@gwu.edu','2000-09-28', 89999999);
--- insert into people values (20, 'G', 'pass', 'G', 'Parmer', 'address', 'email@gwu.edu', '2000-09-28', 99959999);
--- insert into people values (30, 'gs', 'pass', 'GS', 'GS', 'address', 'email@gwu.edu', '2000-09-28', 99950999);
--- insert into people values (40, 'admin', 'pass', 'admin', 'admin', 'address', 'email@gwu.edu', '2000-09-28', 39950999);
-
--- INSERT INTO staff VALUES (10 , 4, 'CSCI', 4);
--- INSERT INTO staff VALUES (20 , 4, 'CSCI', 4);
--- INSERT INTO staff VALUES (30 , 1, 'CSCI', 4);
--- INSERT INTO staff VALUES (40 , 0, 'CSCI', 4);
-
-
 
 -- this is the data for the apps side
-insert into people (ssn, username, email, birthDate, password, uid, fname, lname, address) values (111111111, 'jlennon', 'jlennon@gmail.com', '1940-10-09', '1234', 55555554, 'John', 'Lennon', '72nd St & Central Park West, New York, NY, 10023');
+insert into people (ssn, username, email, birthDate, password, uid, fname, lname, address) values (111111111, 'jlennon', 'jlennon@gmail.com', '1940-10-09', '1234', 55555555, 'John', 'Lennon', '72nd St & Central Park West, New York, NY, 10023');
 
-insert into applicant values (55555554, 'Music', 'Member of The Beatles, formerly', 'md', 2, 1, 2020, 'fall', null);
+insert into applicant values (55555555, 'Music', 'Member of The Beatles, formerly', 'md', 2, 1, 2020, 'fall', null);
 
-insert into degree values (55555554, 'BA', 'Berkley', '4.0', 'Boyband', 1960);
-insert into degree values (55555554, 'BA', 'Columbia', '3.5', 'Rocket Science', 1969);
+insert into degree values (55555555, 'BA', 'Berkley', '4.0', 'Boyband', 1960);
+insert into degree values (55555555, 'BA', 'Columbia', '3.5', 'Rocket Science', 1969);
 
 
 insert into examScore values (55555555, 'total', 340, 1980);
@@ -319,3 +284,37 @@ insert into staff (uid, type) values (7, 5);
 insert into staff (uid, type) values (8, 1);
 insert into staff (uid, type) values (9, 5);
 insert into staff (uid, type) values (10, 2);
+
+
+INSERT into people (uid, username, password, fname, lname) values (77777777, 'eclapton', '1234', 'Eric', 'Clapton');
+INSERT into student values (77777777, 'alumni', 1, 1, 6, 'masters', 2014, 'CS');
+
+-- student trans
+INSERT INTO transcript VALUES (1,77777777,'CSCI',6221,'B',2014,'MS', 0);
+INSERT INTO transcript VALUES (2,77777777,'CSCI',6212,'B',2014,'MS', 0);
+INSERT INTO transcript VALUES (3,77777777,'CSCI',6461,'B',2014,'MS', 0);
+INSERT INTO transcript VALUES (4,77777777,'CSCI',6232,'B',2014,'MS', 0);
+INSERT INTO transcript VALUES (5,77777777,'CSCI',6233,'B',2014,'MS', 0);
+INSERT INTO transcript VALUES (6,77777777,'CSCI',6241,'B',2014,'MS', 0);
+INSERT INTO transcript VALUES (7,77777777,'CSCI',6242,'B',2014,'MS', 0);
+INSERT INTO transcript VALUES (8,77777777,'CSCI',6283,'B',2014,'MS', 0);
+INSERT INTO transcript VALUES (9,77777777,'CSCI',6284,'B',2014,'MS', 0);
+INSERT INTO transcript VALUES (10,77777777,'CSCI',6286,'B',2014,'MS', 0);
+
+
+INSERT into people (uid, username, password, fname, lname) values (34567890, 'kcobain', '1234', 'Kurt', 'Cobain');
+INSERT into student values (34567890, 'alumni', 1, 1, 3, 'masters', 2015, 'CS');
+
+-- student trans
+INSERT INTO transcript VALUES (11,34567890,'CSCI',6221,'A',2015,'MS', 0);
+INSERT INTO transcript VALUES (12,34567890,'CSCI',6212,'A',2015,'MS', 0);
+INSERT INTO transcript VALUES (13,34567890,'CSCI',6461,'A',2015,'MS', 0);
+INSERT INTO transcript VALUES (14,34567890,'CSCI',6232,'A',2015,'MS', 0);
+INSERT INTO transcript VALUES (15,34567890,'CSCI',6233,'A',2015,'MS', 0);
+INSERT INTO transcript VALUES (16,34567890,'CSCI',6241,'A',2015,'MS', 0);
+INSERT INTO transcript VALUES (17,34567890,'CSCI',6283,'A',2015,'MS', 0);
+INSERT INTO transcript VALUES (18,34567890,'CSCI',6284,'A',2015,'MS', 0);
+INSERT INTO transcript VALUES (19,34567890,'CSCI',6286,'A',2015,'MS', 0);
+INSERT INTO transcript VALUES (20,34567890,'CSCI',6242,'B',2015,'MS', 0);
+INSERT INTO transcript VALUES (21,34567890,'CSCI',6251,'B',2015,'MS', 0);
+INSERT INTO transcript VALUES (22,34567890,'CSCI',6254,'B',2015,'MS', 0);
