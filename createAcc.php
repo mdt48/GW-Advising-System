@@ -15,7 +15,7 @@
 	//clear error message
 	$error_msg = $error_user = $error_password = $error_email = "";
 
-	if (!(isset($_SESSION['username']))) {
+	if (!(isset($_SESSION['uid']))) {
 		if (isset($_POST['submit'])) {
 			$dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 			$flag = false;
@@ -51,23 +51,27 @@
 					$flag = true;
 				}
 				if (!$flag) {
-					$query = "select username from users where username = '$user_username'";
+					$query = "select username from people where username = '$user_username'";
 		
 					$data = mysqli_query($dbc, $query);
 		
-					// If The log-in is OK 
+					//If The log-in is OK 
 					if (mysqli_num_rows($data) == 0) {
-						$queryAdd = "INSERT INTO `users` (username, userPassword, email) values ('$user_username', '$user_password', '$user_email');";
+						$queryAdd = "INSERT INTO `people` (username, password, email) values ('$user_username', '$user_password', '$user_email');";
 						
-						$dbc->query($queryAdd);
-
-						$msg = "Here is your login info: \n Username: $user_username \n Password: $user_password";
+						if ($dbc->query($queryAdd)) {
+							$msg = "Here is your login info: \n Username: $user_username \n Password: $user_password";
 						
-						mail($user_email, "GW Graduate Program Login Info", $msg);
+							mail($user_email, "GW Graduate Program Login Info", $msg);
+	
+							$home_url = "login.php";
+			
+							header('Location: ' . $home_url);
+						}
+						else {
+							$error_msg = "Oops, something went wrong";
+						}
 
-						$home_url = "login.php";
-		
-						header('Location: ' . $home_url);
 					}
 					else {
 						$error_user = 'Sorry, this username already exists';
@@ -79,7 +83,7 @@
 			}
 		}
 	}
-	if (empty($_SESSION['username'])) {
+	if (empty($_SESSION['uid'])) {
 ?>
 
 <body data-gr-c-s-loaded = "true">

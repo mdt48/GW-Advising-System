@@ -12,7 +12,7 @@
 session_start();
 require_once ('connectvars.php');
 
-if (!isset($_SESSION['gwid']))
+if (!isset($_SESSION['uid']))
 {
 ?>
 		<!-- NAV BAR -->
@@ -54,11 +54,11 @@ if (!isset($_SESSION['gwid']))
 }
 else
 {
-    $gwidFac = $_SESSION['gwid'];
-    $gwid = $_POST['gwid'];
+    $uidFac = $_SESSION['uid'];
+    $uid = $_POST['uid'];
     $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-    $query = "select facultyType from faculty where gwid = '$gwidFac'";
+    $query = "select type from staff where uid = '$uidFac'";
 
     $data = mysqli_query($dbc, $query);
 
@@ -86,7 +86,7 @@ else
 	</div>
 </nav>
 <?php
-    if ($row['facultyType'] == 1)
+    if ($row['type'] == 1)
     {
 ?>
 <!-- HEADER -->
@@ -96,7 +96,7 @@ else
 			<div class = "col-lg-12">
 				<h1 class = "display-4 text-center text-white mt-5 mb-2">Update Transcript Information</h1>
 				<p class = "lead mb-5 text-center text-white-50" id = button>
-					Currently updating the transcript status of student gwid: <?php echo $gwid; ?>.
+					Currently updating the transcript status of student uid: <?php echo $uid; ?>.
 				</p>
 			</div>
 		</div>
@@ -108,21 +108,23 @@ else
         if (isset($_POST['transcript']))
         {
             $transcript = $_POST['transcript'];
-			$gwid = $_POST['gwid'];
+			$uid = $_POST['uid'];
 			
-			$queryUpdate = "UPDATE applicant SET transcript = '$transcript' WHERE gwid = '$gwid'";
+			$queryUpdate = "UPDATE applicant SET transcript = '$transcript' WHERE uid = '$uid'";
 			$dbc->query($queryUpdate);
 
-			$query = "select count(gwid) as total from recs where recName is not null and gwid = '$gwid'";
-			$data = mysqli_query($dbc, $query);	
-			$row = mysqli_fetch_array($data);
-
-			if ($row['total'] == 1 && $transcript == 1) {
-				$queryUpdate = "UPDATE applicant SET status = 2 WHERE gwid = '$gwid'";
-				$dbc->query($queryUpdate);
+			$checkRecsQuery = "Select * from recs where uid = ".$updateRow['uid'];
+			$checkRecsData = mysqli_query($dbc, $checkRecsQuery);
+			$numRecs = mysqli_num_rows($checkRecsData);
+			if ($numRecs >= 1) {
+				$checkRecsQuery = "SELECT * from recs where recName is not null and uid = ".$updateRow['uid'];
+				$checkRecsData = mysqli_query($dbc, $checkRecsQuery);
+				if (mysqli_num_rows($checkRecsData) >= $numRecs) {
+					mysqli_query($dbc, "UPDATE applicant SET appStatus = 2 WHERE uid = ".$updateRow['uid']);
+				}
 			}
         }
-        $query = "select transcript from applicant where gwid = '$gwid'";
+        $query = "select transcript from applicant where uid = '$uid'";
 
         $data = mysqli_query($dbc, $query);
 
@@ -143,7 +145,7 @@ else
 						<label for="yes">Yes</label><br>
 						<input type="radio" id="no" name="transcript" value="0">
 						<label for="no">No</label><br>
-						<input type="hidden" id="gwid" name="gwid" value="<?php echo $gwid; ?>"> <br>
+						<input type="hidden" id="uid" name="uid" value="<?php echo $uid; ?>"> <br>
 						<input type="submit" value="Submit" name="submit" class="btn text-white btn-lg" style="background-color: #033b59;">
 				</div>
 				</form>

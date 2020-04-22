@@ -13,8 +13,8 @@
 	session_start();
 	require_once('connectvars.php');
 
-	if (isset($_SESSION['gwid'])) {
-		$gwid = $_SESSION['gwid'];
+	if (isset($_SESSION['uid'])) {
+		$uid = $_SESSION['uid'];
 		$dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 ?>
 <!-- NAV BAR -->
@@ -48,28 +48,28 @@
 <div class = "container">
 	<div class = "row">
 	<?php 
-		$query = "select * from applicant where gwid = '$gwid'";
+		$query = "select * from applicant where uid = '$uid'";
 							
 		$data = mysqli_query($dbc, $query);
 
 		if (mysqli_num_rows($data) == 1) {
             $rowA = mysqli_fetch_array($data);
 
-            //info from users
-            $queryU = "select * from users where gwid = '$gwid'";				
+            //info from people
+            $queryU = "select * from people where uid = '$uid'";				
             $dataU = mysqli_query($dbc, $queryU);           
             $rowU = mysqli_fetch_array($dataU);
 
             //info from degrees
-            $queryD = "select * from degree where gwid = '$gwid'";				
+            $queryD = "select * from degree where uid = '$uid'";				
             $dataD = mysqli_query($dbc, $queryD);  
 
             //info from examScore
-            $queryE = "select * from examScore where gwid = '$gwid'";				
+            $queryE = "select * from examScore where uid = '$uid'";				
 			$dataE = mysqli_query($dbc, $queryE);    
 			
             //info from recs
-            $queryR = "select email from recs where gwid = '$gwid'";				
+            $queryR = "select email from recs where uid = '$uid'";				
             $dataR = mysqli_query($dbc, $queryR);    
 
 			echo 'General information <br/><br/>';
@@ -78,8 +78,8 @@
 			Last Name: '.$rowU['lname'].'<br/>
 			Username: '.$rowU['username'].'<br/>
 			Birthday: '.$rowU['birthDate'].'<br/>
-			GWID: '.$rowU['gwid'].'<br/>
-			Address: '.$rowU['username'].'<br/><br/><br/>
+			User Id: '.$rowU['uid'].'<br/>
+			Address: '.$rowU['address'].'<br/><br/><br/>
 
 			Application Information <br/> <br/>
 			Applying to: ';

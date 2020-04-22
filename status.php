@@ -13,8 +13,8 @@
 	session_start();
 	require_once('connectvars.php');
 
-	if (isset($_SESSION['gwid'])) {
-		$gwid = $_SESSION['gwid'];
+	if (isset($_SESSION['uid'])) {
+		$uid = $_SESSION['uid'];
 		$dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 ?>
 <!-- NAV BAR -->
@@ -49,7 +49,7 @@
 	<div class = "row">
 		<p>
 	<?php 
-		$query = "select appStatus, transcript from applicant where gwid = '$gwid'";
+		$query = "select appStatus, transcript from applicant where uid = '$uid'";
 							
 		$data = mysqli_query($dbc, $query);
 
@@ -62,14 +62,23 @@
 				if ($row['transcript'] == 0) {
 					$missing += 1;
 				}
-				$query = "select count(recName) as total from recs where gwid = '$gwid'";
+
+				$query = "select uid from recs where uid = '$uid'";
 									
-				$data = mysqli_query($dbc, $query);	
+				$data = mysqli_query($dbc, $query);
 				
-				$row = mysqli_fetch_array($data);
-				if ($row['total'] != 3) {
-					$missing += 2;
-					$row['total'] = 3 - $row['total'];
+				$recs = mysqli_num_rows($data);
+				
+				if ($recs != 0) {
+					$query = "select count(recName) as total from recs where uid = '$uid' and recName is not null";
+									
+					$data = mysqli_query($dbc, $query);	
+					
+					$row = mysqli_fetch_array($data);
+					if ($row['total'] != $recs) {
+						$missing += 2;
+						$row['total'] = $recs - $row['total'];
+					}
 				}
 				
 				if ($missing == 1) {

@@ -13,13 +13,13 @@
   // Start the session
    session_start();
 
-   // GWID manual assignment for debugging 
+   // uid manual assignment for debugging 
 
     require_once('connectvars.php');
     $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-    if (isset($_SESSION['gwid'])) {
-        $query = "SELECT * FROM faculty WHERE gwid = '".$_SESSION['gwid']."'";
+    if (isset($_SESSION['uid'])) {
+        $query = "SELECT * FROM staff WHERE uid = '".$_SESSION['uid']."'";
         $data = mysqli_query($dbc, $query);
         if (mysqli_num_rows($data) > 0) {
 
@@ -46,10 +46,10 @@
 
 <?php
 
-    // user is a faculty, allow access to page
+    // user is a staff, allow access to page
     $row = mysqli_fetch_array($data);
 
-    if ($row['facultyType'] == 3) {
+    if ($row['type'] == 0) {
     ?>
     <!-- HEADER -->
     <header class = "bg py-5 mb-5" style = "background-color: #033b59;">
@@ -62,14 +62,14 @@
         </div>
     </header>
     <?php
-    // Faculty is a system administrator, only level allowed to access page
+    // staff is a system administrator, only level allowed to access page
 
-        // Check if submit is activated to add a faculty
-        if (isset($_POST['faculty'])) {
+        // Check if submit is activated to add a staff
+        if (isset($_POST['staff'])) {
 
             // Search for existing user with name
             $username = mysqli_real_escape_string($dbc, $_POST['username']);
-            $query = "SELECT gwid FROM users WHERE username = '".$username."'";
+            $query = "SELECT uid FROM people WHERE username = '".$username."'";
             $data = mysqli_query($dbc, $query);
 
             if (mysqli_num_rows($data) == 0) {
@@ -84,29 +84,29 @@
                 $lname = mysqli_real_escape_string($dbc, $_POST['lname']);
                 $address = mysqli_real_escape_string($dbc, $_POST['address']);
 
-                $query = "INSERT INTO users (ssn, username, email, birthDate, userPassword, fname, lname, userAddress) VALUES (".$ssn.", '".$username."', '".$email."', '".$date."', '".$password."', '".$fname."', '".$lname."', '".$address."')";
+                $query = "INSERT INTO people (ssn, username, email, birthDate, password, fname, lname, address) VALUES (".$ssn.", '".$username."', '".$email."', '".$date."', '".$password."', '".$fname."', '".$lname."', '".$address."')";
                 $data = mysqli_query($dbc, $query);
 
-                $query = "SELECT gwid FROM users WHERE username = '".$_POST['username']."'";
+                $query = "SELECT uid FROM people WHERE username = '".$_POST['username']."'";
                 $data = mysqli_query($dbc, $query);
 
                 if (mysqli_num_rows($data) != 0) {
                     $row = mysqli_fetch_array($data);
-                    $gwid = $row['gwid'];
+                    $uid = $row['uid'];
 
                     $years = mysqli_real_escape_string($dbc, $_POST['years']);
                     $dept = mysqli_real_escape_string($dbc, $_POST['dept']);
     
-                    $query = "INSERT INTO faculty (gwid, facultyType, yearsWorking, department) VALUES (".$gwid.", ".$_POST['type'].", ".(int)$years.", '".$dept."')";
+                    $query = "INSERT INTO staff (uid, type, yearsWorking, department) VALUES (".$uid.", ".$_POST['type'].", ".(int)$years.", '".$dept."')";
                     $data = mysqli_query($dbc, $query);
 
-                    $query = "SELECT gwid FROM faculty WHERE gwid = ".$gwid;
+                    $query = "SELECT uid FROM staff WHERE uid = ".$uid;
                     $data = mysqli_query($dbc, $query);
 
                     if (mysqli_num_rows($data) != 0) {
                         ?>
                         <div class="container">
-                        <div class="alert alert-success" role="alert">Successfully added faculty to the system!</div>
+                        <div class="alert alert-success" role="alert">Successfully added staff to the system!</div>
                         </div>
                         <?php
                     }
@@ -116,7 +116,7 @@
                         <div class="alert alert-danger" role="alert">ERROR: A database error occurred! Please try again.</div>
                         </div>
                         <?php
-                        $query = "DELETE FROM users WHERE gwid = ".$gwid;
+                        $query = "DELETE FROM people WHERE uid = ".$uid;
                     }
     
                     
@@ -144,7 +144,7 @@
 
             // Search for existing user with name
             $username = mysqli_real_escape_string($dbc, $_POST['appusername']);
-            $query = "SELECT gwid FROM users WHERE username = '".$username."'";
+            $query = "SELECT uid FROM people WHERE username = '".$username."'";
             $data = mysqli_query($dbc, $query);
 
             if (mysqli_num_rows($data) == 0) {
@@ -160,7 +160,7 @@
                 $lname = mysqli_real_escape_string($dbc, $_POST['applname']);
                 $address = mysqli_real_escape_string($dbc, $_POST['appaddress']);
 
-                $query = "INSERT INTO users (ssn, username, email, birthDate, userPassword, fname, lname, userAddress) VALUES (".$ssn.", '".$username."', '".$email."', '".$date."', '".$password."', '".$fname."', '".$lname."', '".$address."')";
+                $query = "INSERT INTO people (ssn, username, email, birthDate, password, fname, lname, address) VALUES (".$ssn.", '".$username."', '".$email."', '".$date."', '".$password."', '".$fname."', '".$lname."', '".$address."')";
                 $data = mysqli_query($dbc, $query);
 
                 ?>
@@ -178,60 +178,60 @@
             }
         }
 
-        // Deleting a faculty member
+        // Deleting a staff member
         if (isset($_POST['delfac'])) {
 
-            if (!empty($_POST['delusername']) || !empty($_POST['delgwid'])) {
+            if (!empty($_POST['delusername']) || !empty($_POST['deluid'])) {
 
                 // Search for existing user with name
                 $username = mysqli_real_escape_string($dbc, $_POST['delusername']);
-                $gwid = mysqli_real_escape_string($dbc, $_POST['delgwid']);
+                $uid = mysqli_real_escape_string($dbc, $_POST['deluid']);
                 $username = "username = '".$username."'";
-                $gwid = "users.gwid = ".$gwid;
-                // Input for GWID or Username is empty, clear strings if this is the case
-                if ($_POST['delgwid'] == "") {
-                    $gwid = "";
+                $uid = "people.uid = ".$uid;
+                // Input for uid or Username is empty, clear strings if this is the case
+                if ($_POST['deluid'] == "") {
+                    $uid = "";
                 }
                 if ($_POST['delusername'] == "") {
                     $username = "";
                 }
                 // Both have inputs, add OR condition
-                if (!empty($_POST['delusername']) && !empty($_POST['delgwid'])) {
-                    $gwid = " OR ".$gwid;
+                if (!empty($_POST['delusername']) && !empty($_POST['deluid'])) {
+                    $uid = " OR ".$uid;
                 }
-                $query = "SELECT users.gwid FROM users JOIN faculty ON users.gwid = faculty.gwid WHERE ".$username.$gwid;
+                $query = "SELECT people.uid FROM people JOIN staff ON people.uid = staff.uid WHERE ".$username.$uid;
                 $data = mysqli_query($dbc, $query);
                 echo mysqli_error($dbc);
 
                 if (mysqli_num_rows($data) == 1) {
 
                     $row = mysqli_fetch_array($data);
-                    $gwid = $row['gwid'];
+                    $uid = $row['uid'];
 
-                    $query = "DELETE FROM faculty WHERE gwid = ".$gwid;
+                    $query = "DELETE FROM staff WHERE uid = ".$uid;
                     $data = mysqli_query($dbc, $query);
                     echo mysqli_error($dbc);
-                    $query = "DELETE FROM users WHERE gwid = ".$gwid;
+                    $query = "DELETE FROM people WHERE uid = ".$uid;
                     $data = mysqli_query($dbc, $query);
                     echo mysqli_error($dbc);
 
                     ?>
                     <div class="container">
-                    <div class="alert alert-success" role="alert">Successfully deleted faculty member from the system!</div>
+                    <div class="alert alert-success" role="alert">Successfully deleted staff member from the system!</div>
                     </div>
                     <?php
                 }
                 else if (mysqli_num_rows($data) == 0) {
                     ?>
                     <div class="container">
-                    <div class="alert alert-danger" role="alert">ERROR: No match! The user you are trying to delete either does not exist or is not a faculty member. Please check your input and try again.</div>
+                    <div class="alert alert-danger" role="alert">ERROR: No match! The user you are trying to delete either does not exist or is not a staff member. Please check your input and try again.</div>
                     </div>
                     <?php
                 }
                 else if (mysqli_num_rows($data) > 1) {
                     ?>
                     <div class="container">
-                    <div class="alert alert-danger" role="alert">ERROR: No exact match! The GWID and Username provided match more than one user. Please check your input and try again.</div>
+                    <div class="alert alert-danger" role="alert">ERROR: No exact match! The uid and Username provided match more than one user. Please check your input and try again.</div>
                     </div>
                     <?php
                 }
@@ -239,7 +239,7 @@
             else {
                 ?>
                 <div class="container">
-                <div class="alert alert-danger" role="alert">ERROR: Not enough information! Please ensure that you are specifying either a GWID or a Username for the user you wish to delete.</div>
+                <div class="alert alert-danger" role="alert">ERROR: Not enough information! Please ensure that you are specifying either a uid or a Username for the user you wish to delete.</div>
                 </div>
                 <?php
             }
@@ -247,53 +247,53 @@
         // Deleting a applicant
         if (isset($_POST['delapp'])) {
 
-            if (!empty($_POST['delusername']) || !empty($_POST['delgwid'])) {
+            if (!empty($_POST['delusername']) || !empty($_POST['deluid'])) {
 
                 // Search for existing user with name
                 // Search for existing user with name
                 $username = mysqli_real_escape_string($dbc, $_POST['delusername']);
-                $gwid = mysqli_real_escape_string($dbc, $_POST['delgwid']);
+                $uid = mysqli_real_escape_string($dbc, $_POST['deluid']);
                 $username = "username = '".$username."'";
-                $gwid = "users.gwid = ".$gwid;
-                // Input for GWID or Username is empty, clear strings if this is the case
-                if ($_POST['delgwid'] == "") {
-                    $gwid = "";
+                $uid = "people.uid = ".$uid;
+                // Input for uid or Username is empty, clear strings if this is the case
+                if ($_POST['deluid'] == "") {
+                    $uid = "";
                 }
                 if ($_POST['delusername'] == "") {
                     $username = "";
                 }
                 // Both have inputs, add OR condition
-                if (!empty($_POST['delusername']) && !empty($_POST['delgwid'])) {
-                    $gwid = " OR ".$gwid;
+                if (!empty($_POST['delusername']) && !empty($_POST['deluid'])) {
+                    $uid = " OR ".$uid;
                 }
-                $query = "SELECT users.gwid FROM users JOIN applicant ON users.gwid = applicant.gwid WHERE ".$username.$gwid;
+                $query = "select people.uid from applicant, student, staff, people where applicant.uid =".$uid." or student.uid = ".$uid." or staff.uid = ".$uid;
                 $data = mysqli_query($dbc, $query);
                 echo mysqli_error($dbc);
 
-                if (mysqli_num_rows($data) == 1) {
+                if (mysqli_num_rows($data) == 0) {
 
                     $row = mysqli_fetch_array($data);
-                    $gwid = $row['gwid'];
+                    $uid = $row['uid'];
 
-                    $query = "DELETE FROM applicant WHERE gwid = ".$gwid;
+                    $query = "DELETE FROM applicant WHERE uid = ".$uid;
                     $data = mysqli_query($dbc, $query);
                     echo mysqli_error($dbc);
-                    $query = "DELETE FROM degree WHERE gwid = ".$gwid;
+                    $query = "DELETE FROM degree WHERE uid = ".$uid;
                     $data = mysqli_query($dbc, $query);
                     echo mysqli_error($dbc);
-                    $query = "DELETE FROM examScore WHERE gwid = ".$gwid;
+                    $query = "DELETE FROM examScore WHERE uid = ".$uid;
                     $data = mysqli_query($dbc, $query);
                     echo mysqli_error($dbc);
-                    $query = "DELETE FROM recs WHERE gwid = ".$gwid;
+                    $query = "DELETE FROM recs WHERE uid = ".$uid;
                     $data = mysqli_query($dbc, $query);
                     echo mysqli_error($dbc);
-                    $query = "DELETE FROM recReview WHERE studentGwid = ".$gwid;
+                    $query = "DELETE FROM recReview WHERE studentuid = ".$uid;
                     $data = mysqli_query($dbc, $query);
                     echo mysqli_error($dbc);
-                    $query = "DELETE FROM reviewForm WHERE studentGwid = ".$gwid;
+                    $query = "DELETE FROM reviewForm WHERE studentuid = ".$uid;
                     $data = mysqli_query($dbc, $query);
                     echo mysqli_error($dbc);
-                    $query = "DELETE FROM users WHERE gwid = ".$gwid;
+                    $query = "DELETE FROM people WHERE uid = ".$uid;
                     $data = mysqli_query($dbc, $query);
                     echo mysqli_error($dbc);
 
@@ -313,7 +313,7 @@
                 else if (mysqli_num_rows($data) > 1) {
                     ?>
                     <div class="container">
-                    <div class="alert alert-danger" role="alert">ERROR: No exact match! The GWID and Username provided match more than one user. Please check your input and try again.</div>
+                    <div class="alert alert-danger" role="alert">ERROR: No exact match! The uid and Username provided match more than one user. Please check your input and try again.</div>
                     </div>
                     <?php
                 }
@@ -321,18 +321,16 @@
             else {
                 ?>
                 <div class="container">
-                <div class="alert alert-danger" role="alert">ERROR: Not enough information! Please ensure that you are specifying either a GWID or a Username for the user you wish to delete.</div>
+                <div class="alert alert-danger" role="alert">ERROR: Not enough information! Please ensure that you are specifying either a uid or a Username for the user you wish to delete.</div>
                 </div>
                 <?php
             }
-        }
-
-    
+        }    
     ?>
 
     <div class="container">
 
-        <h1>Add Faculty</h1>
+        <h1>Add staff</h1>
         <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
             <div class="form-row">
                 <div class="form-group col-md-5">
@@ -382,12 +380,18 @@
             </div>
             <div class="form-row">
                 <div class="form-group col-md-4">
-                    <label for="type">Type of Faculty</label>
+                    <label for="type">Type of staff</label>
                     <select name="type" class="form-control">
-                        <option value="0">Regular Faculty</option>
+                        <option value="0">System Administrator</option>
                         <option value="1">Graduate Secretary</option>
-                        <option value="2">CAC Faculty</option>
-                        <option value="3">System Administrator</option>
+                        <option value="2">CAC staff</option>
+                        <option value="3">Faculty Reviewer</option>
+                        <option value="4">Faculty Advisor</option>
+                        <option value="5">Faculty Instructor</option>
+                        <option value="6">Faculty Reviewer and Advisor</option>
+                        <option value="7">Faculty Reviewer and Instructor</option>
+                        <option value="8">Faculty Advisor and Instructor</option>
+                        <option value="9">Faculty Reviewer, Advisor, and Instructor</option>
                     </select>
                 </div>
                 <div class="form-group col-md-4">
@@ -399,7 +403,7 @@
                     <input required name="dept" type="text" maxlength="256" class="form-control">
                 </div>
             </div>
-            <button type="submit" name="faculty" class="btn btn-primary">Submit</button>
+            <button type="submit" name="staff" class="btn btn-primary">Submit</button>
 
         </form>
         <br>
@@ -457,13 +461,13 @@
 
         <br>
 
-        <h1>Delete Faculty</h1>
-        <p>Delete a faculty member by specifying their username, GWID, or both. The system will find and delete the faculty member whose information best matches the provided information.</p>
+        <h1>Delete staff</h1>
+        <p>Delete a staff member by specifying their username, uid, or both. The system will find and delete the staff member whose information best matches the provided information.</p>
         <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="delgwid">GWID</label>
-                    <input name="delgwid" type="text" class="form-control" maxlength="9" onkeypress="return (event.charCode > 47 && 
+                    <label for="deluid">uid</label>
+                    <input name="deluid" type="text" class="form-control" maxlength="9" onkeypress="return (event.charCode > 47 && 
                         event.charCode < 58)">
                 </div>
                 <div class="form-group col-md-6">
@@ -477,12 +481,12 @@
         <br>
 
         <h1>Delete Applicant</h1>
-        <p>Delete an applicant by specifying their username, GWID, or both. The system will find and delete the applicant whose information best matches the provided information.</p>
+        <p>Delete an applicant by specifying their username, uid, or both. The system will find and delete the applicant whose information best matches the provided information.</p>
         <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
             <div class="form-row">
                 <div class="form-group col-md-6">
-                    <label for="delgwid">GWID</label>
-                    <input name="delgwid" type="text" class="form-control" maxlength="9" onkeypress="return (event.charCode > 47 && 
+                    <label for="deluid">uid</label>
+                    <input name="deluid" type="text" class="form-control" maxlength="9" onkeypress="return (event.charCode > 47 && 
                         event.charCode < 58)">
                 </div>
                 <div class="form-group col-md-6">

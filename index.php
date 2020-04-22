@@ -13,7 +13,7 @@
 	session_start();
 	require_once('connectvars.php');
 
-	if (isset($_SESSION['gwid'])) {
+	if (isset($_SESSION['uid'])) {
 ?>
 <!-- NAV BAR -->
 <nav class = "navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -36,17 +36,23 @@
 <?php 
 	$dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-	$gwid = $_SESSION['gwid'];
+	$uid = $_SESSION['uid'];
 
 	$flag = 0;
 
-	$query = "select gwid from faculty where gwid = '$gwid'";
+	$query = "select uid from staff where uid = '$uid'";
 
 	$data = mysqli_query($dbc, $query);
 
 	$flag += mysqli_num_rows($data);
 
-	$query = "select gwid from applicant where gwid = '$gwid'";
+	$query = "select uid from applicant where uid = '$uid'";
+
+	$data = mysqli_query($dbc, $query);
+
+	$flag += mysqli_num_rows($data);
+
+	$query = "select uid from student where uid = '$uid'";
 
 	$data = mysqli_query($dbc, $query);
 
@@ -60,7 +66,7 @@
 
 	else {
 
-		$query = "select fname from users where gwid = '$gwid'";
+		$query = "select fname from people where uid = '$uid'";
 							
 		$data = mysqli_query($dbc, $query);
 
@@ -79,35 +85,43 @@
 <div class = "container">
 	<?php 
 	
-		$query = "select gwid from applicant where gwid = '$gwid'";
+		$queryA = "select uid from applicant where uid = '$uid'";
 							
-		$data = mysqli_query($dbc, $query);
+		$dataA = mysqli_query($dbc, $queryA);
+		
+		$queryS = "select uid from staff where uid = '$uid'";
+							
+		$dataS = mysqli_query($dbc, $queryS);
 
-		if (mysqli_num_rows($data) == 1) {	
+		if (mysqli_num_rows($dataA) == 1) {	
 			echo '<a href="status.php"><h1>View Application Status</h1></a><br/>';
 			echo '<a href="viewApp.php"><h1>View Application Contents</h1></a><br/>';
 		}
-		else {
-			$query = "select facultyType from faculty where gwid = '$gwid'";
+		else if (mysqli_num_rows($dataS) == 1){
+			$query = "select type from staff where uid = '$uid'";
 							
 			$data = mysqli_query($dbc, $query);
-
 			if (mysqli_num_rows($data) == 1) {				
 				$row = mysqli_fetch_array($data);
-				if ($row['facultyType'] == 2) {
+				
+				echo 'type is: '.$row['type'];
+				if ($row['type'] == 3) {
 					echo '<a href="queue.php"><h1>Applications to review</h1></a>';
 				}
-				else if ($row['facultyType'] == 0) {
+				else if ($row['type'] == 2) {
 					echo '<a href="queue.php"><h1>Applications to review</h1></a>';
 				}
-				else if ($row['facultyType'] == 1) {
+				else if ($row['type'] == 1) {
 					echo '<a href="queue.php"><h1>Applications to review </h1></a>';
 				}
-				else if ($row['facultyType'] == 3) {
-					echo '<a href="admin.php"><h1>Add users</h1></a>';
+				else if ($row['type'] == 0) {
+					echo '<a href="admin.php"><h1>Add people</h1></a>';
 				}
 			}
 
+		}
+		else {
+			echo 'Student';
 		}
 	}
 	?>
