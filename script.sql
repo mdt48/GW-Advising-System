@@ -289,8 +289,6 @@ insert into staff (uid, type) values (10, 2);
 INSERT into people (uid, username, password, fname, lname) values (77777777, 'eclapton', '1234', 'Eric', 'Clapton');
 INSERT into student values (77777777, 'alumni', 1, 1, 6, 'masters', 2014, 'CS');
 
-insert into people (username, password) values ('mom', 'mom');
-
 -- student trans
 INSERT INTO transcript VALUES (1,77777777,'CSCI',6221,'B',2014,'MS', 0);
 INSERT INTO transcript VALUES (2,77777777,'CSCI',6212,'B',2014,'MS', 0);
