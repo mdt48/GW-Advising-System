@@ -26,17 +26,17 @@
       //user is faculty - only sees students in their class
 
       $theusername = $_SESSION['username'];
-      $userquery = "SELECT u_id FROM person WHERE username='$theusername'";
+      $userquery = "SELECT uid FROM people WHERE username='$theusername'";
       $userdata = mysqli_query($dbc, $userquery);
       $userrow = mysqli_fetch_array($userdata);
-      $user = $userrow["u_id"];
+      $user = $userrow["uid"];
 
       //for teacher only show students currently enrolled in their class who don't have a grade already
-      $query = "SELECT a.u_id, b.fname, b.lname FROM student a JOIN person b ON (a.u_id = b.u_id) JOIN takes c ON (b.u_id = c.u_id) JOIN teaches d ON (c.c_id = d.c_id AND c.dept = d.dept AND c.year = d.year AND c.section = d.section AND c.semester = d.semester) WHERE d.u_id = '$user' AND c.grade = 'IP'";
+      $query = "SELECT a.uid, b.fname, b.lname FROM student a JOIN people b ON (a.uid = b.uid) JOIN takes c ON (b.uid = c.uid) JOIN teaches d ON (c.cid = d.cid AND c.department = d.department AND c.year = d.year AND c.section = d.section AND c.semester = d.semester) WHERE d.uid = '$user' AND c.grade = 'IP'";
 
     } else {
       //for GS and admin show all students
-      $query = "SELECT a.u_id, b.fname, b.lname FROM student a JOIN person b ON (a.u_id = b.u_id) JOIN takes c ON (b.u_id = c.u_id)";
+      $query = "SELECT a.uid, b.fname, b.lname FROM student a JOIN people b ON (a.uid = b.uid) JOIN takes c ON (b.uid = c.uid)";
 
       $user = " ";
     }

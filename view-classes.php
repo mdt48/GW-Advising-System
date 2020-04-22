@@ -33,7 +33,7 @@
       $season = strtolower($season);
       $season = ucfirst($season);
       //query the database for the classes
-      $classes_query = mysqli_query($dbc, "SELECT * FROM schedule a LEFT JOIN teaches c ON (a.c_id = c.c_id AND a.dept = c.dept AND a.year = c.year AND a.section = c.section AND a.semester = c.semester) JOIN course b ON (a.c_id = b.c_id AND a.dept = b.dept) LEFT JOIN person d ON (c.u_id = d.u_id) WHERE a.semester = '$season' AND a.year = '$year';");
+      $classes_query = mysqli_query($dbc, "SELECT * FROM schedule a LEFT JOIN teaches c ON (a.cid = c.cid AND a.deparment = c.department AND a.year = c.year AND a.section = c.section AND a.semester = c.semester) JOIN course b ON (a.cid = b.cid AND a.deparment = b.department) LEFT JOIN people d ON (c.uid = d.uid) WHERE a.semester = '$season' AND a.year = '$year';");
       //display results
       if ($classes_query != false) {
         //print out table

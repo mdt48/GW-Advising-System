@@ -30,89 +30,103 @@
 		    // Student logged in
 		    if ($_POST['whatuser'] == "gradstudent") {
 		        // Retrieves data queried from the database
-		        $query = "SELECT * FROM person p, student s WHERE p.username='$user_username' and p.password='$user_password' and p.u_id=s.u_id";
+		        $query = "SELECT * FROM person p, student s WHERE p.username='$user_username' and p.password='$user_password' and p.uid=s.uid";
 		        $data = mysqli_query($dbc, $query);
 		        // If the username and password are valid, login
-			if (mysqli_num_rows($data) == 1){
-		            $_SESSION['whoareyou'] =  "gradstudent";
-			    $_SESSION['username'] = $user_username;
-			    $row = mysqli_fetch_assoc($data);
-			    $_SESSION['u_id'] = $row['u_id'];
-			    // Go to users homepage
-                            $home_url = 'http://' . $_SERVER["HTTP_HOST"] . dirname($_SERVER["PHP_SELF"]) . '/homepage.php';
-			    header('Location: ' . $home_url);
-			}
-			else {
-			    echo "<p> <font color=red>Username, password, or user type is incorrect. Please try again.</font> </p>";
+				if ($data != false) {
+					if (mysqli_num_rows($data) == 1){
+			            $_SESSION['whoareyou'] =  "gradstudent";
+					    $_SESSION['username'] = $user_username;
+					    $row = mysqli_fetch_assoc($data);
+					    $_SESSION['u_id'] = $row['u_id'];
+					    // Go to users homepage
+		                            $home_url = 'http://' . $_SERVER["HTTP_HOST"] . dirname($_SERVER["PHP_SELF"]) . '/homepage.php';
+					    header('Location: ' . $home_url);
+					}
+					else {
+					    echo "<p> <font color=red>Username, password, or user type is incorrect. Please try again.</font> </p>";
+					}	
+			    } else {
+					echo "<p> <font color=red>Username, password, or user type is incorrect. Please try again.</font> </p>";
+				}
 			}	
-		    }
-
-		    // GS logged in
-		    else if ($_POST['whatuser'] == "GS") {
+			else if ($_POST['whatuser'] == "GS") { // GS logged in
                         // Retrieves data queried from the database
-			$query = "SELECT * FROM person p, admin a WHERE p.username='$user_username' and p.password='$user_password' and p.u_id=a.u_id";
-			$data = mysqli_query($dbc, $query);
-			// If the username and passowrd are valid, login
-			if (mysqli_num_rows($data) == 1) {
-			    // Check that the user is specified as a GS in the admin table
-			    $row = mysqli_fetch_assoc($data);
-                            if ($row['isGS'] == true){
+				$query = "SELECT * FROM person p, staff s WHERE p.username='$user_username' and p.password='$user_password' and p.uid=s.uid";
+				$data = mysqli_query($dbc, $query);
+				// If the username and passowrd are valid, login
+				if ($data != false) {
+					if (mysqli_num_rows($data) == 1) {
+					    // Check that the user is specified as a GS in the admin table
+					    $row = mysqli_fetch_assoc($data);
+		                            if ($row['isGS'] == true){
 
-			        $_SESSION['whoareyou'] = "GS";
-			        $_SESSION['username'] = $user_username;
-			        $_SESSION['u_id'] = $row['u_id'];
-			        // Go to users homepage
-                                $home_url = 'http://' . $_SERVER["HTTP_HOST"] . dirname($_SERVER["PHP_SELF"]) . '/homepage.php';
-			        header('Location: ' . $home_url);
-			    }
-			}
-			else {
-                            echo "<p> <font color=red>Username, password, or user type is incorrect. Please try again.</font> </p>";
-                        }
+					        $_SESSION['whoareyou'] = "GS";
+					        $_SESSION['username'] = $user_username;
+					        $_SESSION['u_id'] = $row['u_id'];
+					        // Go to users homepage
+		                                $home_url = 'http://' . $_SERVER["HTTP_HOST"] . dirname($_SERVER["PHP_SELF"]) . '/homepage.php';
+					        header('Location: ' . $home_url);
+					    }
+					}
+					else {
+		                echo "<p> <font color=red>Username, password, or user type is incorrect. Please try again.</font> </p>";
+		            }
+		        } else {
+					echo "<p> <font color=red>Username, password, or user type is incorrect. Please try again.</font> </p>";
+				}
 		    }
 
 	 	    // Faculty logged in
 		    else if ($_POST['whatuser'] == "faculty") {
                         // Retrieve data queried from the database
-			$query = "SELECT * FROM person p, faculty f WHERE p.username='$user_username' and p.password='$user_password' and p.u_id=f.u_id";
-			$data = mysqli_query($dbc, $query);
-			// If the username and password are valid, login
-			if (mysqli_num_rows($data) == 1) {
-			    $_SESSION['whoareyou'] = "faculty";
-			    $_SESSION['username'] = $user_username;
-			    $row = mysqli_fetch_assoc($data);
-			    $_SESSION['u_id'] = $row['u_id'];
-			    // Go to users homepage
-                            $home_url = 'http://' . $_SERVER["HTTP_HOST"] . dirname($_SERVER["PHP_SELF"]) . '/homepage.php';
-                            header('Location: ' . $home_url);
-			}
-			else {
-                            echo "<p> <font color=red>Username, password, or user type is incorrect. Please try again.</font> </p>";
-                        }
+				$query = "SELECT * FROM people p, staff s WHERE p.username='$user_username' AND p.password = '1234' AND p.uid = s.uid";
+				$data = mysqli_query($dbc, $query);
+				// If the username and password are valid, login
+				if ($data != false) {
+					if (mysqli_num_rows($data) == 1) {
+					    $_SESSION['whoareyou'] = "faculty";
+					    $_SESSION['username'] = $user_username;
+					    $row = mysqli_fetch_assoc($data);
+					    $_SESSION['u_id'] = $row['u_id'];
+					    // Go to users homepage
+		                            $home_url = 'http://' . $_SERVER["HTTP_HOST"] . dirname($_SERVER["PHP_SELF"]) . '/homepage.php';
+		                            header('Location: ' . $home_url);
+					}
+					else {
+		                echo "<p> <font color=red>Username, password, or user type is incorrect. Please try again.</font> </p>";
+		            }
+		        } else {
+					echo "<p> <font color=red>Username, password, or user type is incorrect. Please try again.</font> </p>";
+				}
 		    }
 
 		    // Admin logged in
 		    else if ($_POST['whatuser'] == "admin") {
                         // Retrieve data queried from the database
-			$query = "SELECT * FROM person p, admin a WHERE p.username='$user_username' and p.password='$user_password' and p.u_id=a.u_id";
-			$data = mysqli_query($dbc, $query);
-			// If the username and password are valid, login
-			if (mysqli_num_rows($data) == 1) {
-			    // Check that the user is specified as an admin in the admin table
-			    $row = mysqli_fetch_assoc($data);
-			    if ($row['isGS'] == false) {
+				$query = "SELECT * FROM people p, staff s WHERE p.username='$user_username' and p.password='$user_password' and p.uid=s.uid";
+				$data = mysqli_query($dbc, $query);
+				// If the username and password are valid, login
+				if ($data != false) {
+					if (mysqli_num_rows($data) == 1) {
+					    // Check that the user is specified as an admin in the admin table
+					    $row = mysqli_fetch_assoc($data);
+					    if ($row['isGS'] == false) {
 
-			        $_SESSION['whoareyou'] = "admin";
-			        $_SESSION['username'] = $user_username;
-			        $_SESSION['u_id'] = $row['u_id'];
-			        // Go to users homepage
-			        $home_url = 'http://' . $_SERVER["HTTP_HOST"] . dirname($_SERVER["PHP_SELF"]) . '/homepage.php';
-			        header('Location: ' . $home_url);
-			    }
-			}
-			else {
-                            echo "<p> <font color=red>Username, password, or user type is incorrect. Please try again.</font> </p>";
-                        }
+					        $_SESSION['whoareyou'] = "admin";
+					        $_SESSION['username'] = $user_username;
+					        $_SESSION['u_id'] = $row['u_id'];
+					        // Go to users homepage
+					        $home_url = 'http://' . $_SERVER["HTTP_HOST"] . dirname($_SERVER["PHP_SELF"]) . '/homepage.php';
+					        header('Location: ' . $home_url);
+					    }
+					}
+					else {
+		                echo "<p> <font color=red>Username, password, or user type is incorrect. Please try again.</font> </p>";
+		            }
+		        } else {
+					echo "<p> <font color=red>Username, password, or user type is incorrect. Please try again.</font> </p>";
+				}
 		    }
 
 		    // If they did not select what type of user they are
