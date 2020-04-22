@@ -300,7 +300,7 @@ session_start();
 						$result = mysqli_query($dbc, $query);
 						$row = mysqli_fetch_array($result);
 						if($row['audited']){
-							echo '<script type="text/javascript">alert("You have already been approved");</script>';
+							echo '<script type="text/javascript">alert("You have already been audited");</script>';
 							exit;
 						}else if(strcmp($row['program'],"masters")!=0){
 							echo '<script type="text/javascript">alert("You are not in the Masters program");</script>';
@@ -317,7 +317,7 @@ session_start();
 						$numOutsideCS = 0;
 						$numBs = 0;
 
-						$query = "SELECT * FROM transcript WHERE uid='$uid';";
+						$query = "SELECT * FROM transcript join course on transcript.cid = course.cid WHERE uid='$uid';";
 						$result = mysqli_query($dbc, $query);
 
 						while($row = mysqli_fetch_array($result)){
@@ -353,10 +353,10 @@ session_start();
 								$numOutsideCS++;
 							}
 		
-							$query = "SELECT credit FROM donotshowerror WHERE department='$dept' AND cid='$cid';";
-							$credit_res = mysqli_query($dbc, $query);
-							$credit_row = mysqli_fetch_array($credit_res);
-							$credit = $credit_row['credit'];
+							// $query = "SELECT credit FROM donotshowerror WHERE department='$dept' AND cid='$cid';";
+							// $credit_res = mysqli_query($dbc, $query);
+							// $credit_row = mysqli_fetch_array($credit_res);
+							$credit = $row['credit'];
 
 							if(strcmp($grade,"IP")==0){	//do not count incomplete classes
 								continue;
@@ -392,14 +392,14 @@ session_start();
 
 
 						}
+
+						echo '<script type="text/javascript">alert("'.$credit_sum.'");</script>';
+
 						if($credit_sum!=0){
 							$gpa = round(($gpa_sum)/($credit_sum),2);
 						}else{
 							$gpa = 0;
 						}
-
-
-						
 						/*if($CSCI_6212 && $CSCI_6221 && $CSCI_6461){
 							if($gpa >= 3.0){
 								if($credit_sum >=30){
@@ -475,7 +475,7 @@ session_start();
 						$CS_credits = 0;
 						$numBs = 0;
 
-						$query = "SELECT * FROM transcript WHERE uid='$uid';";
+						$query = "SELECT * FROM transcript join course on transcript.cid = course.cid WHERE uid='$uid';";
 						$result = mysqli_query($dbc, $query);
 
 						while($row = mysqli_fetch_array($result)){
@@ -484,10 +484,10 @@ session_start();
 							$dept = $row['department'];
 							$grade = $row['grade'];
 
-							$query = "SELECT credit FROM donotshowerror WHERE department='$dept' AND cid='$cid';";
-							$credit_res = mysqli_query($dbc, $query);
-							$credit_row = mysqli_fetch_array($credit_res);
-							$credit = $credit_row['credit'];
+							// $query = "SELECT credit FROM donotshowerror WHERE department='$dept' AND cid='$cid';";
+							// $credit_res = mysqli_query($dbc, $query);
+							// $credit_row = mysqli_fetch_array($credit_res);
+							$credit = $row['credit'];
 
 							
 							if(strcmp($grade,"IP")==0){	//do not count incomplete classes

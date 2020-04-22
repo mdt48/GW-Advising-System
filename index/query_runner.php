@@ -19,7 +19,6 @@
         echo json_encode($results);
     } else if (strcmp($type, "f") == 0) {
         $query = "select * from form where uid = '$id'";
-        // echo $query;
         $result = $dbc->query($query);
         $results = array();
         while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {

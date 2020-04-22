@@ -4,52 +4,54 @@
     $id = intval($_POST['uid']);
     $type = $_POST['type'];
 
+
+    if(isset($_SESSION['alumn']) || isset($_SESSION['program'])){
+		$style = "style='display:none;'";
+    } else {
+		$title = $_SESSION['type'];
+		$home_link = "./staff_home.php";
+    }
     
     $query;
     // echo(strcmp($type, "masters"));
     //echo(strcmp($type, "phd"));
-    if (strcmp($type, "masters") == 0 || strcmp($type, "phd") == 0) {
-        //echo("h");
-        $query = "select uid, username, fname, lname, address, email from student where uid = '$id'";
-        
+    //if (isset($_SESSION['alumn']) || isset($_SESSION['program'])) {
+        $query = "select uid, password, username, fname, lname, address, email from people where uid = '$id'";
         $result = $dbc->query($query);
         $results = array();
-        while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-            $uid = $row["uid"];
-            $uname = $row["username"];
-            $fname = $row["fname"];
-            $lname = $row["lname"];
-            $email = $row["email"];
-            // $grad_status = $row["grad_status"];
-            // $thesis = $row["thesis"];
-            // $audited = $row["audited"];
-            //$dep = $row["department"];
-            $add = $row["address"];
-           // $program = $row["program"];
+        while ($row = $result->fetch_object()) {
+            $uid = $row->uid;
+            $pass = $row->password;
+            $uname = $row->username;
+            $fname = $row->fname;
+            $lname = $row->lname;
+            $email = $row->email;
+            $add = $row->address;
 
-            $results[] = array("uid" => $uid, "uname" => $uname, "fname" => $fname,
+            $results[] = array("uid" => $uid, "pass" => $pass, "uname" => $uname, "fname" => $fname,
             "lname" => $lname, "email" => $email, "add" => $add);
             
             echo json_encode($results);
         }
-    } else {
-        $query = "select uid, username, sfname, slname, email, address from staff where uid = '$id'";
-        //echo("hello");
-        $result = $dbc->query($query);
-        $results = array();
+    //} 
+    // else {
+    //     $query = "select uid, username, sfname, slname, email, address from staff where uid = '$id'";
+    //     //echo("hello");
+    //     $result = $dbc->query($query);
+    //     $results = array();
         
-        while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-            $uid = $row["uid"];
-            $uname = $row["username"];
-            $fname = $row["sfname"];
-            $lname = $row["slname"];
-            $email = $row["email"];
-            //$dep = $row["department"];
-            $add = $row["address"];
+    //     while ($row = $result->fetch_object()) {
+    //         $uid = $row->uid;
+    //         $uname = $row->username;
+    //         $fname = $row->fname;
+    //         $lname = $row->lname;
+    //         $email = $row->email;
+    //         $add = $row->address;
+
+    //         $results[] = array("uid" => $uid, "uname" => $uname, "fname" => $fname,
+    //         "lname" => $lname, "email" => $email, "add" => $add);
             
-            $results[] = array("uid" => $uid, "uname" => $uname, "fname" => $fname,
-            "lname" => $lname, "email" => $email, "add" => $add);
-            echo json_encode($results);
-        }
-    }  
+    //         echo json_encode($results);
+    //     }
+    // }  
 ?>
