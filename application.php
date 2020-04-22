@@ -3,7 +3,7 @@ session_start();
 require_once ('connectvars.php');
 $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-//PERSONAL INFORMATION (USER TABLE)
+//peopleAL INFORMATION (USER TABLE)
 $fname = mysqli_real_escape_string($dbc, $_POST['fname']);
 $lname = mysqli_real_escape_string($dbc,$_POST['lname']);
 $SSN = mysqli_real_escape_string($dbc,$_POST['SSN']);
@@ -76,9 +76,9 @@ if (isset($_POST['submit']))
 {
     
     //INSERT
-    if ($result = $dbc->query("SELECT uid FROM person WHERE uid = '$uid'"))
+    if ($result = $dbc->query("SELECT uid FROM people WHERE uid = '$uid'"))
     {
-        $usersql = "UPDATE person SET fname = '$fname', lname = '$lname', ssn = '$SSN', birthDate = '$birthdate', address = '$addr' WHERE uid = '$uid'";
+        $usersql = "UPDATE people SET fname = '$fname', lname = '$lname', ssn = '$SSN', birthDate = '$birthdate', address = '$addr' WHERE uid = '$uid'";
         if (mysqli_query($dbc, $usersql) == false)
         {
             echo "info was not inserted into user, please try again";
@@ -138,7 +138,7 @@ if (isset($_POST['submit']))
         }
         else
         {
-            $subj2sql = "INSERT INTO examScore (gwid, examSubject, score, yearTake) VALUES ('$gwid', '$subj2', '$subjScore2', '$subjYearTaken2')";
+            $subj2sql = "INSERT INTO examScore (uid, examSubject, score, yearTake) VALUES ('$uid', '$subj2', '$subjScore2', '$subjYearTaken2')";
             $dbc->query($subj2sql);
         }
         
@@ -148,7 +148,7 @@ if (isset($_POST['submit']))
         }
         else
         {
-            $subj3sql = "INSERT INTO examScore (gwid, examSubject, score, yearTake) VALUES ('$gwid', '$subj3', '$subjScore3', '$subjYearTaken3')";
+            $subj3sql = "INSERT INTO examScore (uid, examSubject, score, yearTake) VALUES ('$uid', '$subj3', '$subjScore3', '$subjYearTaken3')";
             $dbc->query($subj3sql);
     
         }
@@ -158,7 +158,7 @@ if (isset($_POST['submit']))
         }
         else
         {
-            $subj4sql = "INSERT INTO examScore (gwid, examSubject, score, yearTake) VALUES ('$gwid', '$subj4', '$subjScore4', '$subjYearTaken4')";
+            $subj4sql = "INSERT INTO examScore (uid, examSubject, score, yearTake) VALUES ('$uid', '$subj4', '$subjScore4', '$subjYearTaken4')";
             $dbc->query($subj4sql);
         }
         if (is_null('$subj5') || is_null('$subjScore5'))
@@ -167,7 +167,7 @@ if (isset($_POST['submit']))
         }
         else
         {
-            $subj5sql = "INSERT INTO examScore (gwid, examSubject, score, yearTake) VALUES ('$gwid', '$subj5', '$subjScore5', '$subjYearTaken5')";
+            $subj5sql = "INSERT INTO examScore (uid, examSubject, score, yearTake) VALUES ('$uid', '$subj5', '$subjScore5', '$subjYearTaken5')";
             $dbc->query($subj5sql);
         }
 
@@ -178,7 +178,7 @@ if (isset($_POST['submit']))
         }
         else
         {
-            $subj6sql = "INSERT INTO examScore (gwid, examSubject, score, yearTake) VALUES ('$gwid', '$subj6', '$subjScore6', '$subjYearTaken6')";
+            $subj6sql = "INSERT INTO examScore (uid, examSubject, score, yearTake) VALUES ('$uid', '$subj6', '$subjScore6', '$subjYearTaken6')";
             $dbc->query($subj6sql);
         }
 
@@ -188,7 +188,7 @@ if (isset($_POST['submit']))
         }
         else
         {
-            $subj7sql = "INSERT INTO examScore (gwid, examSubject, score, yearTake) VALUES ('$gwid', '$subj7', '$subjScore7', '$subjYearTaken7')";
+            $subj7sql = "INSERT INTO examScore (uid, examSubject, score, yearTake) VALUES ('$uid', '$subj7', '$subjScore7', '$subjYearTaken7')";
             $dbc->query($subj7sql);
         }
 
@@ -199,7 +199,7 @@ if (isset($_POST['submit']))
         }
         else
         {
-            $pd1sql = "INSERT INTO degree (gwid, degType, school, gpa, major, yearGrad) VALUES ('$gwid', '$pdType1', '$pdCollege1', '$pdGPA1', '$pdMajor1', '$pdYear1')";
+            $pd1sql = "INSERT INTO degree (uid, degType, school, gpa, major, yearGrad) VALUES ('$uid', '$pdType1', '$pdCollege1', '$pdGPA1', '$pdMajor1', '$pdYear1')";
             $dbc->query($pd1sql);
         }
 
@@ -209,47 +209,63 @@ if (isset($_POST['submit']))
         }
         else
         {
-            $pd2sql = "INSERT INTO degree (gwid, degType, school, gpa, major, yearGrad) VALUES ('$gwid', '$pdType2', '$pdCollege2', '$pdGPA2', '$pdMajor2', '$pdYear2')";
+            $pd2sql = "INSERT INTO degree (uid, degType, school, gpa, major, yearGrad) VALUES ('$uid', '$pdType2', '$pdCollege2', '$pdGPA2', '$pdMajor2', '$pdYear2')";
             $dbc->query($pd2sql);
         }
-
-        //THIS PART NEEDS TO BE CHANGE
-        $rec1sql = "INSERT INTO recs (gwid, email) VALUES ('$gwid', '$rec1Email')";
-        if (mysqli_query($dbc, $rec1sql) == false)
+        //Recs
+        
+        if (is_null('$recs1Email'))
         {
-            echo "rec1 was not inserted into recs, please try again";
+            echo "this entry/part of the entry is empty, not added to table";
         }
-        $rec2sql = "INSERT INTO recs (gwid, email) VALUES ('$gwid', '$rec2Email')";
-        if (mysqli_query($dbc, $rec2sql) == false)
+        else
         {
-            echo "rec2 was not inserted into recs, please try again";
-        }
-        $rec3sql = "INSERT INTO recs (gwid, email) VALUES ('$gwid', '$rec3Email')";
-        if (mysqli_query($dbc, $rec3sql) == false)
-        {
-            echo "rec3 was not inserted into recs, please try again";
-        }
-
-        if ($result = $dbc->query("SELECT recId FROM recs WHERE gwid = '$gwid' AND email = '$rec1Email'"))
-        {
-            while ($row = $result->fetch_object())
+            $rec1sql = "INSERT INTO recs (uid, email) VALUES ('$uid', '$rec1Email')";
+            if (mysqli_query($dbc, $rec1sql) == false)
             {
+                echo "rec1 was not inserted into recs, please try again";
+            }
+            else {
+                $result = $dbc->query("SELECT recId FROM recs WHERE uid = '$uid' AND email = '$rec1Email'");
+                $row = $result->fetch_object();
                 $msg = "You have been asked to send a recommendation letter for " . $fname . " " . $lname . ". Your recID is " . $row->recId . ". Please click on the link to fill out the recommendation form." . "http://gwupyterhub.seas.gwu.edu/~sp20DBp1-git-happens/git-happens/recommendation.html";
                 mail($rec1Email, "GW Graduate Program Letter of Recommendation Request", $msg);
             }
         }
-        if ($result = $dbc->query("SELECT recId FROM recs WHERE gwid = '$gwid' AND email = '$rec2Email'"))
+
+        if (is_null('$recs2Email'))
         {
-            while ($row = $result->fetch_object())
+            echo "this entry/part of the entry is empty, not added to table";
+        }
+        else
+        {
+            $rec2sql = "INSERT INTO recs (uid, email) VALUES ('$uid', '$rec2Email')";
+            if (mysqli_query($dbc, $rec2sql) == false)
             {
+                echo "rec2 was not inserted into recs, please try again";
+            }
+            else {
+                $result = $dbc->query("SELECT recId FROM recs WHERE uid = '$uid' AND email = '$rec2Email'");
+                $row = $result->fetch_object();
                 $msg = "You have been asked to send a recommendation letter for " . $fname . " " . $lname . ". Your recID is " . $row->recId . ". Please click on the link to fill out the recommendation form." . "http://gwupyterhub.seas.gwu.edu/~sp20DBp1-git-happens/git-happens/recommendation.html";
                 mail($rec2Email, "GW Graduate Program Letter of Recommendation Request", $msg);
             }
         }
-        if ($result = $dbc->query("SELECT recId FROM recs WHERE gwid = '$gwid' AND email = '$rec3Email'"))
+
+        if (is_null('$recs3Email'))
         {
-            while ($row = $result->fetch_object())
+            echo "this entry/part of the entry is empty, not added to table";
+        }
+        else
+        {
+            $rec3sql = "INSERT INTO recs (uid, email) VALUES ('$uid', '$rec3Email')";
+            if (mysqli_query($dbc, $rec3sql) == false)
             {
+                echo "rec1 was not inserted into recs, please try again";
+            }
+            else {
+                $result = $dbc->query("SELECT recId FROM recs WHERE uid = '$uid' AND email = '$rec2Email'");
+                $row = $result->fetch_object();
                 $msg = "You have been asked to send a recommendation letter for " . $fname . " " . $lname . ". Your recID is " . $row->recId .  "Please click on the link to fill out the recommendation form." . "http://gwupyterhub.seas.gwu.edu/~sp20DBp1-git-happens/git-happens/recommendation.html";
                 mail($rec3Email, "GW Graduate Program Letter of Recommendation Request", $msg);
             }

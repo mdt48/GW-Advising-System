@@ -17,8 +17,8 @@
     require_once('connectvars.php');
     $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-    if (isset($_SESSION['gwid'])) {
-        $query = "SELECT * FROM faculty WHERE gwid = '".$_SESSION['gwid']."'";
+    if (isset($_SESSION['uid'])) {
+        $query = "SELECT * FROM staff WHERE uid = '".$_SESSION['uid']."'";
         $data = mysqli_query($dbc, $query);
         if (mysqli_num_rows($data) > 0) {
 
@@ -45,9 +45,9 @@
 
 <?php
 
-            // user is a faculty, allow access to page
+            // user is a staff, allow access to page
             $row = mysqli_fetch_array($data);
-            if ($row['facultyType'] == 0 || $row['facultyType'] == 2) {
+            if ($row['type'] == 2 || $row['type'] == 3 || $row['type'] == 6 || $row['type'] == 7 || $row['type'] == 9) {
                 ?>
                 <!-- HEADER -->
                 <header class = "bg py-5 mb-5" style = "background-color: #033b59;">
@@ -60,11 +60,11 @@
                     </div>
                 </header>
                 <?php
-                // Faculty is a reviewer; default case (allowed to review)
+                // staff is a reviewer; default case (allowed to review)
 
-                if (isset($_POST['gwid'])) {
+                if (isset($_POST['uid'])) {
 
-                $query = "SELECT * FROM users JOIN applicant ON users.gwid = applicant.gwid WHERE users.gwid = '".$_POST['gwid']."'";
+                $query = "SELECT * FROM people JOIN applicant ON people.uid = applicant.uid WHERE people.uid = '".$_POST['uid']."'";
                 $data = mysqli_query($dbc, $query);
                 $row = mysqli_fetch_array($data);
         
@@ -77,8 +77,8 @@
 
     <dl class="row">
 
-        <dt class="col-sm-3">GWID</dt>
-        <dd class="col-sm-9"><?php echo $row['gwid']; ?></dd>
+        <dt class="col-sm-3">User Id</dt>
+        <dd class="col-sm-9"><?php echo $row['uid']; ?></dd>
 
         <dt class="col-sm-3">First Name</dt>
         <dd class="col-sm-9"><?php echo $row['fname']; ?></dd>
@@ -90,7 +90,12 @@
         <dd class="col-sm-9"><?php echo $row['email']; ?></dd>
 
         <dt class="col-sm-3">Degree Program</dt>
-        <dd class="col-sm-9"><?php echo $row['degProgram']; ?></dd>
+        <dd class="col-sm-9"><?php if ($rowA['degProgram'] == "md") {
+				echo 'MD<br/>';
+			}
+			else {
+				echo 'PHD<br/>';
+			} ?></dd>
 
         <dt class="col-sm-3">Admission Semester/Year</dt>
         <dd class="col-sm-9"><?php echo $row['admissionSemester']." ".$row['admissionYear']; ?></dd>
@@ -103,7 +108,7 @@
 
         <?php
 
-        $recQuery = "SELECT recId, recs.email, recName, job, relation, org, content FROM recs JOIN users WHERE users.gwid = recs.gwid AND users.gwid = ".$row['gwid'];
+        $recQuery = "SELECT * FROM recs WHERE uid = ".$row['uid'];
         $recData = mysqli_query($dbc, $recQuery);
         $count = 1;
 
@@ -148,7 +153,7 @@
 
 <?php
 
-$degQuery = "SELECT * FROM degree JOIN users WHERE users.gwid = degree.gwid AND users.gwid = ".$row['gwid'];
+$degQuery = "SELECT * FROM degree WHERE uid = ".$row['uid'];
 $degData = mysqli_query($dbc, $degQuery);
 $degCount = 1;
 
@@ -186,7 +191,7 @@ while ($degRow = mysqli_fetch_array($degData)) {
 
 <?php
 
-$examQuery = "SELECT * FROM examScore JOIN users WHERE users.gwid = examScore.gwid AND users.gwid = ".$row['gwid'];
+$examQuery = "SELECT * FROM examScore WHERE uid = ".$row['uid'];
 $examData = mysqli_query($dbc, $examQuery);
 $examCount = 1;
 
@@ -253,7 +258,7 @@ while ($examRow = mysqli_fetch_array($examData)) {
             </div>
         </div>
 
-        <input type="hidden" name="gwid" value="<?php echo $row['gwid']; ?>">
+        <input type="hidden" name="uid" value="<?php echo $row['uid']; ?>">
     
     <?php 
     

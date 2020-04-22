@@ -11,7 +11,7 @@
 session_start();
 require_once ('connectvars.php');
 
-if (!isset($_SESSION['gwid']))
+if (!isset($_SESSION['uid']))
 {
 ?>
 		<!-- NAV BAR -->
@@ -52,13 +52,13 @@ if (!isset($_SESSION['gwid']))
 }
 else
 {
-    $gwidFac = $_SESSION['gwid'];
+    $uidFac = $_SESSION['uid'];
 
-    $gwid = $_POST['gwid']; ///THIS WILL NEED TO CHANGE  
+    $uid = $_POST['uid']; 
 
     $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-    $query = "select facultyType from faculty where gwid = '$gwidFac'";
+    $query = "select type from staff where uid = '$uidFac'";
 
     $data = mysqli_query($dbc, $query);
 
@@ -86,21 +86,21 @@ else
 	</div>
 </nav>
 <?php
-    if ($row['facultyType'] == 2 || $row['facultyType'] == 1)
+    if ($row['type'] == 1 || $row['type'] == 2)
     {
-        // User is faculty, allow to access page
+        // User is staff, allow to access page
         // Check if submit is activated to set decision
         if (isset($_POST['submit'])) {
 
             // Update application with final decision
-            $decisionQuery = "UPDATE applicant SET appStatus = ".$_POST['appStatus']." WHERE gwid = ".$_POST['gwid'];
+            $decisionQuery = "UPDATE applicant SET appStatus = ".$_POST['appStatus']." WHERE uid = ".$_POST['uid'];
             $decisionData = mysqli_query($dbc, $decisionQuery);
 
             header('Location: queue.php');
 
         }
 
-    if (isset($_POST['gwid'])) {
+    if (isset($_POST['uid'])) {
 
         ?>
         <!-- HEADER -->
@@ -118,7 +118,7 @@ else
 
         //THIS ENTIRE SECTION IS ON THE APPLICANT'S INFORMATION
 
-        $query = "SELECT * FROM users JOIN applicant ON users.gwid = applicant.gwid WHERE users.gwid = '".$_POST['gwid']."'";
+        $query = "SELECT * FROM people JOIN applicant ON people.uid = applicant.uid WHERE people.uid = '".$_POST['uid']."'";
         $data = mysqli_query($dbc, $query);
         $row = mysqli_fetch_array($data);
 
@@ -128,8 +128,8 @@ else
 
         <dl class="row">
 
-            <dt class="col-sm-3">GWID</dt>
-            <dd class="col-sm-9"><?php echo $row['gwid']; ?></dd>
+            <dt class="col-sm-3">User Id</dt>
+            <dd class="col-sm-9"><?php echo $row['uid']; ?></dd>
 
             <dt class="col-sm-3">First Name</dt>
             <dd class="col-sm-9"><?php echo $row['fname']; ?></dd>
@@ -157,7 +157,7 @@ else
 
             <?php
 
-            $recQuery = "SELECT recId, recs.email, recName, job, relation, org, content FROM recs JOIN users WHERE users.gwid = recs.gwid AND users.gwid = ".$row['gwid'];
+            $recQuery = "select * from recs where uid = ".$row['uid'];
             $recData = mysqli_query($dbc, $recQuery);
             $count = 1;
 
@@ -201,7 +201,7 @@ else
 
             <?php
 
-            $degQuery = "SELECT * FROM degree JOIN users WHERE users.gwid = degree.gwid AND users.gwid = ".$row['gwid'];
+            $degQuery = "SELECT * FROM degree WHERE uid = ".$row['uid'];
             $degData = mysqli_query($dbc, $degQuery);
             $degCount = 1;
 
@@ -239,7 +239,7 @@ else
 
             <?php
 
-            $examQuery = "SELECT * FROM examScore JOIN users WHERE users.gwid = examScore.gwid AND users.gwid = ".$row['gwid'];
+            $examQuery = "SELECT * FROM examScore uid = ".$row['uid'];
             $examData = mysqli_query($dbc, $examQuery);
             $examCount = 1;
 
@@ -278,12 +278,12 @@ else
             
             //THIS ENTIRE SECTION IS ON REVIEW FORMS
             //info from review forms
-            $reviewsQuery = "SELECT * FROM reviewForm WHERE studentGwid = '$gwid'";				
+            $reviewsQuery = "SELECT * FROM reviewForm WHERE studentuid = '$uid'";				
             $reviewsData = mysqli_query($dbc, $reviewsQuery); 
             $reviewCount = 1;
             while ($reviewsRow = mysqli_fetch_array($reviewsData)) {
 
-                $queryFac = "SELECT * FROM faculty JOIN users ON faculty.gwid = users.gwid where faculty.gwid = ".$reviewsRow['gwid'];				
+                $queryFac = "SELECT * FROM staff JOIN people ON staff.uid = people.uid where staff.uid = ".$reviewsRow['uid'];				
                 $dataFac = mysqli_query($dbc, $queryFac);
                 $rowFac = mysqli_fetch_array($dataFac);
 
@@ -306,7 +306,7 @@ else
                     </dd>
                     <?php 
 
-                            $recReviewQuery = "SELECT * FROM recReview WHERE gwid = ".$gwidFac." AND studentGwid = ".$gwid;
+                            $recReviewQuery = "SELECT * FROM recReview WHERE uid = ".$uidFac." AND studentuid = ".$uid;
                             $recReviewData = mysqli_query($dbc, $recReviewQuery);
                             $recCount = 1;
                             
@@ -365,7 +365,7 @@ else
                         <option value="4">Admitted</option>
                         <option value="3">Admitted with Aid</option>
                     </select>
-                    <input type="hidden" name="gwid" value="<?php echo $gwid; ?>">
+                    <input type="hidden" name="uid" value="<?php echo $uid; ?>">
 
                 </div>
 

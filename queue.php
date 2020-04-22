@@ -17,8 +17,8 @@
     require_once('connectvars.php');
     $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-    if (isset($_SESSION['gwid'])) {
-        $query = "SELECT * FROM faculty WHERE gwid = '".$_SESSION['gwid']."'";
+    if (isset($_SESSION['uid'])) {
+        $query = "SELECT * FROM staff WHERE uid = '".$_SESSION['uid']."'";
         $data = mysqli_query($dbc, $query);
         if (mysqli_num_rows($data) > 0) {
 
@@ -44,24 +44,28 @@
 </nav>
 <?php
 
-            // user is a faculty, allow access to page
+            // user is a staff, allow access to page
             $row = mysqli_fetch_array($data);
 
             // update all applications if complete
-            $updateQuery = "SELECT * FROM users JOIN applicant ON users.gwid = applicant.gwid WHERE appStatus = 1";
+            $updateQuery = "SELECT * FROM applicant WHERE appStatus = 1";
             $updateData = mysqli_query($dbc, $updateQuery);
             while ($updateRow = mysqli_fetch_array($updateData)) {
                 if ($updateRow['transcript'] == 1) {
-                    $checkRecsQuery = "SELECT * FROM users JOIN recs ON users.gwid = recs.gwid WHERE users.gwid = ".$updateRow['gwid']." AND recName IS NOT NULL AND job IS NOT NULL AND
-                        relation IS NOT NULL AND recs.email IS NOT NULL AND content IS NOT NULL AND org IS NOT NULL";
+                    $checkRecsQuery = "Select * from recs where uid = ".$updateRow['uid'];
                     $checkRecsData = mysqli_query($dbc, $checkRecsQuery);
-                    if (mysqli_num_rows($checkRecsData) >= 3) {
-                        mysqli_query($dbc, "UPDATE applicant SET appStatus = 2 WHERE gwid = ".$updateRow['gwid']);
+                    $numRecs = mysqli_num_rows($checkRecsData);
+                    if ($numRecs >= 1) {
+                        $checkRecsQuery = "SELECT * from recs where recName is not null and uid = ".$updateRow['uid'];
+                        $checkRecsData = mysqli_query($dbc, $checkRecsQuery);
+                        if (mysqli_num_rows($checkRecsData) >= $numRecs) {
+                            mysqli_query($dbc, "UPDATE applicant SET appStatus = 2 WHERE uid = ".$updateRow['uid']);
+                        }
                     }
                 }
             }
 
-            if ($row['facultyType'] == 0) {
+            if ($row['type'] == 3 || $row['type'] == 6 || $row['type'] == 7 || $row['type'] == 9) {
                 ?>
                 <!-- HEADER -->
                 <header class = "bg py-5 mb-5" style = "background-color: #033b59;">
@@ -74,7 +78,7 @@
                     </div>
                 </header>
                 <?php
-                // Faculty is a reviewer; default case (only allowed to review)
+                // staff is a reviewer; default case (only allowed to review)
         
 
     ?>
@@ -82,7 +86,7 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th scope="col">GWID</th>
+                <th scope="col">User Id</th>
                 <th scope="col">Last Name</th>
                 <th scope="col">First Name</th>
                 <th scope="col">Email Address</th>
@@ -92,18 +96,18 @@
         </thead>
         <tbody>
         <?php
-        $query = "SELECT * FROM users JOIN applicant ON users.gwid = applicant.gwid WHERE appStatus = 2 AND applicant.gwid NOT IN
-            (SELECT studentGwid FROM recReview WHERE recReview.gwid = ".$_SESSION['gwid'].")";
+        $query = "SELECT * FROM people JOIN applicant ON people.uid = applicant.uid WHERE appStatus = 2 AND applicant.uid NOT IN
+            (SELECT studentuid FROM recReview WHERE recReview.uid = ".$_SESSION['uid'].")";
         $data = mysqli_query($dbc, $query);
         while ($row = mysqli_fetch_array($data)) {
         ?>
             <form method="POST" action="review.php">
                 <tr>
-                    <th scope="row"><?php echo $row['gwid']; ?>
+                    <th scope="row"><?php echo $row['uid']; ?>
                     <td><?php echo $row['lname']; ?></td>
                     <td><?php echo $row['fname']; ?></td>
                     <td><?php echo $row['email']; ?></td>
-                    <td><input type="hidden" name="gwid" value="<?php echo $row['gwid']; ?>"></td>
+                    <td><input type="hidden" name="uid" value="<?php echo $row['uid']; ?>"></td>
                     <td><button type="submit" name="review" class="btn btn-primary">Review</button></td>
                 </tr>
             </form>
@@ -117,7 +121,7 @@
     <?php
 
             }
-            else if ($row['facultyType'] == 1) {
+            else if ($row['type'] == 1) {
                 ?>
                 <!-- HEADER -->
                 <header class = "bg py-5 mb-5" style = "background-color: #033b59;">
@@ -130,7 +134,7 @@
                     </div>
                 </header>
                 <?php
-                // Faculty is graduate secretary; can edit application, not review
+                // staff is graduate secretary; can edit application, not review
     
     ?>
 
@@ -138,7 +142,7 @@
     <table class="table table-striped">
     <thead>
         <tr>
-            <th scope="col">GWID</th>
+            <th scope="col">User Id</th>
             <th scope="col">Last Name</th>
             <th scope="col">First Name</th>
             <th scope="col">Email Address</th>
@@ -149,33 +153,33 @@
     </thead>
     <tbody>
     <?php
-    $query = "SELECT * FROM users JOIN applicant ON users.gwid = applicant.gwid WHERE appStatus = 2 OR appStatus = 1";
+    $query = "SELECT * FROM people JOIN applicant ON people.uid = applicant.uid WHERE appStatus = 2 OR appStatus = 1";
     $data = mysqli_query($dbc, $query);
     while ($row = mysqli_fetch_array($data)) {
-        $sub = "SELECT COUNT(*) AS 'count' FROM reviewForm WHERE studentGwid = ".$row['gwid'];
+        $sub = "SELECT COUNT(*) AS 'count' FROM reviewForm WHERE studentuid = ".$row['uid'];
         $subdata = mysqli_query($dbc, $sub);
         $subrow = mysqli_fetch_array($subdata);
     ?>
         <tr>
-            <th scope="row"><?php echo $row['gwid']; ?></th>
+            <th scope="row"><?php echo $row['uid']; ?></th>
             <td><?php echo $row['lname']; ?></td>
             <td><?php echo $row['fname']; ?></td>
             <td><?php echo $row['email']; ?></td>
             <td><?php if ($row['appStatus'] == 1) echo "Incomplete"; else echo "Complete"; ?></td>
             <form method="POST" action="transcriptUpdate.php">
-            <td><input type="hidden" name="gwid" value="<?php echo $row['gwid']; ?>"><button type="submit" name="update" class="btn btn-primary">Update</button></td>
+            <td><input type="hidden" name="uid" value="<?php echo $row['uid']; ?>"><button type="submit" name="update" class="btn btn-primary">Update</button></td>
             </form>
             <?php
                 if ($subrow['count'] >= 3) {
             ?>
             <form method="POST" action="decision.php">
-            <td><input type="hidden" name="gwid" value="<?php echo $row['gwid']; ?>"><button type="submit" name="decide" class="btn btn-primary">Make Decision</button></td>
+            <td><input type="hidden" name="uid" value="<?php echo $row['uid']; ?>"><button type="submit" name="decide" class="btn btn-primary">Make Decision</button></td>
             </form>
             <?php }
                 else {
             ?>
             <form method="POST" action="decision.php">
-            <td><input type="hidden" name="gwid" value="<?php echo $row['gwid']; ?>"><button type="submit" name="decide" class="btn btn-primary" disabled>Make Decision</button></td>
+            <td><input type="hidden" name="uid" value="<?php echo $row['uid']; ?>"><button type="submit" name="decide" class="btn btn-primary" disabled>Make Decision</button></td>
             </form>
             <?php } ?>
         </tr>
@@ -193,7 +197,7 @@
     <?php
 
             }
-            else if ($row['facultyType'] == 2) {
+            else if ($row['type'] == 2) {
                 ?>
                 <!-- HEADER -->
                 <header class = "bg py-5 mb-5" style = "background-color: #033b59;">
@@ -206,7 +210,7 @@
                     </div>
                 </header>
                 <?php
-                // faculty is cac; can make decision if application is ready
+                // staff is cac; can make decision if application is ready
 
     ?>
 
@@ -214,7 +218,7 @@
     <table class="table table-striped">
     <thead>
         <tr>
-            <th scope="col">GWID</th>
+            <th scope="col">uid</th>
             <th scope="col">Last Name</th>
             <th scope="col">First Name</th>
             <th scope="col">Email Address</th>
@@ -224,43 +228,43 @@
     </thead>
     <tbody>
     <?php
-    $query = "SELECT * FROM users JOIN applicant ON users.gwid = applicant.gwid WHERE appStatus = 2";
+    $query = "SELECT * FROM people JOIN applicant ON people.uid = applicant.uid WHERE appStatus = 2";
     $data = mysqli_query($dbc, $query);
     while ($row = mysqli_fetch_array($data)) {
-        $sub = "SELECT COUNT(*) AS 'count' FROM reviewForm WHERE studentGwid = ".$row['gwid'];
+        $sub = "SELECT COUNT(*) AS 'count' FROM reviewForm WHERE studentuid = ".$row['uid'];
         $subdata = mysqli_query($dbc, $sub);
         $subrow = mysqli_fetch_array($subdata);
         
-        $reviewedSub = "SELECT * FROM reviewForm WHERE studentGwid = ".$row['gwid']." AND gwid = ".$_SESSION['gwid'];
+        $reviewedSub = "SELECT * FROM reviewForm WHERE studentuid = ".$row['uid']." AND uid = ".$_SESSION['uid'];
         $reviewedData = mysqli_query($dbc, $reviewedSub);
     ?>
         <tr>
-            <th scope="row"><?php echo $row['gwid']; ?></th>
+            <th scope="row"><?php echo $row['uid']; ?></th>
             <td><?php echo $row['lname']; ?></td>
             <td><?php echo $row['fname']; ?></td>
             <td><?php echo $row['email']; ?></td>
             <?php if (mysqli_num_rows($reviewedData) == 0) {?>
             <form method="POST" action="review.php">
-            <td><input type="hidden" name="gwid" value="<?php echo $row['gwid']; ?>"><button type="submit" name="update" class="btn btn-primary">Review</button></td>
+            <td><input type="hidden" name="uid" value="<?php echo $row['uid']; ?>"><button type="submit" name="update" class="btn btn-primary">Review</button></td>
             </form>
             <?php
                 }
                 else {
                     ?>
                     <form method="POST" action="review.php">
-                    <td><input type="hidden" name="gwid" value="<?php echo $row['gwid']; ?>"><button type="submit" name="update" class="btn btn-primary" disabled>Review</button></td>
+                    <td><input type="hidden" name="uid" value="<?php echo $row['uid']; ?>"><button type="submit" name="update" class="btn btn-primary" disabled>Review</button></td>
                     </form>
                     <?php }
                 if ($subrow['count'] >= 3) {
             ?>
             <form method="POST" action="decision.php">
-            <td><input type="hidden" name="gwid" value="<?php echo $row['gwid']; ?>"><button type="submit" name="decide" class="btn btn-primary">Make Decision</button></td>
+            <td><input type="hidden" name="uid" value="<?php echo $row['uid']; ?>"><button type="submit" name="decide" class="btn btn-primary">Make Decision</button></td>
             </form>
             <?php } 
                 else {
             ?>
             <form method="POST" action="decision.php">
-            <td><input type="hidden" name="gwid" value="<?php echo $row['gwid']; ?>"><button type="submit" name="decide" class="btn btn-primary" disabled>Make Decision</button></td>
+            <td><input type="hidden" name="uid" value="<?php echo $row['uid']; ?>"><button type="submit" name="decide" class="btn btn-primary" disabled>Make Decision</button></td>
             </form>
             <?php } ?>
         </tr>
@@ -276,8 +280,6 @@
     </div>
         
     <?php
-
-
             }
             else {
                 ?>

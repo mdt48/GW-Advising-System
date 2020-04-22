@@ -28,8 +28,9 @@
             $missingCRequired = "";
         }
 
-        $query = "INSERT INTO reviewForm (gwid, studentGwid".$missingCRequired.", gas".$commentsRequired.$reasonRequired.") VALUES (".$_SESSION['gwid'].", ".$_POST['gwid'].$missingC.", ".$_POST['rating'].$comments.$reason.")";
+        $query = "INSERT INTO reviewForm (uid, studentuid".$missingCRequired.", gas".$commentsRequired.$reasonRequired.") VALUES (".$_SESSION['uid'].", ".$_POST['uid'].$missingC.", ".$_POST['rating'].$comments.$reason.")";
         $data = mysqli_query($dbc, $query);
+        
 
         if (isset($_POST['rating1'])) {
             $credible = 0;
@@ -40,7 +41,7 @@
             if ($_POST['generic1'] == '1') {
                 $generic = 1;
             }
-            $query = "INSERT INTO recReview (gwid, studentGwid, recId, rating, generic, credible) VALUES (".(int)$_SESSION['gwid'].", ".(int)$_POST['gwid'].", ".(int)$_POST['rec1'].", ".(int)$_POST['rating1'].", ".$generic.", ".$credible.")";
+            $query = "INSERT INTO recReview (uid, studentuid, recId, rating, generic, credible) VALUES (".(int)$_SESSION['uid'].", ".(int)$_POST['uid'].", ".(int)$_POST['rec1'].", ".(int)$_POST['rating1'].", ".$generic.", ".$credible.")";
             $data = mysqli_query($dbc, $query);
         }
         if (isset($_POST['rating2'])) {
@@ -52,7 +53,7 @@
             if ($_POST['generic2'] == '1') {
                 $generic = 1;
             }
-            $query = "INSERT INTO recReview (gwid, studentGwid, recId, rating, generic, credible) VALUES (".$_SESSION['gwid'].", ".$_POST['gwid'].", ".$_POST['rec2'].", ".$_POST['rating2'].", ".$generic.", ".$credible.")";
+            $query = "INSERT INTO recReview (uid, studentuid, recId, rating, generic, credible) VALUES (".$_SESSION['uid'].", ".$_POST['uid'].", ".$_POST['rec2'].", ".$_POST['rating2'].", ".$generic.", ".$credible.")";
             $data = mysqli_query($dbc, $query);
         }
         if (isset($_POST['rating3'])) {
@@ -64,7 +65,7 @@
             if ($_POST['generic3'] == '1') {
                 $generic = 1;
             }
-            $query = "INSERT INTO recReview (gwid, studentGwid, recId, rating, generic, credible) VALUES (".$_SESSION['gwid'].", ".$_POST['gwid'].", ".$_POST['rec3'].", ".$_POST['rating3'].", ".$generic.", ".$credible.")";
+            $query = "INSERT INTO recReview (uid, studentuid, recId, rating, generic, credible) VALUES (".$_SESSION['uid'].", ".$_POST['uid'].", ".$_POST['rec3'].", ".$_POST['rating3'].", ".$generic.", ".$credible.")";
             $data = mysqli_query($dbc, $query);
         }
     }

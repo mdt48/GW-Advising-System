@@ -25,7 +25,7 @@
 
 			if (!empty($user_username) && !empty($user_password)) {
                 
-				$query = "select username, uid from person where username = '$user_username' and password = '$user_password'";
+				$query = "select username, uid from people where username = '$user_username' and password = '$user_password'";
 						
 				$data = mysqli_query($dbc, $query);
 		
@@ -42,7 +42,7 @@
 				}
 				else {
 				  // The username/password are incorrect so set an error message
-				  $query = "select username from person where username = '$user_username'";
+				  $query = "select username from people where username = '$user_username'";
 						
 				  $data = mysqli_query($dbc, $query);
 
@@ -50,7 +50,7 @@
 					$error_msg = 'Username does not exist.';
 				  }
 				  else {
-					$error_msg = 'Password incorrect.';
+					$error_msg = 'Username/password combination incorrect.';
 				  }
 				}
 			}
@@ -144,7 +144,7 @@
 			<div class = "container h-100">
 				<div class = "row h-100 align-items-center">
 					<div class = "col-lg-12">
-						<h1 class = "display-4 text-center text-white mt-5 mb-2">Logged in as <?php echo $_SESSION['username'];?></h1>
+						<h1 class = "display-4 text-center text-white mt-5 mb-2">Logged in already.</h1>
 						<p class = "lead mb-5 text-center text-white-50" id = button> Want to go back to the home page?
 						</p>
 						<p class = "lead" > <em><center></em></p>
