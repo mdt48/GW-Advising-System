@@ -1,7 +1,7 @@
 <?php
 
   define('DB_HOST', 'localhost');
-  define('DB_USER', 'gradymcpeak');
-  define('DB_PASSWORD', 'DevonGetTables1!');
-  define('DB_NAME', 'gradymcpeak');
+  define('DB_USER', 'git_good');
+  define('DB_PASSWORD', 'seas');
+  define('DB_NAME', 'phase2');
 ?>
