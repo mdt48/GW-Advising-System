@@ -9,21 +9,34 @@
   $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
 
-  echo '<link rel="stylesheet" type="text/css" href="style.css">';
-  echo '<div id = "top"><h1>Your transcript</h1></div>';
-
 ?>
 
 <head>
   <title>Transcript</title>
 </head>
 
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel = "stylesheet" href="/css/heroic-features.css" >
+  <link rel="stylesheet" type="text/css" href="style.css">    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+
+  
+  <header class = "bg py-5 mb-5" style = "background-color: #033b59; height: 15em;">
+    <div class = "container h-100">
+        <div class = "row h-100 align-items-center">
+            <div class = "col-lg-12">
+                <h1 class = "display-4 text-center text-white mt-5 mb-2">Your Transcript</h1></div>
+        </div>
+    </div>
+  </header>
+
 <body>
   <?php
-    if (isset($_SESSION['u_id'])) {
+    if (isset($_SESSION['uid'])) {
       //query database for classes for this user
-      $u_id = $_SESSION['u_id'];
-      $takes_query = mysqli_query($dbc, "SELECT * FROM takes a JOIN course b ON a.c_id = b.c_id WHERE u_id = '$u_id';");
+      $u_id = $_SESSION['uid'];
+      echo "\nPreviously-taken classes:";
+      $takes_query = mysqli_query($dbc, "SELECT * FROM transcript a JOIN course b ON a.cid = b.cid WHERE a.uid = '$u_id';");
       //print out classes
       if ($takes_query != false) {
         //print out table
@@ -31,8 +44,28 @@
         echo "<tr><td><b>Class name</b></td><td><b>Department</b></td><td><b>Grade</b></td></tr>";        
         while ($takes_result = mysqli_fetch_array($takes_query)) {
           echo "<tr>";
-          echo "<td>".$takes_result['name']."</td>";
-          echo "<td class = 'too_short'>".$takes_result['dept']."</td>";
+          echo "<td>".$takes_result['subject']."</td>";
+          echo "<td>".$takes_result['department']."</td>";
+          echo "<td>".$takes_result['grade']."</td>";
+          echo "</tr>";
+        }
+        echo "</table>";
+      } else {
+        echo "ERROR: No classes have been found!";
+      }
+
+      echo "\nClasses currently in progress:";
+
+      $takes_query = mysqli_query($dbc, "SELECT * FROM takes a JOIN course b ON a.cid = b.cid WHERE a.uid = '$u_id';");
+      //print out classes
+      if ($takes_query != false) {
+        //print out table
+        echo "<table>";
+        echo "<tr><td><b>Class name</b></td><td><b>Department</b></td><td><b>Grade</b></td></tr>";        
+        while ($takes_result = mysqli_fetch_array($takes_query)) {
+          echo "<tr>";
+          echo "<td>".$takes_result['subject']."</td>";
+          echo "<td>".$takes_result['department']."</td>";
           echo "<td>".$takes_result['grade']."</td>";
           echo "</tr>";
         }
@@ -45,7 +78,7 @@
     }
   ?>
   <br/>
-  <a href="homepage.php">Home</a>
+  <a href="index.php">Home</a>
 </body>
 
 <?php

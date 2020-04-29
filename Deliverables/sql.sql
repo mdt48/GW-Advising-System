@@ -154,7 +154,7 @@ CREATE TABLE prereqs(
 );
 
 CREATE TABLE transcript(
-  `tid` int,
+  `tid` int AUTO_INCREMENT,
   `uid` int,
   `subject` VARCHAR(32),
   `cid` int,
@@ -318,3 +318,44 @@ INSERT INTO transcript VALUES (19,34567890,'CSCI',6286,'A',2015,'MS', 0);
 INSERT INTO transcript VALUES (20,34567890,'CSCI',6242,'B',2015,'MS', 0);
 INSERT INTO transcript VALUES (21,34567890,'CSCI',6251,'B',2015,'MS', 0);
 INSERT INTO transcript VALUES (22,34567890,'CSCI',6254,'B',2015,'MS', 0);
+
+INSERT INTO schedule VALUES
+(6221, "CSCI", 2020, 1, "Spring", "M", 15.00, 17.30, "SEH 1400");
+INSERT INTO schedule VALUES
+(6461, "CSCI", 2020, 1, "Spring", "T", 15.00, 17.30, "SEH 4040");
+INSERT INTO schedule VALUES
+(6212, "CSCI", 2020, 1, "Spring", "W", 15.00, 17.30, "SEH 3030");
+INSERT INTO schedule VALUES
+(6232, "CSCI", 2020, 1, "Spring", "M", 15.00, 17.30, "SEH 2020");
+INSERT INTO schedule VALUES
+(6233, "CSCI", 2020, 1, "Spring", "T", 15.00, 17.30, "SEH 1400");
+INSERT INTO schedule VALUES
+(6241, "CSCI", 2020, 1, "Spring", "W", 18.00, 20.30, "SEH 1500");
+INSERT INTO schedule VALUES
+(6242, "CSCI", 2020, 1, "Spring", "R", 18.00, 20.30, "SEH 4040");
+INSERT INTO schedule VALUES
+(6246, "CSCI", 2020, 1, "Spring", "T", 15.00, 17.30, "SEH 2020");
+INSERT INTO schedule VALUES
+(6251, "CSCI", 2020, 1, "Spring", "M", 15.00, 17.30, "SEH 4040");
+INSERT INTO schedule VALUES
+(6254, "CSCI", 2020, 1, "Spring", "M", 15.30, 18.00, "SEH 3030");
+INSERT INTO schedule VALUES
+(6260, "CSCI", 2020, 1, "Spring", "R", 18.00, 20.30, "SEH 1500");
+INSERT INTO schedule VALUES
+(6262, "CSCI", 2020, 1, "Spring", "W", 18.00, 20.30, "SEH 4040");
+INSERT INTO schedule VALUES
+(6283, "CSCI", 2020, 1, "Spring", "T", 18.00, 20.30, "SEH 3030");
+INSERT INTO schedule VALUES
+(6284, "CSCI", 2020, 1, "Spring", "M", 18.00, 20.30, "SEH 1400");
+INSERT INTO schedule VALUES
+(6286, "CSCI", 2020, 1, "Spring", "W", 18.00, 20.30, "SEH 2020");
+INSERT INTO schedule VALUES
+(6384, "CSCI", 2020, 1, "Spring", "W", 15.00, 17.30, "SEH 1400");
+INSERT INTO schedule VALUES
+(6241, "ECE", 2020, 1, "Spring", "M", 17.00, 19.30, "SEH 4040");
+INSERT INTO schedule VALUES
+(6242, "ECE", 2020, 1, "Spring", "T", 18.00, 20.30, "SEH 2020");
+INSERT INTO schedule VALUES
+(6210, "MATH", 2020, 1, "Spring", "W", 18.00, 20.30, "SEH 3030");
+INSERT INTO schedule VALUES
+(6339, "CSCI", 2020, 1, "Spring", "R", 16.00, 18.30, "SEH 2020");

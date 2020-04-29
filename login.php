@@ -21,9 +21,10 @@ if (!empty($user_username) && !empty($user_password)) {
 	
     $row = mysqli_fetch_assoc($data);
     $uid = $_SESSION['uid'] = $row['uid'];
+    $_SESSION['username'] = $row['username'];
     //$_SESSION['program'] = $row['program'];
 
-    $query = "SELECT program FROM student WHERE uid = '$uid'" ;
+    $query = "SELECT * FROM student WHERE uid = '$uid'" ;
     $data = mysqli_query($dbc, $query);
     
     // if student
