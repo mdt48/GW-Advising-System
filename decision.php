@@ -1,39 +1,9 @@
-<!DOCtype html>
-<html>
-<head>  
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
-	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	<link rel = "stylesheet" href="/css/heroic-features.css" >
-	<title>Update Decision</title>
-</head>
-<body data-gr-c-s-loaded = "true">
 <?php
-session_start();
-require_once ('connectvars.php');
+require_once ('navBar.php');
 
 if (!isset($_SESSION['uid']))
 {
 ?>
-		<!-- NAV BAR -->
-		<nav class = "navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-		<div class = "container">
-			<a class = "navbar-brand" href = "landingPage.php">GW Graduate Program</a>
-			<div class = "navbar-collapse collapse" id = "navbarNavDropdown" > 
-				<ul class = "navbar-nav ml-auto">
-					<li class = "nav item active">
-						<a class = "nav-link" href = "landingPage.php">Home</a>
-						</a>
-					</li>
-					<li class = "nav item">
-						<a class = "nav-link" href = "login.php">Login</a>
-					</li>
-					<li class = "nav item">
-						<a class = "nav-link" href = "createAcc.php">Create an Account</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</nav>
 	<!-- HEADER -->
 	<header class = "bg py-5 mb-5" style = "background-color: #033b59;">
 		<div class = "container h-100">
@@ -43,7 +13,7 @@ if (!isset($_SESSION['uid']))
 					Don't have an account yet? <a href = "createAcc.php">Create Account</a> <br/>
 					Want to go home?
 					</p>
-						<p class = "lead" > <em></em></p>
+						<p class = "lead" > <em><center></em></p>
 						<a class = "btn btn-light btn-lg" href = "landingPage.php">Click Here!</a>
 		</div>
 	</header>
@@ -66,26 +36,7 @@ else
     {
         $row = mysqli_fetch_array($data);
     }
-?>
-<!-- NAV BAR -->
-<nav class = "navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class = "container">
-		<a class = "navbar-brand" href = "landingPage.php">GW Graduate Program</a>
-		<div class = "navbar-collapse collapse" id = "navbarNavDropdown" > 
-			<ul class = "navbar-nav ml-auto">
-				<li class = "nav item active">
-					<a class = "nav-link" href = "index.php">Home</a>
-					</a>
-				</li>
-				<li class = "nav item">
-					<a class = "nav-link" href = "logout.php">Logout</a>
-					</a>
-				</li>
-			</ul>
-		</div>
-	</div>
-</nav>
-<?php
+
     if ($row['type'] == 1 || $row['type'] == 2)
     {
         // User is staff, allow to access page
@@ -93,7 +44,7 @@ else
         if (isset($_POST['submit'])) {
 
             // Update application with final decision
-            $decisionQuery = "UPDATE applicant SET appStatus = ".$_POST['appStatus']." WHERE uid = ".$_POST['uid'];
+            $decisionQuery = "UPDATE applicant SET appStatus = ".$_POST['appStatus'].", adv = ".$_POST['adv']." WHERE uid = ".$_POST['uid'];
             $decisionData = mysqli_query($dbc, $decisionQuery);
 
             header('Location: queue.php');
@@ -239,7 +190,7 @@ else
 
             <?php
 
-            $examQuery = "SELECT * FROM examScore uid = ".$row['uid'];
+            $examQuery = "SELECT * FROM examScore where uid = ".$row['uid'];
             $examData = mysqli_query($dbc, $examQuery);
             $examCount = 1;
 
@@ -364,6 +315,28 @@ else
                         <option value="5" selected>Reject</option>
                         <option value="4">Admitted</option>
                         <option value="3">Admitted with Aid</option>
+                    </select>
+                    <input type="hidden" name="uid" value="<?php echo $uid; ?>">
+
+                </div>
+
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                
+                    <label for="adv">Advisor (if admitted)</label>
+                    <select name="adv" class="form-control">
+                        <?php
+
+                        $queryAdv = "select people.uid, people.fname, people.lname from staff join people on people.uid = staff.uid where staff.type = 4 or staff.type = 6 or staff.type = 8 or staff.type = 9;";
+                        			
+                        $adv = mysqli_query($dbc, $queryAdv);
+                        while ($rowAdv = mysqli_fetch_array($adv)) {
+                            ?>
+                                <option value="<?php echo $rowAdv['uid'];?>"><?php echo $rowAdv['fname'].' '.$rowAdv['lname'];?></option>
+                            <?php
+                        }
+                        ?>
                     </select>
                     <input type="hidden" name="uid" value="<?php echo $uid; ?>">
 

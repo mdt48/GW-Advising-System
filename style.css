@@ -1,0 +1,20 @@
+
+
+#submit {
+    text-align: center;
+}
+
+.container a h1 {
+    font-size: 35px;
+}
+
+form {
+    width: 80%;
+    margin: auto;   
+}
+.row p{
+    margin: auto; 
+    margin-top: 10px;
+    text-align: center;
+    font-size: 19px;
+}

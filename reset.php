@@ -3,7 +3,7 @@
     
     $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
     
-    $file = './Deliverables/sql.sql';
+    $file = './script.sql';
     
     if($fp = file_get_contents($file)) {
       $var_array = explode(';',$fp);
