@@ -12,8 +12,8 @@
   $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
 
-  if(isset($_GET["c_id"])) {
-    $c_id = $_GET["c_id"];
+  if(isset($_GET["cid"])) {
+    $c_id = $_GET["cid"];
   }
 
   if(isset($_GET["dept"])) {
@@ -32,31 +32,36 @@
     $section = $_GET["section"];
   }
 
-  if(isset($_GET["u_id"])) {
-    $u_id = $_GET["u_id"];
+  if(isset($_GET["uid"])) {
+    $uid = $_GET["uid"];
   }
 
-  $takenbefore = "SELECT * FROM takes WHERE u_id = '$u_id' AND dept = '$dept' AND semester = '$semester' AND year = '$year' AND section = '$section' AND c_id = '$c_id'";
+  $takenbefore = "SELECT * FROM transcript WHERE uid = '$uid' AND subject = '$dept' AND cid = '$c_id'";
   $takenquery = mysqli_query($dbc, $takenbefore);
+
+  $taking = "SELECT * FROM takes WHERE uid = '$uid' AND department = '$dept' AND semester = '$semester' AND year = '$year' AND section = '$section' AND cid = '$c_id'";
+  $takingquery = mysqli_query($dbc, $taking);
 
   //use to determine if they are able to take
   $cantake = true;
 
   if ($row = mysqli_fetch_array($takenquery)) { //this class already exists in their takes table
-    echo "ERROR: You have already taken this class before";?><br><?php
+    echo "ERROR: This class is already listed in your transcript";?><br><?php
+  } else if ($row = mysqli_fetch_array($takingquery)) {
+    echo "ERROR: You are already registered for this class";?><br><?php
   } else {
 
     //main prereq
-    $prereq = "SELECT * FROM prereqs WHERE c_id = '$c_id' AND dept = '$dept' AND ismain = true";
+    $prereq = "SELECT * FROM prereqs WHERE cid = '$c_id' AND department = '$dept'";
     $prereqquery = mysqli_query($dbc, $prereq);
     $prereqrow = mysqli_fetch_array($prereqquery);
 
     if ($prereqrow) { //if there is main prereq
 
       //see if they have taken it
-      $req_dept = $prereqrow["req_dept"];
-      $req_cid = $prereqrow["req_cid"];
-      $checkprereq = "SELECT * FROM takes WHERE u_id = '$u_id' AND dept = '$req_dept' AND c_id = '$req_cid'";
+      $req_dept = $prereqrow["department"];
+      $req_cid = $prereqrow["cid"];
+      $checkprereq = "SELECT * FROM transcript WHERE uid = '$uid' AND subject = '$req_dept' AND cid = '$req_cid'";
       $checkprereqquery = mysqli_query($dbc, $checkprereq);
 
       if (!($row = mysqli_fetch_array($checkprereqquery))) {
@@ -66,14 +71,14 @@
       } else { //they have taken the main prereq check secondary
 
         //secondary prereq
-        $prereq = "SELECT * FROM prereqs WHERE c_id = '$c_id' AND dept = '$dept' AND ismain = false";
+        $prereq = "SELECT * FROM prereqs WHERE cid = '$cid' AND department = '$department'";
         $prereqquery = mysqli_query($dbc, $prereq);
         $prereqrow = mysqli_fetch_array($prereqquery);
 
         if ($prereqrow) { //if there is a secondary prereq
-          $req_dept = $prereqrow["req_dept"];
-          $req_cid = $prereqrow["req_cid"];
-          $checkprereq = "SELECT * FROM takes WHERE u_id = '$u_id' AND dept = '$req_dept' AND c_id = '$req_cid'";
+          $req_dept = $prereqrow["department"];
+          $req_cid = $prereqrow["cid"];
+          $checkprereq = "SELECT * FROM transcript WHERE uid = '$uid' AND subject = '$req_dept' AND cid = '$req_cid'";
           $checkprereqquery = mysqli_query($dbc, $checkprereq);
           if (!($row = mysqli_fetch_array($checkprereqquery))) { //see if they have taken the prereq
             echo "You have not taken a prerequisite for this class: ".$req_dept." ".$req_cid;?><br><?php
@@ -87,7 +92,7 @@
     //check for time conflict
 
     //info about class they want to register for
-    $timeinfo = "SELECT * FROM schedule WHERE dept = '$dept' AND semester = '$semester' AND year = '$year' AND section = '$section' AND c_id = '$c_id'";
+    $timeinfo = "SELECT * FROM schedule WHERE department = '$dept' AND semester = '$semester' AND year = '$year' AND section = '$section' AND cid = '$c_id'";
     $timequery = mysqli_query($dbc, $timeinfo);
     $timerow = mysqli_fetch_array($timequery);
     $day = $timerow["day"];
@@ -96,7 +101,7 @@
 
     if ($cantake) {
       //they have taken the prereqs
-      $conflict = "SELECT * FROM takes c JOIN schedule d ON (c.c_id = d.c_id AND c.dept = d.dept AND c.year = d.year AND c.section = d.section AND c.semester = d.semester) WHERE c.u_id = '$u_id' AND d.semester = '$semester' AND d.year = '$year' AND d.day = '$day'";
+      $conflict = "SELECT * FROM takes c JOIN schedule d ON (c.cid = d.cid AND c.department = d.department AND c.year = d.year AND c.section = d.section AND c.semester = d.semester) WHERE c.uid = '$uid' AND d.semester = '$semester' AND d.year = '$year' AND d.day = '$day'";
       $conflictquery = mysqli_query($dbc, $conflict);
 
       while ($conflictrow = mysqli_fetch_array($conflictquery)) {
@@ -119,7 +124,7 @@
     if ($cantake) { //check if they can take class or not
 
       //they can take - add to database
-      $registerquery = "INSERT INTO takes VALUES ('$c_id', '$dept', '$year', '$section', '$semester', '$u_id', 'IP')";
+      $registerquery = "INSERT INTO takes VALUES ('$c_id', '$dept', '$year', '$section', '$semester', '$uid', 'IP')";
       $registerdata = mysqli_query($dbc, $registerquery);
       echo "You have sucessfully registered for ".$dept." ".$c_id;?><br><?php
     }
