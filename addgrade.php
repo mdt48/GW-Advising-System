@@ -15,7 +15,7 @@
     //get u_id from other page
     if (isset($_GET["u_id"])) {
         $u_id = $_GET["u_id"];
-        $studentquery = "SELECT * FROM person WHERE u_id = '$u_id'";
+        $studentquery = "SELECT * FROM people WHERE uid = '$u_id'";
         $studentdata = mysqli_query($dbc, $studentquery);
         $student = mysqli_fetch_array($studentdata);
         echo '<div id = "top"><h1>'.$student['fname'].' '.$student['lname'].'\'s Classes</h1></div>';
@@ -27,11 +27,11 @@
         $teach_id = $_GET["teach_id"];
     }
 
-    if ($_SESSION['whoareyou'] == "faculty") {
-        $classquery = "SELECT * FROM takes c JOIN teaches d ON (c.c_id = d.c_id AND c.dept = d.dept AND c.year = d.year AND c.section = d.section AND c.semester = d.semester) WHERE d.u_id = '$teach_id' AND c.grade = 'IP' AND c.u_id = '$u_id'";
+    if ($_SESSION['type'] == 5 || $_SESSION['type'] == 7 || $_SESSION['type'] == 8 || $_SESSION['type'] == 9) {
+        $classquery = "SELECT * FROM takes c JOIN teaches d ON (c.cid = d.cid AND c.department = d.department AND c.year = d.year AND c.section = d.section AND c.semester = d.semester) WHERE d.uid = '$teach_id' AND c.grade = 'IP' AND c.u_id = '$uid'";
         $classdata = mysqli_query($dbc, $classquery);
     } else {
-        $classquery = "SELECT * FROM takes WHERE u_id = '$u_id'";
+        $classquery = "SELECT * FROM takes WHERE uid = '$u_id'";
         $classdata = mysqli_query($dbc, $classquery);
     }
 
@@ -40,15 +40,15 @@
         ?><form action="newgrade.php" method="GET">
             <input type="text" name="grade" />
             <input type="submit" name="submit" value="Grade" />
-            <input type="hidden" name ="dept" value="<?php echo $row["dept"]; ?>" />
-            <input type="hidden" name ="c_id" value="<?php echo $row["c_id"]; ?>" />
+            <input type="hidden" name ="dept" value="<?php echo $row["department"]; ?>" />
+            <input type="hidden" name ="c_id" value="<?php echo $row["cid"]; ?>" />
             <input type="hidden" name ="semester" value="<?php echo $row["semester"]; ?>" />
             <input type="hidden" name ="year" value="<?php echo $row["year"]; ?>" />
             <input type="hidden" name ="section" value="<?php echo $row["section"]; ?>" />
             <input type="hidden" name ="u_id" value="<?php echo $u_id; ?>" />
         </form> <?php
 
-        $class = $row["dept"].$space.$row["c_id"];
+        $class = $row["department"].$space.$row["cid"];
         echo $class;?><br><?php
 
     }

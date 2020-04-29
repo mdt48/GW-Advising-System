@@ -38,8 +38,11 @@
 
     //grade was entered
     if (isset($_GET["grade"])) {
-        $gradequery = "UPDATE takes SET grade = '$newgrade' WHERE c_id = '$c_id' AND dept = '$dept' AND semester = '$semester' AND year = '$year' AND section = '$section' AND u_id = '$u_id'";
+        $gradequery = "INSERT INTO transcript VALUES (null, '$u_id', '$dept', '$c_id', '$newgrade', '$year', '', 0);";
         $gradedata = mysqli_query($dbc, $gradequery);
+        $deletequery = "DELETE FROM takes WHERE uid = '$u_id' AND department = '$dept' AND cid = '$c_id' AND year = '$year';";
+        $deletedata = mysqli_query($dbc, $deletequery);
+        echo ("The data is ".$deletedata);
     }
 
     $home_url = 'http://' . $_SERVER["HTTP_HOST"] . dirname($_SERVER["PHP_SELF"]) . '/grades.php';

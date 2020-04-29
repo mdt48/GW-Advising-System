@@ -146,12 +146,10 @@ CREATE TABLE course(
 );
 
 CREATE TABLE prereqs(
-  `cid` int,
-  `department` VARCHAR(32),
-  `subject` VARCHAR(32),
-  `credit` int,
-  primary key (`department`),
-  FOREIGN KEY (`cid`) REFERENCES course (`cid`)
+  cid int,
+  pcid int,
+  PRIMARY KEY (cid, pcid),
+  FOREIGN KEY (cid) REFERENCES course (cid)
 );
 
 CREATE TABLE transcript(

@@ -3,7 +3,10 @@
 <html>  
 
 <head>  
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel = "stylesheet" href="/css/heroic-features.css" >
+<link rel="stylesheet" type="text/css" href="style.css">	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
@@ -31,7 +34,7 @@ session_start();
 ?>
 <body id= "body"> 
 	</script> 
-	<nav class="navbar navbar-ex pand-lg navbar-light bg-light">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
 		<a class="navbar-brand" index="test" href=<?php echo $home_link ?>>Home</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		  <span class="navbar-toggler-icon"></span>
@@ -161,69 +164,5 @@ session_start();
 					});
 			});
 
-			// function addElement({parent, pID, tag, id, scope, inner, cls, type, fr}={}) {
-			// 	if (parent == null){
-			// 		var parent = document.getElementById(pID);
-			// 	}
-				
-			// 	var child = document.createElement(tag);
-			// 	if (cls != null){
-			// 		child.setAttribute('class', cls);
-			// 	}
-			// 	if (id != null){
-			// 		child.setAttribute('id', id);
-			// 	}
-			// 	if (scope != null){
-			// 		child.setAttribute('scope', scope);
-			// 	}
-			// 	if (inner != null){
-			// 		child.innerHTML = inner;
-			// 	}
-			// 	if (fr != null){
-			// 		child.setAttribute('for', fr);
-			// 	}
-			// 	parent.appendChild(child);
-			// 	return;
-			// }
-
-			// function getLabelText(label) {
-			// 	switch (label) {
-			// 		case "uid":
-			// 			return "UID: ";
-			// 			break;
-			// 		case "uname":
-			// 			return "Username: ";
-			// 			break;
-			// 		case "fname":
-			// 			return "First Name: ";
-			// 			break;
-			// 		case "lname":
-			// 			return "Last Name: ";
-			// 			break;
-			// 		case "email":
-			// 			return "Email: ";
-			// 			break;
-			// 		case "grad_status":
-			// 			return "Grad Status: ";
-			// 			break;
-			// 		case "thesis":
-			// 			return "Thesis: ";
-			// 			break;
-			// 		case "audited":
-			// 			return "Audited: ";
-			// 			break;
-			// 		case "program":
-			// 			return "Program: ";
-			// 			break;
-			// 		case "dep":
-			// 			return "Department: ";
-			// 			break;
-			// 		case "add":
-			// 			return "Address: ";
-			// 			break;
-			// 		case "Title":
-			// 			return "Titel: ";
-			// 			break;
-			// 	}
-			// }
+			
 </script>
