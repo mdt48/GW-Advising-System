@@ -359,3 +359,18 @@ INSERT INTO schedule VALUES
 (6210, "MATH", 2020, 1, "Spring", "W", 18.00, 20.30, "SEH 3030");
 INSERT INTO schedule VALUES
 (6339, "CSCI", 2020, 1, "Spring", "R", 16.00, 18.30, "SEH 2020");
+
+INSERT INTO prereqs VALUES (6233, 6232, true, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6242, 6241, true, "ECE", "ECE");
+INSERT INTO prereqs VALUES (6246, 6461, true, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6246, 6212, false, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6251, 6461, true, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6254, 6221, true, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6283, 6212, true, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6284, 6212, true, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6286, 6283, true, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6286, 6232, false, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6325, 6212, true, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6339, 6461, true, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6339, 6212, false, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6384, 6284, true, "CSCI", "CSCI");
