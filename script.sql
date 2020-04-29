@@ -46,7 +46,6 @@ CREATE TABLE people (
 CREATE TABLE student(
   `uid` int,
   `grad_status` varchar(32),
-  
   `thesis` boolean,
   `audited` boolean,
   `advisoruid` int,
@@ -134,7 +133,7 @@ CREATE TABLE reviewForm (
   reasonReject char,
   adv varchar(50),
   PRIMARY KEY (uid, studentuid),
-  FOREIGN KEY (uid) REFERENCES faculty (uid),
+  FOREIGN KEY (uid) REFERENCES staff (uid),
   FOREIGN KEY (studentuid) REFERENCES applicant (uid)
 );
 
@@ -267,12 +266,12 @@ INSERT INTO transcript VALUES (23,55555555,'CSCI',6242,'B',2019,'MS',0);
 
 
 -- this is the data for the apps side
-insert into people (ssn, username, email, birthDate, password, uid, fname, lname, address) values (111111111, 'jlennon', 'jlennon@gmail.com', '1940-10-09', '1234', 55555554, 'John', 'Lennon', '72nd St & Central Park West, New York, NY, 10023');
+insert into people (ssn, username, email, birthDate, password, uid, fname, lname, address) values (111111111, 'jlennon', 'jlennon@gmail.com', '1940-10-09', '1234', 55555555, 'John', 'Lennon', '72nd St & Central Park West, New York, NY, 10023');
 
-insert into applicant values (55555554, 'Music', 'Member of The Beatles, formerly', 'md', 2, 1, 2020, 'fall', null);
+insert into applicant values (55555555, 'Music', 'Member of The Beatles, formerly', 'md', 2, 1, 2020, 'fall', null);
 
-insert into degree values (55555554, 'BA', 'Berkley', '4.0', 'Boyband', 1960);
-insert into degree values (55555554, 'BA', 'Columbia', '3.5', 'Rocket Science', 1969);
+insert into degree values (55555555, 'BA', 'Berkley', '4.0', 'Boyband', 1960);
+insert into degree values (55555555, 'BA', 'Columbia', '3.5', 'Rocket Science', 1969);
 
 
 insert into examScore values (55555555, 'total', 340, 1980);
