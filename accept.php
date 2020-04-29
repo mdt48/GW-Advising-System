@@ -6,6 +6,7 @@
 		$dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME); 
 
         if (isset($_POST['hide'])) {
+
 			$uidP = $_POST['uid'];
             $query = "DELETE FROM examScore WHERE uid = ".$uidP;
             $dbc->query($query);
@@ -60,12 +61,65 @@
 						<div class = "row">
 						<form method = "post" action="<?php echo $_SERVER['PHP_SELF']; ?>" class = "FormF">
 						<div class="form-group">
+								<b>Card Information:</b> <br>
 							
-								Has the student submitted a transcript yet? : <br/> <br/>
-								<input type="radio" id="yes" name="transcript" value="1">
-								<label for="yes">Yes</label><br>
-								<input type="radio" id="no" name="transcript" value="0">
-								<label for="no">No</label><br>
+								<div class="form-group">
+									<label for="fname">*First Name: </label>
+									<input type="text" class="form-control" maxlength="255" onkeypress="return (event.charCode > 64 && 
+									event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode == 32)" id="fname" name = "fname" placeholder="Enter first name" required>
+								</div>
+								<div class="form-group">
+									<label for="lname">*Last Name: </label>
+									<input type="text" class="form-control" id="lname" maxlength="255" onkeypress="return (event.charCode > 64 && 
+									event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode == 32)" name = "lname" placeholder="Enter last name" required>
+								</div>
+								<div class="form-group">
+									<label for="cc">*Card Number:</label>
+									<input type="text" class="form-control" minlength="16" maxlength="16" onkeypress = "return (event.charCode > 47 && event.charCode < 58)" id="cc" name = "cc" placeholder="Enter a card Number" required>
+								</div>
+								<div class="form-group">
+									<label for="cvv">*CVV:</label>
+									<input type="text" class="form-control" minlength="3" maxlength="3" onkeypress = "return (event.charCode > 47 && event.charCode < 58)" id="cvv" name = "cvv" placeholder="Enter the cvv" required>
+								</div>
+								<div class="form-group">
+									<label for="expireMM">*Expiration date:</label>
+									<select name='expireMM' id='expireMM' class="form-control">
+										<option value='' disable selected hidden>Month</option>
+										<option value='01'>January</option>
+										<option value='02'>February</option>
+										<option value='03'>March</option>
+										<option value='04'>April</option>
+										<option value='05'>May</option>
+										<option value='06'>June</option>
+										<option value='07'>July</option>
+										<option value='08'>August</option>
+										<option value='09'>September</option>
+										<option value='10'>October</option>
+										<option value='11'>November</option>
+										<option value='12'>December</option>
+									</select> <br>
+									<select name='expireYY' id='expireYY' class="form-control">
+										<option value='' disable selected hidden>Year</option>
+										<?php
+											for ($i = 20; $i <= 30; $i++) {
+												echo "<option value='".$i."'>20".$i."</option>";
+											}
+										?>
+									</select> 
+								</div>
+								<div class="form-group" onchange="yesnoCheck()">
+									<label for="degree">*Billing Address <br> Same as on file address?</label> </br>
+									<input type="radio" id="yesCheck" name="ba" value="yes" required>
+									<label for="yes">Yes</label><br>
+									<input type="radio" id="noCheck" name="ba" value="no">
+									<label for="no">No</label><br>
+								</div>
+								
+								<div class="form-group">
+									<label for="address" id="ifYes">Address: </label>
+									<input type="text" id="ifYes"class="form-control" maxlength="255" id="address" name = "address" placeholder="Enter address" required>
+								</div>
+
 								<input type="hidden" id="uid" name="uid" value="<?php echo $uid; ?>"> <br>
 								<input type="hidden" id="hide" name="hide" value="1"> <br>
 								<input type="submit" value="Submit" name="submit" class="btn text-white btn-lg" style="background-color: #033b59;">
@@ -100,6 +154,19 @@
 				</header>
 				<div class = "container">
 					<div class = "row">
+					<form method = "post" action="<?php echo $_SERVER['PHP_SELF']; ?>" class = "FormF">
+					<div class="form-group">						
+							Has the student made a payment yet? : <br/> <br/>
+							<input type="radio" id="yes" name="matriculate" value="1">
+							<label for="yes">Yes</label><br>
+							<input type="radio" id="no" name="matriculates" value="0">
+							<label for="no">No</label><br>
+							<input type="hidden" id="uid" name="uid" value="<?php echo $uid; ?>"> <br>
+							<input type="submit" value="Submit" name="submit" class="btn text-white btn-lg" style="background-color: #033b59;">
+					</div>
+					</form>
+					</div>
+				</div>
 					<?php
 				}
 			}
@@ -125,3 +192,14 @@
 
 </body>
 </html>
+
+<script type="text/javascript">
+    function yesnoCheck() {
+        if (document.getElementById("yesCheck").checked) {
+			document.getElementById("address").required = true;
+
+        } else {
+			document.getElementById("address").required = false;
+        }
+    }
+</script>
