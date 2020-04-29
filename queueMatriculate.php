@@ -54,7 +54,11 @@
         }
         ?>
         </tbody>
+    
     </table>
+    
+    <a class="btn text-white btn-lg" style = "background-color: #033b59;" href = "index.php">Go Back</a>
+    
     </div>
         
     <?php

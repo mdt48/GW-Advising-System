@@ -46,7 +46,8 @@
                 <th scope="col">User Id</th>
                 <th scope="col">Last Name</th>
                 <th scope="col">First Name</th>
-                <th scope="col">Email Address</th>
+                <th scope="col">Email Address</th>                
+                <th scope="col">Number Reviews</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
             </tr>
@@ -56,14 +57,18 @@
         $query = "SELECT * FROM people JOIN applicant ON people.uid = applicant.uid WHERE appStatus = 2 AND applicant.uid NOT IN
             (SELECT studentuid FROM recReview WHERE recReview.uid = ".$_SESSION['uid'].")";
         $data = mysqli_query($dbc, $query);
-        while ($row = mysqli_fetch_array($data)) {
+        while ($row = mysqli_fetch_array($data)) {    
+            $sub = "SELECT COUNT(*) AS 'count' FROM reviewForm WHERE studentuid = ".$row['uid'];
+            $subdata = mysqli_query($dbc, $sub);
+            $subrow = mysqli_fetch_array($subdata);
         ?>
             <form method="POST" action="review.php">
                 <tr>
                     <th scope="row"><?php echo $row['uid']; ?>
                     <td><?php echo $row['lname']; ?></td>
                     <td><?php echo $row['fname']; ?></td>
-                    <td><?php echo $row['email']; ?></td>
+                    <td><?php echo $row['email']; ?></td>                    
+                    <td><?php echo $subrow['count']; ?></td>
                     <td><input type="hidden" name="uid" value="<?php echo $row['uid']; ?>"></td>
                     <td><button type="submit" name="review" class="btn btn-primary">Review</button></td>
                 </tr>
@@ -73,6 +78,8 @@
         ?>
         </tbody>
     </table>
+    
+    <a class="btn text-white btn-lg" style = "background-color: #033b59;" href = "index.php">Go Back</a>
     </div>
 
     <?php
@@ -99,6 +106,7 @@
             <th scope="col">First Name</th>
             <th scope="col">Email Address</th>
             <th scope="col">Application Status</th>
+            <th scope="col">Number Reviews</th>
             <th scope="col"></th>
             <th scope="col"></th>
         </tr>
@@ -118,11 +126,15 @@
             <td><?php echo $row['fname']; ?></td>
             <td><?php echo $row['email']; ?></td>
             <td><?php if ($row['appStatus'] == 1) echo "Incomplete"; else echo "Complete"; ?></td>
+            <td><?php echo $subrow['count']; ?></td>
+            <?php 
+            if ($row['transcript'] == 0) {
+            ?>
             <form method="POST" action="transcriptUpdate.php">
             <td><input type="hidden" name="uid" value="<?php echo $row['uid']; ?>"><button type="submit" name="update" class="btn btn-primary">Update</button></td>
             </form>
             <?php
-                if ($subrow['count'] >= 3) {
+                }if ($subrow['count'] >= 1) {
             ?>
             <form method="POST" action="decision.php">
             <td><input type="hidden" name="uid" value="<?php echo $row['uid']; ?>"><button type="submit" name="decide" class="btn btn-primary">Make Decision</button></td>
@@ -142,6 +154,8 @@
     ?>
     </tbody>
     </table>
+    
+    <a class="btn text-white btn-lg" style = "background-color: #033b59;" href = "index.php">Go Back</a>
     </div> 
     <?php
             }
@@ -170,6 +184,7 @@
             <th scope="col">Last Name</th>
             <th scope="col">First Name</th>
             <th scope="col">Email Address</th>
+            <th scope="col">Number Reviews</th>
             <th scope="col"></th>
             <th scope="col"></th>
         </tr>
@@ -191,6 +206,7 @@
             <td><?php echo $row['lname']; ?></td>
             <td><?php echo $row['fname']; ?></td>
             <td><?php echo $row['email']; ?></td>
+            <td><?php echo $subrow['count']; ?></td>
             <?php if (mysqli_num_rows($reviewedData) == 0) {?>
             <form method="POST" action="review.php">
             <td><input type="hidden" name="uid" value="<?php echo $row['uid']; ?>"><button type="submit" name="update" class="btn btn-primary">Review</button></td>
@@ -203,7 +219,7 @@
                     <td><input type="hidden" name="uid" value="<?php echo $row['uid']; ?>"><button type="submit" name="update" class="btn btn-primary" disabled>Review</button></td>
                     </form>
                     <?php }
-                if ($subrow['count'] >= 3) {
+                if ($subrow['count'] >= 1) {
             ?>
             <form method="POST" action="decision.php">
             <td><input type="hidden" name="uid" value="<?php echo $row['uid']; ?>"><button type="submit" name="decide" class="btn btn-primary">Make Decision</button></td>
@@ -225,6 +241,8 @@
     ?>
     </tbody>
     </table>
+    
+    <a class="btn text-white btn-lg" style = "background-color: #033b59;" href = "index.php">Go Back</a>
     </div>
         
     <?php

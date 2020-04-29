@@ -91,11 +91,11 @@ if (isset($_SESSION['uid'])) {
 				}
 				//cac
 				else if ($row['type'] == 2) {
-					echo '<a href="queue.php"><h1>Applications to review</h1></a>';
+					echo '<a href="queue.php"><h1>Applications to review</h1></a><br>';
 				}
 				//fr
 				else if ($row['type'] == 3) {
-					echo '<a href="queue.php"><h1>Applications to review</h1></a>';
+					echo '<a href="queue.php"><h1>Applications to review</h1></a><br>';
 				}
 				//fa
 				else if ($row['type'] == 4) {
@@ -108,12 +108,12 @@ if (isset($_SESSION['uid'])) {
 				}
 				//fr&a
 				else if ($row['type'] == 6) {
-					echo '<a href="queue.php"><h1>Applications to review</h1></a>';					
+					echo '<a href="queue.php"><h1>Applications to review</h1></a><br>';					
 					echo '<a href="view_all_students.php"><h1>View All Students</h1></a><br/>';
 				}
 				//fr&i
 				else if ($row['type'] == 7) {
-					echo '<a href="queue.php"><h1>Applications to review</h1></a>';
+					echo '<a href="queue.php"><h1>Applications to review</h1></a><br>';
 					echo '<a href="grades.php"><h1>View Grades</h1></a><br/>';
 					echo '<a href="view-student-transcripts.php"><h1>View Student Transcripts</h1></a><br/>';
 				}
@@ -125,7 +125,7 @@ if (isset($_SESSION['uid'])) {
 				}
 				//all three
 				else if ($row['type'] == 9) {
-					echo '<a href="queue.php"><h1>Applications to review</h1></a>';
+					echo '<a href="queue.php"><h1>Applications to review</h1></a><br>';
 					echo '<a href="view_all_students.php"><h1>View All Students</h1></a><br/>';
 					echo '<a href="grades.php"><h1>View Grades</h1></a><br/>';
 					echo '<a href="view-student-transcripts.php"><h1>View Student Transcripts</h1></a><br/>';
