@@ -13,45 +13,21 @@
     }
     
     $query;
-    // echo(strcmp($type, "masters"));
-    //echo(strcmp($type, "phd"));
-    //if (isset($_SESSION['alumn']) || isset($_SESSION['program'])) {
-        $query = "select uid, password, username, fname, lname, address, email from people where uid = '$id'";
-        $result = $dbc->query($query);
-        $results = array();
-        while ($row = $result->fetch_object()) {
-            $uid = $row->uid;
-            $pass = $row->password;
-            $uname = $row->username;
-            $fname = $row->fname;
-            $lname = $row->lname;
-            $email = $row->email;
-            $add = $row->address;
+    $query = "select uid, password, username, fname, lname, address, email from people where uid = '$id'";
+    $result = $dbc->query($query);
+    $results = array();
+    while ($row = $result->fetch_object()) {
+        $uid = $row->uid;
+        $pass = $row->password;
+        $uname = $row->username;
+        $fname = $row->fname;
+        $lname = $row->lname;
+        $email = $row->email;
+        $add = $row->address;
 
-            $results[] = array("uid" => $uid, "pass" => $pass, "uname" => $uname, "fname" => $fname,
-            "lname" => $lname, "email" => $email, "add" => $add);
-            
-            echo json_encode($results);
-        }
-    //} 
-    // else {
-    //     $query = "select uid, username, sfname, slname, email, address from staff where uid = '$id'";
-    //     //echo("hello");
-    //     $result = $dbc->query($query);
-    //     $results = array();
+        $results[] = array("uid" => $uid, "pass" => $pass, "uname" => $uname, "fname" => $fname,
+        "lname" => $lname, "email" => $email, "add" => $add);
         
-    //     while ($row = $result->fetch_object()) {
-    //         $uid = $row->uid;
-    //         $uname = $row->username;
-    //         $fname = $row->fname;
-    //         $lname = $row->lname;
-    //         $email = $row->email;
-    //         $add = $row->address;
-
-    //         $results[] = array("uid" => $uid, "uname" => $uname, "fname" => $fname,
-    //         "lname" => $lname, "email" => $email, "add" => $add);
-            
-    //         echo json_encode($results);
-    //     }
-    // }  
+        echo json_encode($results);
+    }
 ?>
