@@ -38,7 +38,7 @@
 
     <dl class="row">
 
-        <dt class="col-sm-3">User Id</dt>
+        <dt class="col-sm-3">User ID</dt>
         <dd class="col-sm-9"><?php echo $row['uid']; ?></dd>
 
         <dt class="col-sm-3">First Name</dt>
@@ -63,11 +63,12 @@
 
         <dt class="col-sm-3">Areas of Interest</dt>
         <dd class="col-sm-9"><?php echo $row['aoi']; ?></dd>
-        
-        <dt class="col-sm-3">Experience</dt>
-        <dd class="col-sm-9"><?php echo $row['appExp']; ?></dd>
-
-        <?php
+        <?php 
+            	if (!($row['appExp'] == NULL)) {
+        	?>
+			<dt class="col-sm-3">Experience</dt>
+			<dd class="col-sm-9"><?php echo $rowA['appExp']; ?></dd>
+        <?php }
 
         $recQuery = "SELECT * FROM recs WHERE uid = ".$row['uid'];
         $recData = mysqli_query($dbc, $recQuery);

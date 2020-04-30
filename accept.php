@@ -17,7 +17,7 @@
 			$query = "DELETE FROM reviewForm WHERE studentuid = ".$uid;
 			$dbc->query($query);
 
-			$query = "SELECT adv from applicant where uid = ".$uid;
+			$query = "SELECT adv, degProgram from applicant where uid = ".$uid;
 					
 			$data = mysqli_query($dbc, $query);
 		
@@ -26,7 +26,7 @@
 			$query = "DELETE FROM applicant WHERE uid = ".$uid;
 			$dbc->query($query);
 
-			$query = "INSERT INTO student (uid, advisoruid) values (".$uid.", ".$row['adv'].")";
+			$query = "INSERT INTO student (uid, advisoruid, program) values (".$uid.", ".$row['adv'].", ".$row['degProgram'].")";
 			$dbc->query($query);
 
 			echo "<script>window.location.href='index.php';</script>";
@@ -45,14 +45,16 @@
 			$query = "DELETE FROM reviewForm WHERE studentuid = ".$uidP;
 			$dbc->query($query);
 
-			$query = "SELECT adv from applicant where uid = ".$uidP;
-			$qD = mysqli_query($dbc, $query);
-			$row = mysqli_fetch_array($qD);
+			$query = "SELECT adv, degProgram from applicant where uid = ".$uid;
+					
+			$data = mysqli_query($dbc, $query);
+		
+			$row = mysqli_fetch_array($data);
 
-			$query = "DELETE FROM applicant WHERE uid = ".$uidP;
+			$query = "DELETE FROM applicant WHERE uid = ".$uid;
 			$dbc->query($query);
 
-			$query = "INSERT INTO student (uid, advisoruid) values (".$uidP.", ".$row['adv'].")";
+			$query = "INSERT INTO student (uid, advisoruid, program) values (".$uid.", ".$row['adv'].", ".$row['degProgram'].")";
 			$dbc->query($query);
 
 			$home_url = "queueMatriculate.php";
@@ -189,15 +191,13 @@
 							<input type="hidden" id="uid" name="uid" value="<?php echo $uidS; ?>"> <br>
 							<input type="submit" value="Submit" name="submit" class="btn text-white btn-lg" style="background-color: #033b59;">
 					</div>
-					</form>
+					</form><p>
+								<a class="btn text-white btn-lg" style = "background-color: #033b59;" href = "queueMatriculate.php">Go Back</a>
+								</p>
 					</div>
 				</div>
 					<?php
 				}
-			}
-			else {
-				
-			echo 'Cunting bitch';
 			}
 		
 	?>

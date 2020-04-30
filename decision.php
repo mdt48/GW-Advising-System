@@ -257,12 +257,11 @@ else
                     </dd>
                     <?php 
 
-                            $recReviewQuery = "SELECT * FROM recReview WHERE uid = ".$uidFac." AND studentuid = ".$uid;
+                            $recReviewQuery = "SELECT * FROM recReview WHERE uid = ".$rowFac['uid']." AND studentuid = ".$uid;
                             $recReviewData = mysqli_query($dbc, $recReviewQuery);
                             $recCount = 1;
                             
                             while ($recReviewRow = mysqli_fetch_array($recReviewData)) {
-
                         ?>
                     <dt class="col-sm-4">Recommendation <?php echo $recCount; ?></dt>
                     <dd class="col-sm-8">
@@ -306,6 +305,61 @@ else
 
         <?php $reviewCount++; } ?>
         </dl>
+        <h1>Average</h1>
+
+        <dl class="row">
+        <?php
+            $reviewsQuery = "SELECT distinct recId FROM recReview WHERE studentuid = '$uid'";				
+            $reviewsData = mysqli_query($dbc, $reviewsQuery); 
+            $avgCount = 1;
+            while ($recReviewRow = mysqli_fetch_array($reviewsData) ) {
+                $avgQ = "select avg(generic) as generic, avg(credible) as credible, round(avg(rating), 2) as rating from recReview where recId = ".$recReviewRow['recId'];
+                $avgD = mysqli_query($dbc, $avgQ);
+                $avgRow = mysqli_fetch_array($avgD);
+            ?>
+            <dt class="col-sm-4">Recommendation <?php echo $avgCount; ?></dt>
+                    <dd class="col-sm-8">
+                        <dl class="row">
+
+                            <dt class="col-sm-5">Rating</dt>
+                            <dd class="col-sm-7"><?php echo $avgRow['rating']; ?></dd>
+
+                            <dt class="col-sm-5">Generic</dt>
+                            <dd class="col-sm-7"><?php if ($avgRow['generic'] >= 0.6) echo "Yes"; else echo "No"; ?></dd>
+                            
+                            <dt class="col-sm-5">Credible</dt>
+                            <dd class="col-sm-7"><?php if ($avgRow['credible'] >= 0.6) echo "Yes"; else echo "No"; ?></dd>
+                            
+
+                        </dl>
+                    </dd>
+                    
+        <?php $avgCount++; } ?>
+        <dt class="col-sm-4">Recommended Decision</dt>
+                    <dd class="col-sm-8">
+                        <dl class="row">
+                            <?php                
+                            $reviewsQuery = "SELECT avg(gas) as gas FROM reviewForm WHERE studentuid = '$uid'";				
+                            $reviewsData = mysqli_query($dbc, $reviewsQuery); 
+                            $recReviewRow = mysqli_fetch_array($reviewsData);
+                            ?>
+                            <dd class="col-sm-7">
+                                <?php 
+                                if ($recReviewRow['gas'] <= 0.6) {
+                                    echo 'Reject';
+                                }
+                                else if ($recReviewRow['gas'] <= 1.5) {
+                                    echo 'Borderline Admit';
+                                }
+                                else if ($recReviewRow['gas'] <= 2.5) {
+                                    echo 'Admit without Aid';
+                                }
+                                else if ($recReviewRow['gas'] <= 3) {
+                                    echo 'Admit with Aid';
+                                }?></dd>
+                        </dl>
+                    </dd>
+        </d1>
         <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
             <div class="form-row">
                 <div class="form-group col-md-12">

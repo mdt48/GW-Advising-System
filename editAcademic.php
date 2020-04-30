@@ -16,8 +16,10 @@
     </div>
 </header>
 <div class = "container">
-	<h1>General Information</h1> <br>
-    <dl class="row">
+    <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+	<div class = "col-md-20 mb-5">
+	    <h2>Academic Information</h2>
+    </div>
 	<?php 
 		$query = "select * from applicant where uid = '$uid'";
 							
@@ -25,11 +27,6 @@
 
 		if (mysqli_num_rows($data) == 1) {
             $rowA = mysqli_fetch_array($data);
-
-            //info from people
-            $queryU = "select * from people where uid = '$uid'";				
-            $dataU = mysqli_query($dbc, $queryU);           
-            $rowU = mysqli_fetch_array($dataU);
 
             //info from degrees
             $queryD = "select * from degree where uid = '$uid'";				
@@ -42,28 +39,39 @@
             //info from recs
             $queryR = "select email from recs where uid = '$uid'";				
 			$dataR = mysqli_query($dbc, $queryR);  
-			?> 
-			<dt class="col-sm-3">First Name</dt>
-			<dd class="col-sm-9"><?php echo $rowU['fname']; ?></dd>
+            ?> 
+            
+            <div class = "form-group">
+            <b><label for="appDate">Application Date*</label></b></br>
+			<select id="appSem" name="appSem" required>
+                <?php
+                    if ($rowA['admissionSemester'] == "fall") {
+                        ?>        
+                            <option value="fall">Fall</option>
+                            <option value="spring">Spring</option>
+                        <?php
+                    }
+                    else {
+                        ?>   
+                        <option value="spring">Spring</option>
+                        <option value="fall">Fall</option>
+                        <?php
+                    }
+                ?>
+				<option value="fall">Fall</option>
+				<option value="spring">Spring</option>
+			</select>
+			<input type="number" min="2020" max="2050" step="1" value="<?php ?>" name="appYear" required>
+            </div>
+            <div class="form-group">
+                <b><label for="aio">Areas of Interest*</label></b>
+                <input type="text" class="form-control" maxlength="255" id="aoi" name = "aoi" placeholder="Enter areas of interest" required>
+            </div>
+            <div class="form-group">
+                <b><label for="workExp">Past Work Experience (Optional)</label></b>
+                <textarea class="form-control" maxLength = "255" id="workExp" name = "workExp" placeholder="Enter past work experience"></textarea>
+            </div>
 
-			<dt class="col-sm-3">Last Name</dt>
-			<dd class="col-sm-9"><?php echo $rowU['lname']; ?></dd>
-
-			<dt class="col-sm-3">Email Address</dt>
-			<dd class="col-sm-9"><?php echo $rowU['email']; ?></dd>
-			
-			<dt class="col-sm-3">Username</dt>
-			<dd class="col-sm-9"><?php echo $rowU['username']; ?></dd>
-			
-			<dt class="col-sm-3">Birthday</dt>
-			<dd class="col-sm-9"><?php echo $rowU['birthDate']; ?></dd>
-			
-			<dt class="col-sm-3">User ID</dt>
-			<dd class="col-sm-9"><?php echo $rowU['uid']; ?></dd>
-			
-			<dt class="col-sm-3">Address</dt>
-        	<dd class="col-sm-9"><?php echo $rowU['address']; ?></dd>
-			</dl>
 			<h1>Application</h1> <br/>
 			<dl class="row">
 			<dt class="col-sm-3">Degree Program</dt>

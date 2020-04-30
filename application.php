@@ -80,15 +80,22 @@ if (isset($_POST['submit']))
     {
         $usersql = "UPDATE people SET fname = '$fname', lname = '$lname', ssn = '$SSN', birthDate = '$birthdate', address = '$addr' WHERE uid = '$uid'";
         if (mysqli_query($dbc, $usersql) == false)
-        {
+        {   
             echo "info was not inserted into user, please try again";
         }
     }
     //APPLICANT
-    $applicantsql = "INSERT INTO applicant (uid, aoi, appExp, admissionYear, admissionSemester, degProgram, appStatus, transcript) VALUES ('$uid', '$aoi', '$workExp', '$appYear', '$appSem', '$program', '1', '0')";
+    if ($_POST['transcript'] == NULL) $transcript = 0;
+    else $transcript = 1;
+    
+
+    if ($transcript == 1 & $rec1Email == NULL & $rec2Email == NULL & $rec3Email == NULL) $status = 2;
+    else $status = 2;
+
+    $applicantsql = "INSERT INTO applicant (uid, aoi, appExp, admissionYear, admissionSemester, degProgram, appStatus, transcript) VALUES ('$uid', '$aoi', '$workExp', '$appYear', '$appSem', '$program', '$status', '$transcript')";
     if (mysqli_query($dbc, $applicantsql) == false)
     {
-        echo "info was not inserted into user, please try again";
+        echo "info was not inserted into applicant, please try again";
     }
     else {
         //GRE
@@ -214,7 +221,7 @@ if (isset($_POST['submit']))
         }
         //Recs
         
-        if (is_null('$recs1Email'))
+        if ($rec1Email == NULL)
         {
             echo "this entry/part of the entry is empty, not added to table";
         }
@@ -233,7 +240,7 @@ if (isset($_POST['submit']))
             }
         }
 
-        if (is_null('$recs2Email'))
+        if ($rec2Email == NULL)
         {
             echo "this entry/part of the entry is empty, not added to table";
         }
@@ -252,7 +259,7 @@ if (isset($_POST['submit']))
             }
         }
 
-        if (is_null('$recs3Email'))
+        if ($rec3Email== NULL)
         {
             echo "this entry/part of the entry is empty, not added to table";
         }
