@@ -36,7 +36,7 @@
             $dataD = mysqli_query($dbc, $queryD);  
 
             //info from examScore
-            $queryE = "select * from examScore where uid = '$uid'";				
+            $queryE = 'select * from examScore where uid = '.$uid.' and examSubject != "total" and examSubject != "verbal" and examSubject != "quantitative" order by examSubject asc';				
 			$dataE = mysqli_query($dbc, $queryE);    
 			
             //info from recs
@@ -79,6 +79,10 @@
 
 			<dt class="col-sm-3">Areas of Interest</dt>
 			<dd class="col-sm-9"><?php echo $rowA['aoi']; ?></dd>
+			
+			<dt class="col-sm-3">Transcript Link</dt>
+			<dd class="col-sm-9"><?php echo $rowA['transcript']; ?></dd>
+
 			<?php 
             	if (!($rowA['appExp'] == NULL)) {
 			?>
@@ -113,6 +117,37 @@
 			</dd>
 				<?php				
 				$degCount++;
+			}
+			
+            $queryEQ = 'select * from examScore where uid = '.$uid.' and examSubject = "quantitative"';				
+			$dataEQ = mysqli_query($dbc, $queryEQ); 
+			if ($rowEQ = mysqli_fetch_array($dataEQ)) { //if there is a GRE			
+				$queryEV = 'select * from examScore where uid = '.$uid.' and examSubject = "verbal"';				
+				$dataEV = mysqli_query($dbc, $queryEV);
+				$rowEV = mysqli_fetch_array($dataEV);
+				$queryET = 'select * from examScore where uid = '.$uid.' and examSubject = "total"';				
+				$dataET = mysqli_query($dbc, $queryET);
+				$rowET = mysqli_fetch_array($dataET);?>
+				
+				<dt class="col-sm-3">GRE</dt>
+				<dd class="col-sm-9">
+				<dl class="row">
+						<dt class="col-sm-4">Verbal</dt>
+						<dd class="col-sm-8"><?php echo $rowEV['score']; ?></dd>
+
+						<dt class="col-sm-4">Quantitative</dt>
+						<dd class="col-sm-8"><?php echo $rowEQ ['score']; ?></dd>
+						
+						<dt class="col-sm-4">Total</dt>
+						<dd class="col-sm-8"><?php echo $rowET['score']; ?></dd>
+
+						<dt class="col-sm-4">Year Taken</dt>
+						<dd class="col-sm-8"><?php echo $rowET['yearTake']; ?></dd>
+					</dl>
+
+				</dd>
+
+				<?php
 			}
 			
 			$examCount = 1;

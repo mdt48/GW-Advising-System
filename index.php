@@ -60,10 +60,16 @@ if (isset($_SESSION['uid'])) {
 		$queryS = "select uid from staff where uid = '$uid'";
 							
 		$dataS = mysqli_query($dbc, $queryS);
+		
+		$checkQ = "select * from reviewForm where studentuid = '$uid'";		
+		$checkD = mysqli_query($dbc, $checkQ);
 
 		if (mysqli_num_rows($dataA) == 1) {	
 			echo '<a href="status.php"><h1>View Application Status</h1></a><br/>';
 			echo '<a href="viewApp.php"><h1>View Application Contents</h1></a><br/>';
+			if (mysqli_num_rows($checkD) == 0) {
+				echo '<a href="editAcademic.php"><h1>Edit Academic Contents</h1></a><br/>';
+			}
 			echo '<a href="edit_user_info.php"><h1>Edit User Info</h1></a><br/>';
 		}
 		else if (mysqli_num_rows($dataS) == 1){
@@ -75,6 +81,8 @@ if (isset($_SESSION['uid'])) {
 				//admin
 				if ($row['type'] == 0) {
 					echo '<a href="admin.php"><h1>Add Users</h1></a><br/>';
+					echo '<a href="queue.php"><h1>Applications</h1></a><br/>';
+					echo '<a href="queueMatriculate.php"><h1>Students to Matriculate</h1></a><br/>';
 					//echo '<a href="view_all_accounts.php"><h1>View all Accounts</h1></a><br/>';
 					echo '<a href="grades.php"><h1>View Grades</h1></a><br/>';
 					echo '<a href="view-student-transcripts.php"><h1>View Transcripts</h1></a><br/>';
@@ -82,7 +90,7 @@ if (isset($_SESSION['uid'])) {
 				}
 				//gs
 				else if ($row['type'] == 1) {
-					echo '<a href="queue.php"><h1>Applications to review</h1></a><br/>';
+					echo '<a href="queue.php"><h1>Applications</h1></a><br/>';
 					echo '<a href="queueMatriculate.php"><h1>Students to Matriculate</h1></a><br/>';
 					echo '<a href="view_transcript.php"><h1>View Transcript</h1></a><br/>';
 					echo '<a href="grades.php"><h1>View Grades</h1></a><br/>';
@@ -91,11 +99,11 @@ if (isset($_SESSION['uid'])) {
 				}
 				//cac
 				else if ($row['type'] == 2) {
-					echo '<a href="queue.php"><h1>Applications to review</h1></a><br>';
+					echo '<a href="queue.php"><h1>Applications</h1></a><br>';
 				}
 				//fr
 				else if ($row['type'] == 3) {
-					echo '<a href="queue.php"><h1>Applications to review</h1></a><br>';
+					echo '<a href="queue.php"><h1>Applications</h1></a><br>';
 				}
 				//fa
 				else if ($row['type'] == 4) {
@@ -108,12 +116,12 @@ if (isset($_SESSION['uid'])) {
 				}
 				//fr&a
 				else if ($row['type'] == 6) {
-					echo '<a href="queue.php"><h1>Applications to review</h1></a><br>';					
+					echo '<a href="queue.php"><h1>Applications</h1></a><br>';					
 					echo '<a href="view_all_students.php"><h1>View All Students</h1></a><br/>';
 				}
 				//fr&i
 				else if ($row['type'] == 7) {
-					echo '<a href="queue.php"><h1>Applications to review</h1></a><br>';
+					echo '<a href="queue.php"><h1>Applications</h1></a><br>';
 					echo '<a href="grades.php"><h1>View Grades</h1></a><br/>';
 					echo '<a href="view-student-transcripts.php"><h1>View Student Transcripts</h1></a><br/>';
 				}
@@ -125,7 +133,7 @@ if (isset($_SESSION['uid'])) {
 				}
 				//all three
 				else if ($row['type'] == 9) {
-					echo '<a href="queue.php"><h1>Applications to review</h1></a><br>';
+					echo '<a href="queue.php"><h1>Applications</h1></a><br>';
 					echo '<a href="view_all_students.php"><h1>View All Students</h1></a><br/>';
 					echo '<a href="grades.php"><h1>View Grades</h1></a><br/>';
 					echo '<a href="view-student-transcripts.php"><h1>View Student Transcripts</h1></a><br/>';

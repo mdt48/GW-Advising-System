@@ -14,6 +14,7 @@ $addr = mysqli_real_escape_string($dbc,$_POST['addr']);
 $appSem = mysqli_real_escape_string($dbc,$_POST['appSem']);
 $appYear = mysqli_real_escape_string($dbc,$_POST['appYear']);
 $aoi = mysqli_real_escape_string($dbc,$_POST['aoi']);
+$transcript = mysqli_real_escape_string($dbc,$_POST['transcript']);
 $workExp = mysqli_real_escape_string($dbc,$_POST['workExp']);
 $program = mysqli_real_escape_string($dbc,$_POST['program']);
 //EXAMSCORE TABLE
@@ -46,9 +47,9 @@ $subj6 = mysqli_real_escape_string($dbc,$_POST['subj6']);
 $subjScore6 = mysqli_real_escape_string($dbc,$_POST['subjScore6']);
 $subjYearTaken6 = mysqli_real_escape_string($dbc,$_POST['subjYearTaken6']);
 
-$subj7 = mysqli_real_escape_string($dbc,$_POST['subj7']);
-$subjScore7 = mysqli_real_escape_string($dbc,$_POST['subjScore7']);
-$subjYearTaken7 = mysqli_real_escape_string($dbc,$_POST['subjYearTaken7']);
+$subj8 = mysqli_real_escape_string($dbc,$_POST['subj8']);
+$subjScore8 = mysqli_real_escape_string($dbc,$_POST['subjScore8']);
+$subjYearTaken8 = mysqli_real_escape_string($dbc,$_POST['subjYearTaken8']);
 //DEGREE TABLE
 $pdType1 = mysqli_real_escape_string($dbc,$_POST['pdType1']);
 $pdYear1 = mysqli_real_escape_string($dbc,$_POST['pdYear1']);
@@ -69,168 +70,142 @@ $rec2Email = mysqli_real_escape_string($dbc,$_POST['rec2Email']);
 $rec3Name = mysqli_real_escape_string($dbc,$_POST['rec3Name']);
 $rec3Email = mysqli_real_escape_string($dbc,$_POST['rec3Email']);
 
+$flag = true;
 
 $uid = $_SESSION['uid'];
 
 if (isset($_POST['submit']))
-{
-    
+{    
     //INSERT
     if ($result = $dbc->query("SELECT uid FROM people WHERE uid = '$uid'"))
     {
         $usersql = "UPDATE people SET fname = '$fname', lname = '$lname', ssn = '$SSN', birthDate = '$birthdate', address = '$addr' WHERE uid = '$uid'";
         if (mysqli_query($dbc, $usersql) == false)
         {   
-            echo "info was not inserted into user, please try again";
+            $flag = false;
         }
     }
-    //APPLICANT
-    if ($_POST['transcript'] == NULL) $transcript = 0;
-    else $transcript = 1;
-    
 
-    if ($transcript == 1 & $rec1Email == NULL & $rec2Email == NULL & $rec3Email == NULL) $status = 2;
-    else $status = 2;
+    //APPLICANT   
+    if ($transcript != NULL && $rec1Email == NULL && $rec2Email == NULL && $rec3Email == NULL) $status = 2;
+    else $status = 1;
 
     $applicantsql = "INSERT INTO applicant (uid, aoi, appExp, admissionYear, admissionSemester, degProgram, appStatus, transcript) VALUES ('$uid', '$aoi', '$workExp', '$appYear', '$appSem', '$program', '$status', '$transcript')";
+    
     if (mysqli_query($dbc, $applicantsql) == false)
     {
-        echo "info was not inserted into applicant, please try again";
+        $flag = false;
     }
     else {
         //GRE
-        if (is_null('$total'))
-        {
-            echo "this entry/part of the entry is empty, not added to table";
-        }
-        else
+        if ($total != NULL && $verbal != NULL && $quant != NULL)
         {
             $gretotalsql = "INSERT INTO examScore (uid, examSubject, score, yearTake) VALUES ('$uid', 'total', '$total', '$greYearTaken')";
-            $dbc->query($gretotalsql);
-        }
-        
-        if (is_null('$verbal'))
-        {
-            echo "this entry/part of the entry is empty, not added to table";
-        }
-        else
-        {
+            if (mysqli_query($dbc, $gretotalsql) == false)
+            {
+                $flag = false;
+            }
             $greverbalsql = "INSERT INTO examScore (uid, examSubject, score, yearTake) VALUES ('$uid', 'verbal', '$verbal', '$greYearTaken')";
-            $dbc->query($greverbalsql);
-        }
-   
-        if (is_null('$quant'))
-        {
-            echo "this entry/part of the entry is empty, not added to table";
-        }
-        else
-        {
+            if (mysqli_query($dbc, $greverbalsql) == false)
+            {
+                $flag = false;
+            }
             $grequantsql = "INSERT INTO examScore (uid, examSubject, score, yearTake) VALUES ('$uid', 'quantitative', '$quant', '$greYearTaken')";
-            $dbc->query($grequantsql);
-        }
-        //GRE SUBJECTS
-        if (is_null('$subj1') || is_null('$subjScore1'))
-        {
-            echo "this entry/part of the entry is empty, not added to table";
-        }
-        else
-        {
-            $subj1sql = "INSERT INTO examScore (uid, examSubject, score, yearTake) VALUES ('$uid', '$subj1', '$subjScore1', '$subjYearTaken1')";
-            $dbc->query($subj1sql);
+            if (mysqli_query($dbc, $grequantsql) == false)
+            {
+                $flag = false;
+            }
         }
         
-        if (is_null('$subj2') || is_null('$subjScore2'))
-        {
-            echo "this entry/part of the entry is empty, not added to table";
-        }
-        else
-        {
-            $subj2sql = "INSERT INTO examScore (uid, examSubject, score, yearTake) VALUES ('$uid', '$subj2', '$subjScore2', '$subjYearTaken2')";
-            $dbc->query($subj2sql);
-        }
-        
-        if (is_null('$subj3') || is_null('$subjScore3'))
-        {
-            echo "this entry/part of the entry is empty, not added to table";
-        }
-        else
-        {
-            $subj3sql = "INSERT INTO examScore (uid, examSubject, score, yearTake) VALUES ('$uid', '$subj3', '$subjScore3', '$subjYearTaken3')";
-            $dbc->query($subj3sql);
-    
-        }
-        if (is_null('$subj4') || is_null('$subjScore4'))
-        {
-            echo "this entry/part of the entry is empty, not added to table";
-        }
-        else
-        {
-            $subj4sql = "INSERT INTO examScore (uid, examSubject, score, yearTake) VALUES ('$uid', '$subj4', '$subjScore4', '$subjYearTaken4')";
-            $dbc->query($subj4sql);
-        }
-        if (is_null('$subj5') || is_null('$subjScore5'))
-        {
-            echo "this entry/part of the entry is empty, not added to table";
-        }
-        else
-        {
-            $subj5sql = "INSERT INTO examScore (uid, examSubject, score, yearTake) VALUES ('$uid', '$subj5', '$subjScore5', '$subjYearTaken5')";
-            $dbc->query($subj5sql);
-        }
-
-
-        if (is_null('$subj6') || is_null('$subjScore6'))
-        {
-            echo "this entry/part of the entry is empty, not added to table";
-        }
-        else
-        {
-            $subj6sql = "INSERT INTO examScore (uid, examSubject, score, yearTake) VALUES ('$uid', '$subj6', '$subjScore6', '$subjYearTaken6')";
-            $dbc->query($subj6sql);
-        }
-
-        if (is_null('$subj7') || is_null('$subjScore7'))
-        {
-            echo "this entry/part of the entry is empty, not added to table";
-        }
-        else
-        {
-            $subj7sql = "INSERT INTO examScore (uid, examSubject, score, yearTake) VALUES ('$uid', '$subj7', '$subjScore7', '$subjYearTaken7')";
-            $dbc->query($subj7sql);
-        }
+       //GRE SUBJECTS
+			if ($subjScore1 != NULL) 
+			{
+				$subj1sql = "INSERT INTO examScore (uid, examSubject, score, yearTake) VALUES ('$uid', '$subj1', '$subjScore1', '$subjYearTaken1')";
+				if (mysqli_query($dbc, $subj1sql) == false)
+				{
+					$flag = false;
+				}
+			}
+			
+			if ($subjScore2 != NULL)
+			{
+				$subj2sql = "INSERT INTO examScore (uid, examSubject, score, yearTake) VALUES ('$uid', '$subj2', '$subjScore2', '$subjYearTaken2')";
+				if (mysqli_query($dbc, $subj2sql) == false)
+				{
+					$flag = false;
+				}
+			}
+			
+			if ($subjScore3 != NULL)
+			{
+				$subj3sql = "INSERT INTO examScore (uid, examSubject, score, yearTake) VALUES ('$uid', '$subj3', '$subjScore3', '$subjYearTaken3')";
+				if (mysqli_query($dbc, $subj3sql) == false)
+				{
+					$flag = false;
+				}
+		
+			}
+			if ($subjScore4 != NULL)
+			{
+				$subj4sql = "INSERT INTO examScore (uid, examSubject, score, yearTake) VALUES ('$uid', '$subj4', '$subjScore4', '$subjYearTaken4')";
+				if (mysqli_query($dbc, $subjScore4) == false)
+				{
+					$flag = false;
+				}
+			}
+			if ($subjScore5 != NULL)
+			{
+				$subj5sql = "INSERT INTO examScore (uid, examSubject, score, yearTake) VALUES ('$uid', '$subj5', '$subjScore5', '$subjYearTaken5')";
+				if (mysqli_query($dbc, $subj5sql) == false)
+				{
+					$flag = false;
+				}
+			}
+	
+			if ($subjScore6 != NULL)
+			{
+				$subj6sql = "INSERT INTO examScore (uid, examSubject, score, yearTake) VALUES ('$uid', '$subj6', '$subjScore6', '$subjYearTaken6')";
+				if (mysqli_query($dbc, $subj6sql) == false)
+				{
+					$flag = false;
+				}
+			}
+	
+			if ($subjScore8 != NULL)
+			{
+				$subj8sql = "INSERT INTO examScore (uid, examSubject, score, yearTake) VALUES ('$uid', '$subj8', '$subjScore8', '$subjYearTaken8')";
+				if (mysqli_query($dbc, $subj8sql) == false)
+				{
+					$flag = false;
+				}
+			}
 
         //PRIOR DEGREE
-        if (is_null('$pdMajor1') || is_null('$pdGPA1') || is_null('$pdCollege1'))
-        {
-            echo "this entry/part of the entry is empty, not added to table";
-        }
-        else
+        if ($pdMajor1 != NULL && $pdGPA1 != NULL && $pdCollege1 != NULL)
         {
             $pd1sql = "INSERT INTO degree (uid, degType, school, gpa, major, yearGrad) VALUES ('$uid', '$pdType1', '$pdCollege1', '$pdGPA1', '$pdMajor1', '$pdYear1')";
-            $dbc->query($pd1sql);
+            if (mysqli_query($dbc, $pd1sql) == false)
+            {
+                $flag = false;
+            }
         }
 
-        if (is_null('$pdMajor2') || is_null('$pdGPA2') || is_null('$pdCollege2'))
-        {
-            echo "this entry/part of the entry is empty, not added to table";
-        }
-        else
+        if ($pdMajor2 != NULL && $pdGPA2 != NULL && $pdCollege2 != NULL)
         {
             $pd2sql = "INSERT INTO degree (uid, degType, school, gpa, major, yearGrad) VALUES ('$uid', '$pdType2', '$pdCollege2', '$pdGPA2', '$pdMajor2', '$pdYear2')";
-            $dbc->query($pd2sql);
+            if (mysqli_query($dbc, $pd2sql) == false)
+            {
+                $flag = false;
+            }
         }
         //Recs
         
-        if ($rec1Email == NULL)
-        {
-            echo "this entry/part of the entry is empty, not added to table";
-        }
-        else
+        if ($rec1Email != NULL)
         {
             $rec1sql = "INSERT INTO recs (uid, email) VALUES ('$uid', '$rec1Email')";
             if (mysqli_query($dbc, $rec1sql) == false)
             {
-                echo "rec1 was not inserted into recs, please try again";
+                $flag = false;
             }
             else {
                 $result = $dbc->query("SELECT recId FROM recs WHERE uid = '$uid' AND email = '$rec1Email'");
@@ -240,16 +215,12 @@ if (isset($_POST['submit']))
             }
         }
 
-        if ($rec2Email == NULL)
-        {
-            echo "this entry/part of the entry is empty, not added to table";
-        }
-        else
+        if ($rec2Email != NULL)
         {
             $rec2sql = "INSERT INTO recs (uid, email) VALUES ('$uid', '$rec2Email')";
             if (mysqli_query($dbc, $rec2sql) == false)
             {
-                echo "rec2 was not inserted into recs, please try again";
+                $flag = false;
             }
             else {
                 $result = $dbc->query("SELECT recId FROM recs WHERE uid = '$uid' AND email = '$rec2Email'");
@@ -259,16 +230,12 @@ if (isset($_POST['submit']))
             }
         }
 
-        if ($rec3Email== NULL)
-        {
-            echo "this entry/part of the entry is empty, not added to table";
-        }
-        else
+        if ($rec3Email != NULL)
         {
             $rec3sql = "INSERT INTO recs (uid, email) VALUES ('$uid', '$rec3Email')";
             if (mysqli_query($dbc, $rec3sql) == false)
             {
-                echo "rec1 was not inserted into recs, please try again";
+                $flag = false;
             }
             else {
                 $result = $dbc->query("SELECT recId FROM recs WHERE uid = '$uid' AND email = '$rec2Email'");
@@ -278,8 +245,7 @@ if (isset($_POST['submit']))
             }
         }
     }
-    echo "<script>window.location.href='index.php';</script>";
-    exit;
+    if ($flag == true) echo "<script>window.location.href='index.php';</script>";
     mysqli_close($dbc);
 }
 ?>

@@ -8,7 +8,7 @@
         if (mysqli_num_rows($data) > 0) {
             // user is a staff, allow access to page
             $row = mysqli_fetch_array($data);
-            if ($row['type'] == 2 || $row['type'] == 3 || $row['type'] == 6 || $row['type'] == 7 || $row['type'] == 9) {
+            if ($row['type'] == 0 || $row['type'] == 2 || $row['type'] == 3 || $row['type'] == 6 || $row['type'] == 7 || $row['type'] == 9) {
                 ?>
                 <!-- HEADER -->
                 <header class = "bg py-5 mb-5" style = "background-color: #033b59;">
@@ -32,7 +32,7 @@
 
     ?>
 
-<div class="container">
+    <div class="container">
     <form action="submitreview.php" method="POST">
     <h1>Application</h1>
 
@@ -63,53 +63,15 @@
 
         <dt class="col-sm-3">Areas of Interest</dt>
         <dd class="col-sm-9"><?php echo $row['aoi']; ?></dd>
+        
+        <dt class="col-sm-3">Transcript Link</dt>
+        <dd class="col-sm-9"><?php echo $row['transcript']; ?></dd>
         <?php 
             	if (!($row['appExp'] == NULL)) {
         	?>
 			<dt class="col-sm-3">Experience</dt>
-			<dd class="col-sm-9"><?php echo $rowA['appExp']; ?></dd>
+			<dd class="col-sm-9"><?php echo $row['appExp']; ?></dd>
         <?php }
-
-        $recQuery = "SELECT * FROM recs WHERE uid = ".$row['uid'];
-        $recData = mysqli_query($dbc, $recQuery);
-        $count = 1;
-
-        while ($recRow = mysqli_fetch_array($recData)) {
-            ?>
-
-        <dt class="col-sm-3">Recommendation <?php echo $count; ?></dt>
-        <dd class="col-sm-9">
-
-            <dl class="row">
-                <dt class="col-sm-4">Recommendation ID</dt>
-                <dd class="col-sm-8"><?php echo $recRow['recId']; ?></dd>
-                <input type="hidden" name="rec<?php echo $recRow['recId']; ?>" value="<?php echo $recRow['recId']; ?>">
-
-                <dt class="col-sm-4">Recommender Email Address</dt>
-                <dd class="col-sm-8"><?php echo $recRow['email']; ?></dd>
-
-                <dt class="col-sm-4">Recommender Name</dt>
-                <dd class="col-sm-8"><?php echo $recRow['recName']; ?></dd>
-
-                <dt class="col-sm-4">Recommender Job Title</dt>
-                <dd class="col-sm-8"><?php echo $recRow['job']; ?></dd>
-
-                <dt class="col-sm-4">Relation to Applicant</dt>
-                <dd class="col-sm-8"><?php echo $recRow['relation']; ?></dd>
-
-                <dt class="col-sm-4">Recommender's Organization</dt>
-                <dd class="col-sm-8"><?php echo $recRow['org']; ?></dd>
-
-                <dt class="col-sm-4">Content</dt>
-                <dd class="col-sm-8"><?php echo $recRow['content']; ?></dd>
-
-            </dl>
-
-        </dd>
-
-            <?php
-            $count++;
-        }
 
 $degQuery = "SELECT * FROM degree WHERE uid = ".$row['uid'];
 $degData = mysqli_query($dbc, $degQuery);
@@ -149,9 +111,40 @@ while ($degRow = mysqli_fetch_array($degData)) {
 
 <?php
 
-$examQuery = "SELECT * FROM examScore WHERE uid = ".$row['uid'];
+$examQuery = 'select * from examScore where uid = '.$row['uid'].' and examSubject != "total" and examSubject != "verbal" and examSubject != "quantitative" order by examSubject asc';				
 $examData = mysqli_query($dbc, $examQuery);
 $examCount = 1;
+
+$queryEQ = 'select * from examScore where uid = '.$row['uid'].' and examSubject = "quantitative"';				
+			$dataEQ = mysqli_query($dbc, $queryEQ); 
+			if ($rowEQ = mysqli_fetch_array($dataEQ)) { //if there is a GRE			
+				$queryEV = 'select * from examScore where uid = '.$row['uid'].' and examSubject = "verbal"';				
+				$dataEV = mysqli_query($dbc, $queryEV);
+				$rowEV = mysqli_fetch_array($dataEV);
+				$queryET = 'select * from examScore where uid = '.$row['uid'].' and examSubject = "total"';				
+				$dataET = mysqli_query($dbc, $queryET);
+				$rowET = mysqli_fetch_array($dataET);?>
+				
+				<dt class="col-sm-3">GRE</dt>
+				<dd class="col-sm-9">
+				<dl class="row">
+						<dt class="col-sm-4">Verbal</dt>
+						<dd class="col-sm-8"><?php echo $rowEV['score']; ?></dd>
+
+						<dt class="col-sm-4">Quantitative</dt>
+						<dd class="col-sm-8"><?php echo $rowEQ ['score']; ?></dd>
+						
+						<dt class="col-sm-4">Total</dt>
+						<dd class="col-sm-8"><?php echo $rowET['score']; ?></dd>
+
+						<dt class="col-sm-4">Year Taken</dt>
+						<dd class="col-sm-8"><?php echo $rowET['yearTake']; ?></dd>
+					</dl>
+
+				</dd>
+
+				<?php
+			}
 
 while ($examRow = mysqli_fetch_array($examData)) {
     ?>
@@ -174,6 +167,48 @@ while ($examRow = mysqli_fetch_array($examData)) {
 
     <?php
     $examCount++;
+}
+
+
+$recQuery = "SELECT * FROM recs WHERE uid = ".$row['uid'];
+$recData = mysqli_query($dbc, $recQuery);
+$count = 1;
+
+while ($recRow = mysqli_fetch_array($recData)) {
+    ?>
+
+<dt class="col-sm-3">Recommendation <?php echo $count; ?></dt>
+<dd class="col-sm-9">
+
+    <dl class="row">
+        <dt class="col-sm-4">Recommendation ID</dt>
+        <dd class="col-sm-8"><?php echo $recRow['recId']; ?></dd>
+        <input type="hidden" name="rec<?php echo $recRow['recId']; ?>" value="<?php echo $recRow['recId']; ?>">
+
+        <dt class="col-sm-4">Recommender Email Address</dt>
+        <dd class="col-sm-8"><?php echo $recRow['email']; ?></dd>
+
+        <dt class="col-sm-4">Recommender Name</dt>
+        <dd class="col-sm-8"><?php echo $recRow['recName']; ?></dd>
+
+        <dt class="col-sm-4">Recommender Job Title</dt>
+        <dd class="col-sm-8"><?php echo $recRow['job']; ?></dd>
+
+        <dt class="col-sm-4">Relation to Applicant</dt>
+        <dd class="col-sm-8"><?php echo $recRow['relation']; ?></dd>
+
+        <dt class="col-sm-4">Recommender's Organization</dt>
+        <dd class="col-sm-8"><?php echo $recRow['org']; ?></dd>
+
+        <dt class="col-sm-4">Content</dt>
+        <dd class="col-sm-8"><?php echo $recRow['content']; ?></dd>
+
+    </dl>
+
+</dd>
+
+    <?php
+    $count++;
 }
 
 ?>

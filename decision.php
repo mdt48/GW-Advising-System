@@ -37,7 +37,7 @@ else
         $row = mysqli_fetch_array($data);
     }
 
-    if ($row['type'] == 1 || $row['type'] == 2)
+    if ($row['type'] == 1 || $row['type'] == 0)
     {
         // User is staff, allow to access page
         // Check if submit is activated to set decision
@@ -75,151 +75,186 @@ else
 
         ?>
 
-        <h1>Application</h1>
+<h1>Application</h1>
 
-        <dl class="row">
+<dl class="row">
 
-            <dt class="col-sm-3">User Id</dt>
-            <dd class="col-sm-9"><?php echo $row['uid']; ?></dd>
+    <dt class="col-sm-3">User ID</dt>
+    <dd class="col-sm-9"><?php echo $row['uid']; ?></dd>
 
-            <dt class="col-sm-3">First Name</dt>
-            <dd class="col-sm-9"><?php echo $row['fname']; ?></dd>
+    <dt class="col-sm-3">First Name</dt>
+    <dd class="col-sm-9"><?php echo $row['fname']; ?></dd>
 
-            <dt class="col-sm-3">Last Name</dt>
-            <dd class="col-sm-9"><?php echo $row['lname']; ?></dd>
+    <dt class="col-sm-3">Last Name</dt>
+    <dd class="col-sm-9"><?php echo $row['lname']; ?></dd>
 
-            <dt class="col-sm-3">Email Address</dt>
-            <dd class="col-sm-9"><?php echo $row['email']; ?></dd>
+    <dt class="col-sm-3">Email Address</dt>
+    <dd class="col-sm-9"><?php echo $row['email']; ?></dd>
 
-            <dt class="col-sm-3">Degree Program</dt>
-            <dd class="col-sm-9"><?php if ($row['degProgram'] == "md") echo "Master's"; else echo "PHD"; ?></dd>
+    <dt class="col-sm-3">Degree Program</dt>
+    <dd class="col-sm-9"><?php if ($row['degProgram'] == "md") {
+            echo 'MD<br/>';
+        }
+        else {
+            echo 'PHD<br/>';
+        } ?></dd>
 
-            <dt class="col-sm-3">Transcript Received</dt>
-            <dd class="col-sm-9"><?php if ($row['transcript'] == 1) echo "Yes"; else echo "No"; ?></dd>
+    <dt class="col-sm-3">Admission Semester/Year</dt>
+    <dd class="col-sm-9"><?php echo $row['admissionSemester']." ".$row['admissionYear']; ?></dd>
 
-            <dt class="col-sm-3">Admission Semester/Year</dt>
-            <dd class="col-sm-9"><?php echo $row['admissionSemester']." ".$row['admissionYear']; ?></dd>
+    <dt class="col-sm-3">Areas of Interest</dt>
+    <dd class="col-sm-9"><?php echo $row['aoi']; ?></dd>
+    
+    <dt class="col-sm-3">Transcript Link</dt>
+    <dd class="col-sm-9"><?php echo $row['transcript']; ?></dd>
+    <?php 
+            if (!($row['appExp'] == NULL)) {
+        ?>
+        <dt class="col-sm-3">Experience</dt>
+        <dd class="col-sm-9"><?php echo $row['appExp']; ?></dd>
+    <?php }
 
-            <dt class="col-sm-3">Areas of Interest</dt>
-            <dd class="col-sm-9"><?php echo $row['aoi']; ?></dd>
+$degQuery = "SELECT * FROM degree WHERE uid = ".$row['uid'];
+$degData = mysqli_query($dbc, $degQuery);
+$degCount = 1;
+
+while ($degRow = mysqli_fetch_array($degData)) {
+?>
+
+<dt class="col-sm-3">Degree <?php echo $degCount; ?></dt>
+<dd class="col-sm-9">
+
+<dl class="row">
+    <dt class="col-sm-4">Type of Degree</dt>
+    <dd class="col-sm-8"><?php echo $degRow['degType']; ?></dd>
+
+    <dt class="col-sm-4">Issuing University</dt>
+    <dd class="col-sm-8"><?php echo $degRow['school']; ?></dd>
+
+    <dt class="col-sm-4">GPA</dt>
+    <dd class="col-sm-8"><?php echo $degRow['gpa']; ?></dd>
+
+    <dt class="col-sm-4">Field of Study</dt>
+    <dd class="col-sm-8"><?php echo $degRow['major']; ?></dd>
+
+    <dt class="col-sm-4">Year Graduating</dt>
+    <dd class="col-sm-8"><?php echo $degRow['yearGrad']; ?></dd>
+
+</dl>
+
+</dd>
+
+<?php
+$degCount++;
+}
+
+?>
+
+<?php
+
+$examQuery = 'select * from examScore where uid = '.$row['uid'].' and examSubject != "total" and examSubject != "verbal" and examSubject != "quantitative" order by examSubject asc';				
+$examData = mysqli_query($dbc, $examQuery);
+$examCount = 1;
+
+$queryEQ = 'select * from examScore where uid = '.$row['uid'].' and examSubject = "quantitative"';				
+        $dataEQ = mysqli_query($dbc, $queryEQ); 
+        if ($rowEQ = mysqli_fetch_array($dataEQ)) { //if there is a GRE			
+            $queryEV = 'select * from examScore where uid = '.$row['uid'].' and examSubject = "verbal"';				
+            $dataEV = mysqli_query($dbc, $queryEV);
+            $rowEV = mysqli_fetch_array($dataEV);
+            $queryET = 'select * from examScore where uid = '.$row['uid'].' and examSubject = "total"';				
+            $dataET = mysqli_query($dbc, $queryET);
+            $rowET = mysqli_fetch_array($dataET);?>
             
-            <dt class="col-sm-3">Experience</dt>
-            <dd class="col-sm-9"><?php echo $row['appExp']; ?></dd>
-
-            <?php
-
-            $recQuery = "select * from recs where uid = ".$row['uid'];
-            $recData = mysqli_query($dbc, $recQuery);
-            $count = 1;
-
-            while ($recRow = mysqli_fetch_array($recData)) {
-                ?>
-
-            <dt class="col-sm-3">Recommendation <?php echo $count; ?></dt>
+            <dt class="col-sm-3">GRE</dt>
             <dd class="col-sm-9">
+            <dl class="row">
+                    <dt class="col-sm-4">Verbal</dt>
+                    <dd class="col-sm-8"><?php echo $rowEV['score']; ?></dd>
 
-                <dl class="row">
-                    <dt class="col-sm-4">Recommendation ID</dt>
-                    <dd class="col-sm-8"><?php echo $recRow['recId']; ?></dd>
-
-                    <dt class="col-sm-4">Recommender Email Address</dt>
-                    <dd class="col-sm-8"><?php echo $recRow['email']; ?></dd>
-
-                    <dt class="col-sm-4">Recommender Name</dt>
-                    <dd class="col-sm-8"><?php echo $recRow['recName']; ?></dd>
-
-                    <dt class="col-sm-4">Recommender Job Title</dt>
-                    <dd class="col-sm-8"><?php echo $recRow['job']; ?></dd>
-
-                    <dt class="col-sm-4">Relation to Applicant</dt>
-                    <dd class="col-sm-8"><?php echo $recRow['relation']; ?></dd>
-
-                    <dt class="col-sm-4">Recommender's Organization</dt>
-                    <dd class="col-sm-8"><?php echo $recRow['org']; ?></dd>
-
-                    <dt class="col-sm-4">Content</dt>
-                    <dd class="col-sm-8"><?php echo $recRow['content']; ?></dd>
-
-                </dl>
-
-            </dd>
-
-                <?php
-                $count++;
-            }
-
-            ?>
-
-            <?php
-
-            $degQuery = "SELECT * FROM degree WHERE uid = ".$row['uid'];
-            $degData = mysqli_query($dbc, $degQuery);
-            $degCount = 1;
-
-            while ($degRow = mysqli_fetch_array($degData)) {
-                ?>
-
-            <dt class="col-sm-3">Degree <?php echo $degCount; ?></dt>
-            <dd class="col-sm-9">
-
-                <dl class="row">
-                    <dt class="col-sm-4">Type of Degree</dt>
-                    <dd class="col-sm-8"><?php echo $degRow['degType']; ?></dd>
-
-                    <dt class="col-sm-4">Issuing University</dt>
-                    <dd class="col-sm-8"><?php echo $degRow['school']; ?></dd>
-
-                    <dt class="col-sm-4">GPA</dt>
-                    <dd class="col-sm-8"><?php echo $degRow['gpa']; ?></dd>
-
-                    <dt class="col-sm-4">Field of Study</dt>
-                    <dd class="col-sm-8"><?php echo $degRow['major']; ?></dd>
-
-                    <dt class="col-sm-4">Year Graduating</dt>
-                    <dd class="col-sm-8"><?php echo $degRow['yearGrad']; ?></dd>
-
-                </dl>
-
-            </dd>
-
-                <?php
-                $degCount++;
-            }
-
-            ?>
-
-            <?php
-
-            $examQuery = "SELECT * FROM examScore where uid = ".$row['uid'];
-            $examData = mysqli_query($dbc, $examQuery);
-            $examCount = 1;
-
-            while ($examRow = mysqli_fetch_array($examData)) {
-                ?>
-
-            <dt class="col-sm-3">Exam <?php echo $examCount; ?></dt>
-            <dd class="col-sm-9">
-
-                <dl class="row">
-                    <dt class="col-sm-4">Subject</dt>
-                    <dd class="col-sm-8"><?php echo $examRow['examSubject']; ?></dd>
-
-                    <dt class="col-sm-4">Score</dt>
-                    <dd class="col-sm-8"><?php echo $examRow['score']; ?></dd>
+                    <dt class="col-sm-4">Quantitative</dt>
+                    <dd class="col-sm-8"><?php echo $rowEQ ['score']; ?></dd>
+                    
+                    <dt class="col-sm-4">Total</dt>
+                    <dd class="col-sm-8"><?php echo $rowET['score']; ?></dd>
 
                     <dt class="col-sm-4">Year Taken</dt>
-                    <dd class="col-sm-8"><?php echo $examRow['yearTake']; ?></dd>
+                    <dd class="col-sm-8"><?php echo $rowET['yearTake']; ?></dd>
                 </dl>
 
             </dd>
 
-                <?php
-                $examCount++;
-            }
+            <?php
+        }
 
-            ?>
-    
-        </dl>
+while ($examRow = mysqli_fetch_array($examData)) {
+?>
+
+<dt class="col-sm-3">Exam <?php echo $examCount; ?></dt>
+<dd class="col-sm-9">
+
+<dl class="row">
+    <dt class="col-sm-4">Subject</dt>
+    <dd class="col-sm-8"><?php echo $examRow['examSubject']; ?></dd>
+
+    <dt class="col-sm-4">Score</dt>
+    <dd class="col-sm-8"><?php echo $examRow['score']; ?></dd>
+
+    <dt class="col-sm-4">Year Taken</dt>
+    <dd class="col-sm-8"><?php echo $examRow['yearTake']; ?></dd>
+</dl>
+
+</dd>
+
+<?php
+$examCount++;
+}
+
+
+$recQuery = "SELECT * FROM recs WHERE uid = ".$row['uid'];
+$recData = mysqli_query($dbc, $recQuery);
+$count = 1;
+
+while ($recRow = mysqli_fetch_array($recData)) {
+?>
+
+<dt class="col-sm-3">Recommendation <?php echo $count; ?></dt>
+<dd class="col-sm-9">
+
+<dl class="row">
+    <dt class="col-sm-4">Recommendation ID</dt>
+    <dd class="col-sm-8"><?php echo $recRow['recId']; ?></dd>
+    <input type="hidden" name="rec<?php echo $recRow['recId']; ?>" value="<?php echo $recRow['recId']; ?>">
+
+    <dt class="col-sm-4">Recommender Email Address</dt>
+    <dd class="col-sm-8"><?php echo $recRow['email']; ?></dd>
+
+    <dt class="col-sm-4">Recommender Name</dt>
+    <dd class="col-sm-8"><?php echo $recRow['recName']; ?></dd>
+
+    <dt class="col-sm-4">Recommender Job Title</dt>
+    <dd class="col-sm-8"><?php echo $recRow['job']; ?></dd>
+
+    <dt class="col-sm-4">Relation to Applicant</dt>
+    <dd class="col-sm-8"><?php echo $recRow['relation']; ?></dd>
+
+    <dt class="col-sm-4">Recommender's Organization</dt>
+    <dd class="col-sm-8"><?php echo $recRow['org']; ?></dd>
+
+    <dt class="col-sm-4">Content</dt>
+    <dd class="col-sm-8"><?php echo $recRow['content']; ?></dd>
+
+</dl>
+
+</dd>
+
+<?php
+$count++;
+}
+
+?>
+
+</dl>
 
         <h1>Reviews</h1>
 

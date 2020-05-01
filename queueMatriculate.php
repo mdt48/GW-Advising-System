@@ -10,7 +10,7 @@
             // user is a staff, allow access to page
             $row = mysqli_fetch_array($data);
             // user is a staff, allow access to page
-            if ($row['type'] == 2 || $row['type'] == 1) {
+            if ($row['type'] == 0 || $row['type'] == 1) {
                 ?>
                 <!-- HEADER -->
                 <header class = "bg py-5 mb-5" style = "background-color: #033b59;">
@@ -47,6 +47,7 @@
                     <td><?php echo $row['fname']; ?></td>
                     <td><?php echo $row['email']; ?></td>
                     <td><input type="hidden" name="uid" value="<?php echo $row['uid']; ?>"></td>
+                    <td><input type="hidden" name="matriculate" value="<?php echo $row['uid']; ?>"></td>
                     <td><button type="submit" name="review" class="btn btn-primary">Matriculate</button></td>
                 </tr>
             </form>

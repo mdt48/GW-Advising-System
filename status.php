@@ -27,18 +27,15 @@
 
 			$row = mysqli_fetch_array($data);
 
+			$missing = 0;
+
 			if ($row['appStatus'] == 1) {
-				$missing = 0;
-				if ($row['transcript'] == 0) {
+				if ($row['transcript'] == NULL) {
 					$missing += 1;
 				}
-
-				$query = "select uid from recs where uid = '$uid'";
-									
-				$data = mysqli_query($dbc, $query);
-				
-				$recs = mysqli_num_rows($data);
-				
+				$query = "select uid from recs where uid = '$uid'";					
+				$data = mysqli_query($dbc, $query);				
+				$recs = mysqli_num_rows($data);				
 				if ($recs != 0) {
 					$query = "select count(recName) as total from recs where uid = '$uid' and recName is not null";
 									
@@ -50,20 +47,22 @@
 						$row['total'] = $recs - $row['total'];
 					}
 				}
-				
-				if ($missing == 1) {
-					echo 'Application incomplete: Waiting for your transcript.<br/>';
+				if ($missing == 0) {
+					$query = "update applicant set appStatus = 2 where uid = '$uid'";
+									
+					$data = mysqli_query($dbc, $query);	
 				}
-				else if ($missing == 2) {
-					echo 'Application incomplete: Waiting for '.$row['total'].' of your recommendations.<br/>
-					Please contact your references to make sure we receive their information by the deadline.<br/>';
-				}
-				else {
-					echo 'Application incomplete: Waiting for your transcript and '.$row['total'].' of your recommendations.<br/>
-					Please contact your references to make sure we receive their information by the deadline.<br/>';
-				}
-
-				echo 'If this page hasn\'t changed in a period of two weeks or you think that there has been an error make sure to contact us.<br/>';		
+			}
+			if ($missing == 1) {
+				echo 'Application incomplete: Waiting for your transcript.<br/>';
+			}
+			else if ($missing == 2) {
+				echo 'Application incomplete: Waiting for '.$row['total'].' of your recommendations.<br/>
+				Please contact your references to make sure we receive their information by the deadline.<br/>';
+			}
+			else if ($missing == 3){
+				echo 'Application incomplete: Waiting for your transcript and '.$row['total'].' of your recommendations.<br/>
+				Please contact your references to make sure we receive their information by the deadline.<br/>';
 			}
 			else if ($row['appStatus'] == 2) {
 				echo 'Application complete: We have received all your information and your application is currently under review. <br/>
