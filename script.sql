@@ -70,7 +70,7 @@ CREATE TABLE applicant (
   `appExp` varchar(256),
   `degProgram` varchar(40),
   `appStatus` int,
-  `transcript` boolean,
+  `transcript` varchar(256),
   `admissionYear` year,
   `admissionSemester` varchar(10),
   `adv` int,
@@ -145,12 +145,10 @@ CREATE TABLE course(
 );
 
 CREATE TABLE prereqs(
-  `cid` int,
-  `department` VARCHAR(32),
-  `subject` VARCHAR(32),
-  `credit` int,
-  primary key (`department`),
-  FOREIGN KEY (`cid`) REFERENCES course (`cid`)
+  cid int,
+  pcid int,
+  PRIMARY KEY (cid, pcid),
+  FOREIGN KEY (cid) REFERENCES course (cid)
 );
 
 CREATE TABLE transcript(
@@ -234,7 +232,7 @@ INSERT INTO course VALUES (6210,'MATH','Logic',2);
 -- this is the data for the apps side
 insert into people (ssn, username, email, birthDate, password, uid, fname, lname, address) values (111111111, 'jlennon', 'jlennon@gmail.com', '1940-10-09', '1234', 55555555, 'John', 'Lennon', '72nd St & Central Park West, New York, NY, 10023');
 
-insert into applicant values (55555555, 'Music', 'Member of The Beatles, formerly', 'md', 2, 1, 2020, 'fall', null);
+insert into applicant values (55555555, 'Music', 'Member of The Beatles, formerly', 'md', 2, 'Registrar link', 2020, 'fall', null);
 
 insert into degree values (55555555, 'BA', 'Berkley', '4.0', 'Boyband', 1960);
 insert into degree values (55555555, 'BA', 'Columbia', '3.5', 'Rocket Science', 1969);
@@ -250,7 +248,7 @@ insert into recs (uid, recName, job, relation, email, content, org) values (5555
 
 insert into people (ssn, username, email, birthDate, password, uid, fname, lname, address) values (222111111, 'rstarr', 'rstarr@gmail.com', '1940-07-07', '1234', 66666666, 'Ringo', 'Starr', '2 Glynde Mews, Chelsea, London SW3 1SB, United Kingdom');
 
-insert into applicant (uid, aoi, appExp, degProgram, appStatus, transcript, admissionYear, admissionSemester) values (66666666, 'Music', 'Member of The Beatles, formerly', 'md', 1, 0, 2020, 'fall');
+insert into applicant (uid, aoi, appExp, degProgram, appStatus, transcript, admissionYear, admissionSemester) values (66666666, 'Music', 'Member of The Beatles, formerly', 'md', 1, NULL, 2020, 'fall');
 
 insert into degree values (66666666, 'BA', 'NYU', '3.8', 'Boyband', 1968);
 
@@ -260,7 +258,7 @@ insert into examScore values (66666666, 'quantitative', 170, 1983);
 
 insert into recs (uid, recName, job, relation, email, content, org) values (66666666, 'Daffy Duck', 'Duck', 'Acquaintance', 'dduck@aol.com', 'Not a rabbit, cannot complain', 'Toons');
 insert into recs (uid, recName, job, relation, email, content, org) values (66666666, 'Rogger Rabbit', 'Rock Star', 'Employer', 'rrabbit@hotmail.com', 'Wonderful man.', 'Wouldnt you like to know');
---insert into recs (uid, email) values (66666666, 'madonna@gmail.com');
+--insert into recs (uid, email) values (55555555, 'madonna@gmail.com');
 
 -- staff
 insert into people (fname, lname, uid, username, password) values ('Bhagi', 'Narahari', 1, 'bnarahari', '1234');
@@ -288,8 +286,6 @@ insert into staff (uid, type) values (10, 2);
 
 INSERT into people (uid, username, password, fname, lname) values (77777777, 'eclapton', '1234', 'Eric', 'Clapton');
 INSERT into student values (77777777, 'alumni', 1, 1, 6, 'masters', 2014, 'CS');
-
-insert into people (username, password) values ('mom', 'mom');
 
 -- student trans
 INSERT INTO transcript VALUES (1,77777777,'CSCI',6221,'B',2014,'MS', 0);
@@ -320,3 +316,32 @@ INSERT INTO transcript VALUES (19,34567890,'CSCI',6286,'A',2015,'MS', 0);
 INSERT INTO transcript VALUES (20,34567890,'CSCI',6242,'B',2015,'MS', 0);
 INSERT INTO transcript VALUES (21,34567890,'CSCI',6251,'B',2015,'MS', 0);
 INSERT INTO transcript VALUES (22,34567890,'CSCI',6254,'B',2015,'MS', 0);
+
+-- missing most stuff but 
+insert into teaches (cid, department, uid) values (6221, 'CSCI', 9);
+insert into teaches (cid, department, uid) values (6233, 'CSCI', 4);
+insert into teaches (cid, department, uid) values (6242, 'CSCI', 4);
+insert into teaches (cid, department, uid) values (6241, 'CSCI', 7);
+
+insert into teaches (cid, department, uid) VALUES (6221,'CSCI', 9);
+insert into teaches (cid, department, uid) VALUES (6461,'CSCI', 1);
+insert into teaches (cid, department, uid) VALUES (6212,'CSCI', 9);
+insert into teaches (cid, department, uid) VALUES (6220,'CSCI', 7);
+insert into teaches (cid, department, uid) VALUES (6232,'CSCI', 9);
+insert into teaches (cid, department, uid) VALUES (6233,'CSCI', 4);
+insert into teaches (cid, department, uid) VALUES (6241,'CSCI', 7);
+insert into teaches (cid, department, uid) VALUES (6242,'CSCI', 4);
+insert into teaches (cid, department, uid) VALUES (6246,'CSCI', 1);
+insert into teaches (cid, department, uid) VALUES (6260,'CSCI', 7);
+insert into teaches (cid, department, uid) VALUES (6251,'CSCI', 4);
+insert into teaches (cid, department, uid) VALUES (6254,'CSCI', 7);
+insert into teaches (cid, department, uid) VALUES (6262,'CSCI', 7);
+insert into teaches (cid, department, uid) VALUES (6283,'CSCI', 7);
+insert into teaches (cid, department, uid) VALUES (6284,'CSCI', 7);
+insert into teaches (cid, department, uid) VALUES (6286,'CSCI', 4);
+insert into teaches (cid, department, uid) VALUES (6325,'CSCI', 4);
+insert into teaches (cid, department, uid) VALUES (6339,'CSCI', 9);
+insert into teaches (cid, department, uid) VALUES (6384,'CSCI', 9);
+insert into teaches (cid, department, uid) VALUES (6241,'ECE', 1);
+insert into teaches (cid, department, uid) VALUES (6242,'ECE', 1);
+insert into teaches (cid, department, uid) VALUES (6210,'MATH', 1);
