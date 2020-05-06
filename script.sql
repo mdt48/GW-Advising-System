@@ -1,3 +1,4 @@
+use phase2;
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS student CASCADE;
 DROP TABLE IF EXISTS form CASCADE;
@@ -258,7 +259,7 @@ insert into examScore values (66666666, 'quantitative', 170, 1983);
 
 insert into recs (uid, recName, job, relation, email, content, org) values (66666666, 'Daffy Duck', 'Duck', 'Acquaintance', 'dduck@aol.com', 'Not a rabbit, cannot complain', 'Toons');
 insert into recs (uid, recName, job, relation, email, content, org) values (66666666, 'Rogger Rabbit', 'Rock Star', 'Employer', 'rrabbit@hotmail.com', 'Wonderful man.', 'Wouldnt you like to know');
---insert into recs (uid, email) values (55555555, 'madonna@gmail.com');
+-- insert into recs (uid, email) values (55555555, 'madonna@gmail.com');
 
 -- staff
 insert into people (fname, lname, uid, username, password) values ('Bhagi', 'Narahari', 1, 'bnarahari', '1234');
@@ -345,3 +346,111 @@ insert into teaches (cid, department, uid) VALUES (6384,'CSCI', 9);
 insert into teaches (cid, department, uid) VALUES (6241,'ECE', 1);
 insert into teaches (cid, department, uid) VALUES (6242,'ECE', 1);
 insert into teaches (cid, department, uid) VALUES (6210,'MATH', 1);
+
+
+-- students
+insert into people values (88888888, "Billy", "pass", "Billy", "Holliday", "address", "email@gwu.edu", "1990-02-20", 2873192);
+insert into student values (88888888, 0, null, 0, 6, "masters", null, "CSCI");
+
+insert into people values (99999999, "Krall", "pass", "Diana", "Krall", "address", "email@gwu.edu", "1990-02-20", 2873191);
+insert into student values (99999999, 0, null, 0, 3, "masters", null, "CSCI");
+
+insert into people values (23456789, "Ella", "pass", "Ella", "Fitzgerald", "address", "email@gwu.edu", "1990-02-20", 2873190);
+insert into student values (23456789, 0, null, 0, 1, "phd", null, "CSCI");
+
+insert into people values (87654321, "Eva", "pass", "Eva", "Cassidy", "address", "email@gwu.edu", "1990-02-20", 2873193);
+insert into student values (87654321, null, null, 0, 1, "masters", null, "CSCI");
+insert into transcript values(87654321, "CSCI", 6221, "C", 2017, "masters");
+insert into transcript values(87654321, "CSCI", 6212, "C", 2017, "masters");
+insert into transcript values(87654321, "CSCI", 6461, "C", 2017, "masters");
+insert into transcript values(87654321, "CSCI", 6232, "C", 2017, "masters");
+insert into transcript values(87654321, "CSCI", 6233, "C", 2017, "masters");
+insert into transcript values(87654321, "CSCI", 6284, "C", 2017, "masters");
+insert into transcript values(87654321, "CSCI", 6286, "C", 2017, "masters");
+insert into form values (87654321, "CSCI", 6221);
+insert into form values (87654321, "CSCI", 6212);
+insert into form values (87654321, "CSCI", 6461);
+insert into form values (87654321, "CSCI", 6232);
+insert into form values (87654321, "CSCI", 6233);
+insert into form values (87654321, "CSCI", 6284);
+insert into form values (87654321, "CSCI", 6286);
+
+insert into people values (45678901, "Jimi", "pass", "Jimi", "Hendrix", "address", "email@gwu.edu", "1990-02-20", 2873198);
+insert into student values (45678901, null , null, 0, 4, "masters", null, "CSCI");
+insert into transcript values(45678901, "CSCI", 6221, "A", 2017, "masters");
+insert into transcript values(45678901, "CSCI", 6212, "A", 2017, "masters");
+insert into transcript values(45678901, "CSCI", 6461, "A", 2017, "masters");
+insert into transcript values(45678901, "CSCI", 6232, "A", 2017, "masters");
+insert into transcript values(45678901, "CSCI", 6233, "A", 2017, "masters");
+insert into transcript values(45678901, "CSCI", 6284, "A", 2017, "masters");
+insert into transcript values(45678901, "CSCI", 6286, "A", 2017, "masters");
+insert into transcript values(45678901, "CSCI", 6241, "A", 2017, "masters");
+insert into transcript values(45678901, "ECE", 6241, "B", 2017, "masters");
+insert into transcript values(45678901, "ECE", 6242, "B", 2017, "masters");
+insert into transcript values(45678901, "MATH", 6210, "B", 2017, "masters");
+
+
+insert into people values (1444444, "Paul", "pass", "Paul", "Mccartney", "address", "email@gwu.edu", "1990-02-20", 2873188);
+insert into student values (1444444, null , null, 0, 1, "masters", null, "CSCI");
+insert into transcript values(1444444, "CSCI", 6221, "A", 2017, "masters");
+insert into transcript values(1444444, "CSCI", 6212, "A", 2017, "masters");
+insert into transcript values(1444444, "CSCI", 6461, "A", 2017, "masters");
+insert into transcript values(1444444, "CSCI", 6232, "A", 2017, "masters");
+insert into transcript values(1444444, "CSCI", 6233, "A", 2017, "masters");
+insert into transcript values(1444444, "CSCI", 6241, "B", 2017, "masters");
+insert into transcript values(1444444, "CSCI", 6246, "B", 2017, "masters");
+insert into transcript values(1444444, "CSCI", 6262, "B", 2017, "masters");
+insert into transcript values(1444444, "CSCI", 6283, "B", 2017, "masters");
+insert into transcript values(1444444, "CSCI", 6242, "B", 2017, "masters");
+insert into form values (1444444, "CSCI", 6221);
+insert into form values (1444444, "CSCI", 6212);
+insert into form values (1444444, "CSCI", 6461);
+insert into form values (1444444, "CSCI", 6232);
+insert into form values (1444444, "CSCI", 6233);
+insert into form values (1444444, "CSCI", 6241);
+insert into form values (1444444, "CSCI", 6246);
+insert into form values (1444444, "CSCI", 6262);
+insert into form values (1444444, "CSCI", 6283);
+insert into form values (1444444, "CSCI", 6242);
+
+
+insert into people values (16666666, "George", "pass", "George", "Harrison", "address", "email@gwu.edu", "1990-02-20", 2875188);
+insert into student values (16666666, null , null, 0, 4, "masters", null, "CSCI");
+insert into transcript values(16666666, "ECE", 6242, "C", 2017, "masters");
+insert into transcript values(16666666, "CSCI", 6221, "B", 2017, "masters");
+insert into transcript values(16666666, "CSCI", 6461, "B", 2017, "masters");
+insert into transcript values(16666666, "CSCI", 6212, "B", 2017, "masters");
+insert into transcript values(16666666, "CSCI", 6232, "B", 2017, "masters");
+insert into transcript values(16666666, "CSCI", 6233, "B", 2017, "masters");
+insert into transcript values(16666666, "CSCI", 6241, "B", 2017, "masters");
+insert into transcript values(16666666, "CSCI", 6242, "B", 2017, "masters");
+insert into transcript values(16666666, "CSCI", 6283, "B", 2017, "masters");
+insert into transcript values(16666666, "CSCI", 6284, "B", 2017, "masters");
+
+
+insert into people values (12345678, "Stevie", "pass", "Stevie", "Nicks", "address", "email@gwu.edu", "1990-02-20", 2173188);
+insert into student values (12345678, null , 0, 0, 6, "phd", null, "CSCI");
+insert into transcript values(12345678, "CSCI", 6221, "A", 2017, "phd");
+insert into transcript values(12345678, "CSCI", 6212, "A", 2017, "phd");
+insert into transcript values(12345678, "CSCI", 6461, "A", 2017, "phd");
+insert into transcript values(12345678, "CSCI", 6232, "A", 2017, "phd");
+insert into transcript values(12345678, "CSCI", 6233, "A", 2017, "phd");
+insert into transcript values(12345678, "CSCI", 6284, "A", 2017, "phd");
+insert into transcript values(12345678, "CSCI", 6286, "A", 2017, "phd");
+insert into transcript values(12345678, "CSCI", 6241, "B", 2017, "phd");
+insert into transcript values(12345678, "CSCI", 6246, "B", 2017, "phd");
+insert into transcript values(12345678, "CSCI", 6262, "B", 2017, "phd");
+insert into transcript values(12345678, "CSCI", 6283, "B", 2017, "phd");
+insert into transcript values(12345678, "CSCI", 6242, "B", 2017, "phd");
+insert into form values (12345678, "CSCI", 6221);
+insert into form values (12345678, "CSCI", 6212);
+insert into form values (12345678, "CSCI", 6461);
+insert into form values (12345678, "CSCI", 6232);
+insert into form values (12345678, "CSCI", 6233);
+insert into form values (12345678, "CSCI", 6284);
+insert into form values (12345678, "CSCI", 6241);
+insert into form values (12345678, "CSCI", 6246);
+insert into form values (12345678, "CSCI", 6262);
+insert into form values (12345678, "CSCI", 6242);
+insert into form values (12345678, "CSCI", 6283);
+insert into form values (12345678, "CSCI", 6242);
