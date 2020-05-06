@@ -26,16 +26,15 @@
 			$query = "DELETE FROM applicant WHERE uid = ".$uid;
 			$dbc->query($query);
 
-			$query = "INSERT INTO student (uid, advisoruid, program) values (".$uid.", ".$row['adv'].", ".$row['degProgram'].")";
+			$query = "INSERT INTO student (uid, advisoruid, program) values (".$uid.", ".$row['adv'].", '".$row['degProgram']."')";
 			$dbc->query($query);
 
 			echo "<script>window.location.href='index.php';</script>";
 		}
 		else if (isset($_POST['matriculate'])) {
 			$uidP = $_POST['uid'];
-            $query = "DELETE FROM examScore WHERE uid = ".$uidP;
-            $dbc->query($query);
-            $query = "DELETE FROM recs WHERE uid = ".$uidP;
+			
+			$query = "DELETE FROM recs WHERE uid = ".$uidP;
             $dbc->query($query);
             $query = "DELETE FROM degree WHERE uid = ".$uidP;
 			$dbc->query($query);
@@ -50,15 +49,11 @@
 		
 			$row = mysqli_fetch_array($data);
 
-			$query = "DELETE FROM applicant WHERE uid = ".$uidP;
-			$dbc->query($query);
-
-			$query = "INSERT INTO student (uid, advisoruid, program) values (".$uidP.", ".$row['adv'].", ".$row['degProgram'].")";
-			$dbc->query($query);
-
+			$query = "INSERT INTO student (uid, advisoruid, program) values (".$uidP.", ".$row['adv'].", '".$row['degProgram']."')";
+			
 			$home_url = "queueMatriculate.php";
 				  
-		//	header('Location: ' . $home_url);
+			header('Location: ' . $home_url);
 		}
 		else {
         

@@ -26,7 +26,7 @@
                     }
                 }
             }
-
+            //fr
             if ($row['type'] == 3 || $row['type'] == 6 || $row['type'] == 7 || $row['type'] == 9) {
                 ?>
                 <!-- HEADER -->
@@ -40,6 +40,59 @@
                     </div>
                 </header>
     <div class="container">
+    <?php
+        $where = "";
+        $order = "asc";
+        $result = "Currently viewing report all applications order by asc";
+        if (isset($_POST['submit'])) {
+            $uidP = $_POST['uid'];
+            $lname = $_POST['lname'];
+            $order = $_POST['order'];
+
+            $result = "";
+
+            if ($uidP == NULL) $uidSelected = false;
+            else $uidSelected = true;
+
+            if ($lname == NULL) $lnameSelected = false;
+            else $lnameSelected = true;
+
+            $result = "Currently viewing applications of ";
+
+            //concatenate the query          
+
+            if ($uidSelected == true) {
+                $where = $where ." and applicant.uid like '%".$uidP."%'";
+                $result = $result."UID is ".$uidP;
+            }
+
+            if ($lnameSelected == true) {
+                $where = $where ." and lname like '%".$lname."%'";
+                if ($uidSelected == true) $result = $result."and last name is ".$lname;
+            }
+
+            if ($uidSelected == false && $lnameSelected == false) {
+                $where = "";
+            }
+            $where = $where." order by lname ".$order;
+            $result = $result.", order by ".$order;
+        }
+    ?>
+    <form class="form-inline" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+    <input class="form-control mr-sm-2" name="uid" onkeypress = "return (event.charCode > 47 && event.charCode < 58)"  maxlength="7" type="search" placeholder="UID" id= "search_bar" aria-label="Search">
+        <input class="form-control mr-sm-2" name="lname" type="search" placeholder="Last Name" id= "search_bar" aria-label="Search" maxlength="255" onkeypress="return (event.charCode > 64 && 
+        event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode == 32) || (event.charCode == 45)">
+        <br><br><br>
+        <select name="order" class="form-control mr-sm-2"  id= "search_bar" aria-label="Search"> 
+            <option value="asc" selected hidden>Order</option>                 
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>     
+        </select>
+            <input class="form-control mr-sm-2" name="submit" type="submit" id= "search_bar" aria-label="Search">
+        </form> 
+        
+    <b><?php echo $result;?></b>  
+    <br>             
     <table class="table table-striped">
         <thead>
             <tr>
@@ -55,7 +108,7 @@
         <tbody>
         <?php
         $query = "SELECT * FROM people JOIN applicant ON people.uid = applicant.uid WHERE appStatus = 2 AND applicant.uid NOT IN
-            (SELECT studentuid FROM recReview WHERE recReview.uid = ".$_SESSION['uid'].")";
+            (SELECT studentuid FROM recReview WHERE recReview.uid = ".$_SESSION['uid'].") ".$where;
         $data = mysqli_query($dbc, $query);
         while ($row = mysqli_fetch_array($data)) {    
             $sub = "SELECT COUNT(*) AS 'count' FROM reviewForm WHERE studentuid = ".$row['uid'];
@@ -85,6 +138,7 @@
     <?php
 
             }
+            //gs
             else if ($row['type'] == 1) {
                 ?>
                 <!-- HEADER -->
@@ -98,7 +152,114 @@
                     </div>
                 </header>
     <div class="container">
-    <table class="table table-striped">
+    <?php
+        $where = " (appStatus = 2 OR appStatus = 1) ";
+        $order = "asc";
+        $result = "Currently viewing results of all programs, all semesters, and all years, order by asc";
+        if (isset($_POST['submit'])) {
+            $program = $_POST['program'];
+            $semester = $_POST['sem'];
+            $year = $_POST['year'];
+            $uidP = $_POST['uid'];
+            $lname = $_POST['lname'];
+            $status = $_POST['status'];
+            $order = $_POST['order'];
+
+            if ($program == "Program" || $program == "all") $programSelected = false;
+            else $programSelected = true;
+
+            if ($semester == "Semester" || $semester == "all") $semesterSelected = false;
+            else $semesterSelected = true;
+            
+            if ($year == NULL) $yearSelected = false;
+            else $yearSelected = true;
+
+            if ($uidP == NULL) $uidSelected = false;
+            else $uidSelected = true;
+
+            if ($lname == NULL) $lnameSelected = false;
+            else $lnameSelected = true;
+
+            if ($status == NULL || $status == "all") $statusSelected = false;
+            else $statusSelected = true;
+
+            $result = "Currently viewing results of ";
+
+
+            if ($statusSelected == false) $where = " (appStatus = 2 OR appStatus = 1) ";
+            else {
+                if ($status == "i") $where = "appStatus = 1 ";
+                else $where = "appStatus = 2 ";
+            }
+
+            //concatenate the query                    
+            if ($programSelected == true) {
+                $where = $where."and degProgram = '".$program."'";
+                $result = $result.$program." program, ";
+            }
+            else $result = $result."all programs, ";
+
+            if ($semesterSelected == true) {
+                $where = $where ." and admissionSemester = '".$semester."'";
+                $result = $result.$semester." semester, ";
+            }
+            else $result = $result."all semesters, ";
+
+            if ($yearSelected == true) {
+                $where = $where ." and admissionYear = ".$year;
+                $result = $result."from ".$year;
+            }
+            else $result = $result."from all years";
+
+            if ($uidSelected == true) {
+                $where = $where ." and applicant.uid like '%".$uidP."%'";
+                $result = $result.", UID is ".$uidP;
+            }
+
+            if ($lnameSelected == true) {
+                $where = $where ." and lname like '%".$lname."%'";
+                $result = $result.", last name is ".$lname;
+            }
+
+            $where = $where." order by lname ".$order;
+            $result = $result.", order by ".$order;
+        }
+    ?>
+        <form class="form-inline" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+        <select name="program" class="form-control mr-sm-2"  id= "search_bar" aria-label="Search">        
+            <option selected hidden>Program</option>                
+            <option value="all">All</option>                
+            <option value="md">MD</option>
+            <option value="phd">PHD</option>    
+        </select>
+        <select name="sem" class="form-control mr-sm-2"  id= "search_bar" aria-label="Search"> 
+            <option selected hidden>Semester</option>               
+            <option value="all">All</option>                          
+            <option value="fall">Fall</option>
+            <option value="spring">Spring</option>     
+        </select>
+        <input class="form-control mr-sm-2" name="year" type="search" placeholder="Year" id= "search_bar" aria-label="Search">
+        <input class="form-control mr-sm-2" name="uid" onkeypress = "return (event.charCode > 47 && event.charCode < 58)"  maxlength="7" type="search" placeholder="UID" id= "search_bar" aria-label="Search">
+        <input class="form-control mr-sm-2" name="lname" type="search" placeholder="Last Name" id= "search_bar" aria-label="Search" maxlength="255" onkeypress="return (event.charCode > 64 && 
+        event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode == 32) || (event.charCode == 45)">
+        <br><br><br>
+        <select name="status" class="form-control mr-sm-2"  id= "search_bar" aria-label="Search"> 
+            <option value="all" selected hidden>Status</option>                 
+            <option value="all">All</option>                 
+            <option value="c">Complete</option>
+            <option value="i">Incomplete</option>     
+        </select>
+        <select name="order" class="form-control mr-sm-2"  id= "search_bar" aria-label="Search"> 
+            <option value="asc" selected hidden>Order</option>                 
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>     
+        </select>
+            <input class="form-control mr-sm-2" name="submit" type="submit" id= "search_bar" aria-label="Search">
+        </form> 
+        <br>
+        
+    <b><?php echo $result;?><br></b>
+<table class="table table-striped">
     <thead>
         <tr>
             <th scope="col">User Id</th>
@@ -113,7 +274,7 @@
     </thead>
     <tbody>
     <?php
-    $query = "SELECT * FROM people JOIN applicant ON people.uid = applicant.uid WHERE appStatus = 2 OR appStatus = 1";
+    $query = "SELECT * FROM people JOIN applicant ON people.uid = applicant.uid where ".$where;
     $data = mysqli_query($dbc, $query);
     while ($row = mysqli_fetch_array($data)) {
         $sub = "SELECT COUNT(*) AS 'count' FROM reviewForm WHERE studentuid = ".$row['uid'];
@@ -127,15 +288,11 @@
             <td><?php echo $row['email']; ?></td>
             <td><?php if ($row['appStatus'] == 1) echo "Incomplete"; else echo "Complete"; ?></td>
             <td><?php echo $subrow['count']; ?></td>
-            <?php 
-                if ($subrow['count'] == 0) {
-
-            ?>
             <form method="POST" action="editAcademic.php">
             <td><input type="hidden" name="uid" value="<?php echo $row['uid']; ?>">
             <button type="submit" name="update" class="btn btn-primary">Update</button></td>
             </form>
-            <?php }
+            <?php
                 if ($subrow['count'] >= 1) {
             ?>
             <form method="POST" action="decision.php">
@@ -174,7 +331,117 @@
                         </div>
                     </div>
                 </header>
-    <div class="container">
+        
+         
+		  
+    <div class="container">  
+    <?php
+        $where = " (appStatus = 2 OR appStatus = 1) ";
+        $order = "asc";
+        $result = "Currently viewing results of all programs, all semesters, and all years, order by asc";
+        if (isset($_POST['submit'])) {
+            $program = $_POST['program'];
+            $semester = $_POST['sem'];
+            $year = $_POST['year'];
+            $uidP = $_POST['uid'];
+            $lname = $_POST['lname'];
+            $status = $_POST['status'];
+            $order = $_POST['order'];
+
+            if ($program == "Program" || $program == "all") $programSelected = false;
+            else $programSelected = true;
+
+            if ($semester == "Semester" || $semester == "all") $semesterSelected = false;
+            else $semesterSelected = true;
+            
+            if ($year == NULL) $yearSelected = false;
+            else $yearSelected = true;
+
+            if ($uidP == NULL) $uidSelected = false;
+            else $uidSelected = true;
+
+            if ($lname == NULL) $lnameSelected = false;
+            else $lnameSelected = true;
+
+            if ($status == NULL || $status == "all") $statusSelected = false;
+            else $statusSelected = true;
+
+            $result = "Currently viewing results of ";
+
+
+            if ($statusSelected == false) $where = " (appStatus = 2 OR appStatus = 1) ";
+            else {
+                if ($status == "i") $where = "appStatus = 1 ";
+                else $where = "appStatus = 2 ";
+            }
+
+            //concatenate the query                    
+            if ($programSelected == true) {
+                $where = $where."and degProgram = '".$program."'";
+                $result = $result.$program." program, ";
+            }
+            else $result = $result."all programs, ";
+
+            if ($semesterSelected == true) {
+                $where = $where ." and admissionSemester = '".$semester."'";
+                $result = $result.$semester." semester, ";
+            }
+            else $result = $result."all semesters, ";
+
+            if ($yearSelected == true) {
+                $where = $where ." and admissionYear = ".$year;
+                $result = $result."from ".$year;
+            }
+            else $result = $result."from all years";
+
+            if ($uidSelected == true) {
+                $where = $where ." and applicant.uid like '%".$uidP."%'";
+                $result = $result.", UID is ".$uidP;
+            }
+
+            if ($lnameSelected == true) {
+                $where = $where ." and lname like '%".$lname."%'";
+                $result = $result.", last name is ".$lname;
+            }
+
+            $where = $where." order by lname ".$order;
+            $result = $result.", order by ".$order;
+        }
+    ?>
+        <form class="form-inline" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+        <select name="program" class="form-control mr-sm-2"  id= "search_bar" aria-label="Search">        
+            <option selected hidden>Program</option>                
+            <option value="all">All</option>                
+            <option value="md">MD</option>
+            <option value="phd">PHD</option>    
+        </select>
+        <select name="sem" class="form-control mr-sm-2"  id= "search_bar" aria-label="Search"> 
+            <option selected hidden>Semester</option>               
+            <option value="all">All</option>                          
+            <option value="fall">Fall</option>
+            <option value="spring">Spring</option>     
+        </select>
+        <input class="form-control mr-sm-2" name="year" type="search" placeholder="Year" id= "search_bar" aria-label="Search">
+        <input class="form-control mr-sm-2" name="uid" onkeypress = "return (event.charCode > 47 && event.charCode < 58)"  maxlength="7" type="search" placeholder="UID" id= "search_bar" aria-label="Search">
+        <input class="form-control mr-sm-2" name="lname" type="search" placeholder="Last Name" id= "search_bar" aria-label="Search" maxlength="255" onkeypress="return (event.charCode > 64 && 
+        event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode == 32) || (event.charCode == 45)">
+        <br><br><br>
+        <select name="status" class="form-control mr-sm-2"  id= "search_bar" aria-label="Search"> 
+            <option value="all" selected hidden>Status</option>                 
+            <option value="all">All</option>                 
+            <option value="c">Complete</option>
+            <option value="i">Incomplete</option>     
+        </select>
+        <select name="order" class="form-control mr-sm-2"  id= "search_bar" aria-label="Search"> 
+            <option value="asc" selected hidden>Order</option>                 
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>     
+        </select>
+            <input class="form-control mr-sm-2" name="submit" type="submit" id= "search_bar" aria-label="Search">
+        </form> 
+        <br>
+        
+    <b><?php echo $result;?><br></b>
     <table class="table table-striped">
     <thead>
         <tr>
@@ -190,7 +457,7 @@
     </thead>
     <tbody>
     <?php
-    $query = "SELECT * FROM people JOIN applicant ON people.uid = applicant.uid WHERE appStatus = 2 OR appStatus = 1";
+    $query = "SELECT * FROM people JOIN applicant ON people.uid = applicant.uid where ".$where;
     $data = mysqli_query($dbc, $query);
     while ($row = mysqli_fetch_array($data)) {
         $sub = "SELECT COUNT(*) AS 'count' FROM reviewForm WHERE studentuid = ".$row['uid'];
@@ -216,11 +483,20 @@
             <button type="submit" name="update" class="btn btn-primary">Update</button></td>
             </form>
             
-            <?php if (mysqli_num_rows($reviewedData) == 0) {?>
-            <form method="POST" action="review.php">
-            <td><input type="hidden" name="uid" value="<?php echo $row['uid']; ?>"><button type="submit" name="update" class="btn btn-primary">Review</button></td>
-            </form>
-            <?php
+            <?php if (mysqli_num_rows($reviewedData) == 0) {
+                if ($row['appStatus'] == 1) {
+                ?>
+                <form method="POST" action="review.php">
+                <td><input type="hidden" name="uid" value="<?php echo $row['uid']; ?>"><button type="submit" name="update" class="btn btn-primary" disabled>Review</button></td>
+                </form>
+            <?php }
+            else {
+                ?>
+                <form method="POST" action="review.php">
+                <td><input type="hidden" name="uid" value="<?php echo $row['uid']; ?>"><button type="submit" name="update" class="btn btn-primary">Review</button></td>
+                </form>
+                <?php
+            }
                 }
                 else {
                     ?>
@@ -254,7 +530,7 @@
     </div> 
     <?php
             }
-
+            //cac
             else if ($row['type'] == 2) {
                 ?>
                 <!-- HEADER -->
@@ -273,6 +549,64 @@
     ?>
 
     <div class="container">
+    <?php
+        $where = "";
+        $order = "asc";
+        $result = "Currently viewing report all applications order by asc";
+        if (isset($_POST['submit'])) {
+            $uidP = $_POST['uid'];
+            $lname = $_POST['lname'];
+            $order = $_POST['order'];
+
+            $result = "";
+
+            if ($uidP == NULL) $uidSelected = false;
+            else $uidSelected = true;
+
+            if ($lname == NULL) $lnameSelected = false;
+            else $lnameSelected = true;
+
+            $result = "Currently viewing applications of ";
+
+            //concatenate the query          
+
+            if ($uidSelected == true) {
+                $where = $where ." and applicant.uid like '%".$uidP."%'";
+                $result = $result."UID is ".$uidP;
+            }
+
+            if ($lnameSelected == true) {
+                $where = $where ." and lname like '%".$lname."%'";
+                if ($uidSelected == true) $result = $result."and last name is ".$lname;
+            }
+
+            if ($uidSelected == false && $lnameSelected == false) {
+                $where = "";
+            }
+            $where = $where." order by lname ".$order;
+            $result = $result.", order by ".$order;
+        }
+    ?>
+    <form class="form-inline" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+    <input class="form-control mr-sm-2" name="uid" onkeypress = "return (event.charCode > 47 && event.charCode < 58)"  maxlength="7" type="search" placeholder="UID" id= "search_bar" aria-label="Search">
+        <input class="form-control mr-sm-2" name="lname" type="search" placeholder="Last Name" id= "search_bar" aria-label="Search" maxlength="255" onkeypress="return (event.charCode > 64 && 
+        event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode == 32) || (event.charCode == 45)">
+        <br><br><br>
+        <select name="order" class="form-control mr-sm-2"  id= "search_bar" aria-label="Search"> 
+            <option value="asc" selected hidden>Order</option>                 
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>     
+        </select>
+        <select name="order" class="form-control mr-sm-2"  id= "search_bar" aria-label="Search"> 
+            <option value="asc" selected hidden>Order</option>                 
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>     
+        </select>
+            <input class="form-control mr-sm-2" name="submit" type="submit" id= "search_bar" aria-label="Search">
+        </form> 
+        
+    <b><?php echo $result;?></b>  
+    <br>      
     <table class="table table-striped">
     <thead>
         <tr>
@@ -287,7 +621,7 @@
     </thead>
     <tbody>
     <?php
-    $query = "SELECT * FROM people JOIN applicant ON people.uid = applicant.uid WHERE appStatus = 2";
+    $query = "SELECT * FROM people JOIN applicant ON people.uid = applicant.uid WHERE appStatus = 2 ".$where;
     $data = mysqli_query($dbc, $query);
     while ($row = mysqli_fetch_array($data)) {
         $sub = "SELECT COUNT(*) AS 'count' FROM reviewForm WHERE studentuid = ".$row['uid'];

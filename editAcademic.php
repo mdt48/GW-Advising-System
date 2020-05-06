@@ -737,8 +737,12 @@
 		$queryCheck = "select count(recId) as total from recs where uid = '$uid' and content is null";					
 		$dataCheck = mysqli_query($dbc, $queryCheck);
 		$rowCheck = mysqli_fetch_array($dataCheck);
+
+		$queryStaff = "SELECT * FROM staff WHERE uid = '".$_SESSION['uid']."'";
+		$dataStaff = mysqli_query($dbc, $queryStaff);
+		$rowStaff = mysqli_num_rows($dataStaff);
  
-		if ($row['total'] == 0 || $row['total'] == $rowCheck['total']) {
+		if ($row['total'] == 0 || $row['total'] == $rowCheck['total'] || $rowStaff['type'] == 1 || $rowStaff['type'] == 0) {
 			?>
 			<div class="form-group">
 				<b><label for="recs">Recommendation Letter Contacts</label></br></b>
