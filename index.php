@@ -79,6 +79,7 @@ if (isset($_SESSION['uid'])) {
 					echo '<a href="grades.php"><h1>View Grades</h1></a><br/>';
 					echo '<a href="view-student-transcripts.php"><h1>View Transcripts</h1></a><br/>';
 					echo '<a href="view-classes.php"><h1>View Classes</h1></a><br/>';
+					echo '<a href="all_accounts.php"><h1>View All Accounts</h1></a><br/>';
 				}
 				//gs
 				else if ($row['type'] == 1) {

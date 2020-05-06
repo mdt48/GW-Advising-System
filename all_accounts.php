@@ -41,9 +41,7 @@
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		<ul class="navbar-nav mr-auto">
 			  <!-- Admin tabs -->
-			<li class="nav-item">
-			  <a class="nav-link adm" id= "test" href="./create_account.php">Create New Account</a>
-			</li>
+			
 			<li class="nav-item">
 				<a class="nav-link adm" id= "test" href="./all_accounts.php">View All Accounts</a>
 			  </li>
@@ -174,7 +172,7 @@
 										}
 
 
-										$q = "select staff.uid, type,  fname, lname from people join staff on people.uid = staff.uid";
+										$q = "select staff.uid, type,  fname, lname from people join staff on people.uid = staff.uid where staff.type = 4 or staff.type = 6";
 
 										
 										if ($result2 = $dbc->query($q)){	
