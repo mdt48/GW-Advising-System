@@ -3,13 +3,15 @@
 <html>  
 
 <head>  
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
-  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<link rel = "stylesheet" href="/css/heroic-features.css" >
-<link rel="stylesheet" type="text/css" href="style.css">	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
+	<script src="./functions.js" ></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel = "stylesheet" href="/css/heroic-features.css" >
+
 </head>
 <?php 
 session_start();
@@ -52,17 +54,362 @@ session_start();
 		  </ul>
 		</div>
 	  </nav>
-	  <!-- end of nav -->
-	  <div class = "container h-100">
-		<div class = "row h-100 align-items-center">
-			<div class = "col-lg-12">
-				<h1 class = "display-4 text-center text-white mt-5 mb-2">Step 1: Complete Form 1</h1>			</div>
-		</div>
-    </div>
-	  
+	 
+	
 	</script>
 	  <!-- F1 -->
-	  
+	  <?php 
+	  require_once("connectvars.php");
+	  $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+	  $query = "SELECT * FROM form WHERE uid='$uid';";
+	  $result = mysqli_query($dbc, $query);
+	  $num_rows = mysqli_num_rows ($result);
+	  if($num_rows != 0){
+		?>
+		
+			<div class = "container h-100">
+			<div class = "row h-100 align-items-center">
+				<div class = "col-lg-12">
+					<h1 class = "display-4 text-center text-black mt-5 mb-2">Form 1 Already Submitted!</h1>			</div>
+			</div>
+		</div>
+		  
+	 <?php 
+	
+	
+	$uid = $_SESSION['uid'];
+				$query = "SELECT grad_status FROM student WHERE uid='$uid';";
+				$result = mysqli_query($dbc, $query);
+				$row = mysqli_fetch_array($result);
+				$gStat = $row['grad_status'];
+				
+				if(strcmp($gStat,"f1")==0){
+					echo "Approved";
+					echo "
+							<br />
+							<br />
+							<button type='submit' class='btn btn-primary btn-md float-left f1' id='masters' name='masters' style='margin-right:20px;'>Apply For Masters</button>
+							
+							<button type='submit' class='btn btn-primary btn-md float-left f1' id='phd' name='phd'>Apply For PHD</button>
+							";
+				}else{
+					
+					echo "Form 1 not yet Approved or Denied. Check Back Later". $gStat;
+				}
+			?>
+		</h1>
+		<br />
+				<?php
+					if(isset($_POST['masters'])){
+						require_once("connectvars.php");
+						$dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+		
+						if(!$dbc){
+							die("could not connect");
+						}
+						$uid = $_SESSION['uid'];
+
+						$query = "SELECT audited, program FROM student WHERE uid='$uid';";
+						$result = mysqli_query($dbc, $query);
+						$row = mysqli_fetch_array($result);
+						if($row['audited']){
+							echo '<script type="text/javascript">alert("You have already been audited");</script>';
+							exit;
+						}else if(strcmp($row['program'],"masters")!=0){
+							echo '<script type="text/javascript">alert("You are not in the Masters program");</script>';
+							exit;
+						}
+						
+						//core courses
+						$CSCI_6212 = false;
+						$CSCI_6221 = false;
+						$CSCI_6461 = false;
+
+						$gpa_sum = 0.0;
+						$credit_sum = 0;
+						$numOutsideCS = 0;
+						$numBs = 0;
+
+						$query = "SELECT * FROM transcript join course on transcript.cid = course.cid WHERE uid='$uid';";
+						$result = mysqli_query($dbc, $query);
+
+						while($row = mysqli_fetch_array($result)){
+							//core classes
+							if(!$CSCI_6212){
+								if(strcmp($row['department'],"CSCI")==0){
+									if($row['cid']==6212){
+										$CSCI_6212 = true;
+									}
+								}
+							}
+							if(!$CSCI_6221){
+								if(strcmp($row['department'],"CSCI")==0){
+									if($row['cid']==6221){
+										$CSCI_6221 = true;
+									}
+								}
+							}
+							if(!$CSCI_6461){
+								if(strcmp($row['department'],"CSCI")==0){
+									if($row['cid']==6461){
+										$CSCI_6461 = true;
+									}
+								}
+							}
+
+							//gpa calc
+							$cid = $row['cid'];
+							$dept = $row['department'];
+							$grade = $row['grade'];
+
+							if(strcmp($dept,"CSCI")!=0){
+								$numOutsideCS++;
+							}
+		
+							// $query = "SELECT credit FROM donotshowerror WHERE department='$dept' AND cid='$cid';";
+							// $credit_res = mysqli_query($dbc, $query);
+							// $credit_row = mysqli_fetch_array($credit_res);
+							$credit = $row['credit'];
+
+							if(strcmp($grade,"IP")==0){	//do not count incomplete classes
+								continue;
+							}
+
+							$credit_sum += $credit;
+
+							if(strcmp($grade,"A")==0){
+								$gpa_sum += ($credit * 4);
+				
+							}else if(strcmp($grade,"A-")==0){
+									$gpa_sum += ($credit * 3.7);
+							}else if(strcmp($grade,"B+")==0){
+									$gpa_sum += ($credit * 3.3);
+							}else if(strcmp($grade,"B")==0){
+									$gpa_sum += ($credit * 3);
+							}else if(strcmp($grade,"B-")==0){
+									$gpa_sum += ($credit * 2.7);
+									$numBs++;
+							}else if(strcmp($grade,"C+")==0){
+									$gpa_sum += ($credit * 2.3);
+									$numBs++;
+							}else if(strcmp($grade,"C")==0){
+									$gpa_sum += ($credit * 2);
+									$numBs++;
+							}else if(strcmp($grade,"F")==0){
+									//add zero
+									$numBs++;
+							}else{
+								//invalid grade
+							}
+
+
+
+						}
+
+						echo '<script type="text/javascript">alert("'.$credit_sum.'");</script>';
+
+						if($credit_sum!=0){
+							$gpa = round(($gpa_sum)/($credit_sum),2);
+						}else{
+							$gpa = 0;
+						}
+						/*if($CSCI_6212 && $CSCI_6221 && $CSCI_6461){
+							if($gpa >= 3.0){
+								if($credit_sum >=30){
+									if($numBs <= 2){
+										if($numOutsideCS <= 2){
+											$query = "UPDATE student SET audited=1 WHERE uid='$uid';";
+											mysqli_query($dbc, $query);
+											echo '<script type="text/javascript">alert("The system has approved you for graduation");</script>';
+										}else{
+											echo '<script type="text/javascript">alert("You have taken too many non-CS courses");</script>';
+										}
+									}else{
+										echo '<script type="text/javascript">alert("You have too many grades below B");</script>';
+									}
+								}else{
+									echo '<script type="text/javascript">alert("You have failed to take 30 credits");</script>';
+								}
+							}else{
+								echo '<script type="text/javascript">alert("You have failed to reach the gpa requirement");</script>';
+							}
+						}else{
+							echo '<script type="text/javascript">alert("You have failed to take core classes");</script>';
+						}*/
+
+						if($CSCI_6212 && $CSCI_6221 && $CSCI_6461 && $gpa >= 3.0 && $credit_sum >= 30 && $numBs <=2 && $numOutsideCS <=2){
+							$query = "UPDATE student SET audited=1 WHERE uid='$uid';";
+							mysqli_query($dbc, $query);
+							echo '<script type="text/javascript">alert("The system has approved you for a Masters degree");</script>';
+						}else{
+							echo '<script type="text/javascript">alert("You have failed to reach Masters degree requirements");</script>';
+							$error_msg = "Failed to meet degree requirements: ";
+							if(!($CSCI_6212 && $CSCI_6221 && $CSCI_6461)){
+								$error_msg .= "(Core CS classes not taken) ";
+							}
+							if(!($gpa>=3.0)){
+								$error_msg .= "(GPA is too low) ";
+							}
+							if(!($credit_sum>=30)){
+								$error_msg .= "(Not enough credits) ";
+							}
+							if(!($numBs<=2)){
+								$error_msg .= "(Too many grades below B) ";
+							}
+							if(!($numOutsideCS<=2)){
+								$error_msg .= "(Too many courses outside CS) ";
+							}
+							echo '<script type="text/javascript">alert("'.$error_msg.'");</script>';
+						}
+
+					}
+					if(isset($_POST['phd'])){
+						require_once("connectvars.php");
+						$dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+		
+						if(!$dbc){
+							die("could not connect");
+						}
+						$uid = $_SESSION['uid'];
+
+						$query = "SELECT audited, program, thesis FROM student WHERE uid='$uid';";
+						$result = mysqli_query($dbc, $query);
+						$row = mysqli_fetch_array($result);
+						if($row['audited']){
+							echo '<script type="text/javascript">alert("You have already been approved");</script>';
+							exit;
+						}else if(strcmp($row['program'],"phd")!=0){
+							echo '<script type="text/javascript">alert("You are not in the PHD program");</script>';
+							exit;
+						} else if (!$row['thesis']){
+							echo '<script type="text/javascript">alert("Youre thesis has not been approved");</script>';
+							exit;
+						}
+
+						$gpa_sum = 0.0;
+						$credit_sum = 0;
+						$CS_credits = 0;
+						$numBs = 0;
+
+						$query = "SELECT * FROM transcript join course on transcript.cid = course.cid WHERE uid='$uid';";
+						$result = mysqli_query($dbc, $query);
+
+						while($row = mysqli_fetch_array($result)){
+							//gpa calc
+							$cid = $row['cid'];
+							$dept = $row['department'];
+							$grade = $row['grade'];
+
+							// $query = "SELECT credit FROM donotshowerror WHERE department='$dept' AND cid='$cid';";
+							// $credit_res = mysqli_query($dbc, $query);
+							// $credit_row = mysqli_fetch_array($credit_res);
+							$credit = $row['credit'];
+
+							
+							if(strcmp($grade,"IP")==0){	//do not count incomplete classes
+								continue;
+							}
+
+							$credit_sum += $credit;
+							if(strcmp($dept,"CSCI")==0){
+								$CS_credits +=$credit;
+							}
+
+							//calc gpa
+							if(strcmp($grade,"A")==0){
+								$gpa_sum += ($credit * 4);
+							}else if(strcmp($grade,"A-")==0){
+									$gpa_sum += ($credit * 3.7);
+							}else if(strcmp($grade,"B+")==0){
+									$gpa_sum += ($credit * 3.3);
+							}else if(strcmp($grade,"B")==0){
+									$gpa_sum += ($credit * 3);
+							}else if(strcmp($grade,"B-")==0){
+									$gpa_sum += ($credit * 2.7);
+									$numBs++;
+							}else if(strcmp($grade,"C+")==0){
+									$gpa_sum += ($credit * 2.3);
+									$numBs++;
+							}else if(strcmp($grade,"C")==0){
+									$gpa_sum += ($credit * 2);
+									$numBs++;
+							}else if(strcmp($grade,"F")==0){
+									//add zero
+									$numBs++;
+							}else{
+								//invalid grade
+							}
+
+						}
+						if($credit_sum!=0){
+							$gpa = round(($gpa_sum)/($credit_sum),2);
+						}else{
+							$gpa = 0;
+						}
+
+						$query = "SELECT thesis FROM student WHERE uid='$uid';";
+						$result = mysqli_query($dbc, $query);
+						$row = mysqli_fetch_array($result);
+						$thesis = $row['thesis'];
+						
+						
+						/*if($gpa >= 3.5){
+							if($credit_sum >=36){
+								if($CS_credits >= 30){
+									if($numBs <= 1){
+										if($thesis){
+											$query = "UPDATE student SET audited=1 WHERE uid='$uid';";
+											mysqli_query($dbc, $query);
+											echo '<script type="text/javascript">alert("The system has approved you for a PHD degree");</script>';
+										}else{
+											echo '<script type="text/javascript">alert("Your thesis is not approved");</script>';
+										}
+									}else{
+										echo '<script type="text/javascript">alert("You have too many grades below B");</script>';
+									}
+								}else{
+									echo '<script type="text/javascript">alert("You have failed to take 30 CS credits");</script>';
+								}
+							}else{
+								echo '<script type="text/javascript">alert("You have failed to take 36 credits");</script>';
+							}
+						}else{
+							echo '<script type="text/javascript">alert("You have failed to reach the gpa requirement");</script>';
+						}*/
+						
+						if($gpa >= 3.5 && $credit_sum >=36 && $CS_credits >= 30 && $numBs <=1 && $thesis){
+							$query = "UPDATE student SET audited=1 WHERE uid='$uid';";
+							mysqli_query($dbc, $query);
+							echo '<script type="text/javascript">alert("The system has approved you for a PHD degree");</script>';
+						}else{
+							//echo '<script type="text/javascript">alert("You have failed to reach PHD degree requirements");</script>';
+							$error_msg = "Failed to meet degree requirements: ";
+							if(!($gpa >= 3.5)){
+								$error_msg .= "(GPA is too low) ";
+							}
+							if(!($credit_sum >= 36)){
+								$error_msg .= "(Not enough credits) ";
+							}
+							if(!($CS_credits>=30)){
+								$error_msg .= "(Not enough CS credits) ";
+							}
+							if(!($numBs <= 1)){
+								$error_msg .= "(Too many grades below B) ";
+							}
+							if(!($thesis)){
+								$error_msg .= "(Thesis not approved) ";
+							}
+							echo '<script type="text/javascript">alert("'.$error_msg.'");</script>';
+						}
+
+					}
+	} else {?>
+		<div class = "container h-100">
+		<div class = "row h-100 align-items-center">
+			<div class = "col-lg-12">
+				<h1 class = "display-4 text-center text-black mt-5 mb-2">Step 1: Complete Form 1</h1>			</div>
+		</div>
+    </div>
 	  <table class="table" id="tab">
 		<thead>
 		  <tr>
@@ -269,327 +616,8 @@ session_start();
 				if(!$dbc){
 					die("could not connect");
 				}
-				$uid = $_SESSION['uid'];
-				$query = "SELECT grad_status FROM student WHERE uid='$uid';";
-				$result = mysqli_query($dbc, $query);
-				$row = mysqli_fetch_array($result);
-				$gStat = $row['grad_status'];
-				if(strcmp($gStat,"f1")==0){
-					echo "Approved";
-					echo "
-							<br />
-							<br />
-							<button type='submit' class='btn btn-primary btn-md float-left f1' id='masters' name='masters' style='margin-right:20px;'>Apply For Masters</button>
-							
-							<button type='submit' class='btn btn-primary btn-md float-left f1' id='phd' name='phd'>Apply For PHD</button>
-							";
-				}else{
-					echo "Not Approved";
-				}
-			?>
-		</h1>
-		<br />
-				<?php
-					if(isset($_POST['masters'])){
-						require_once("connectvars.php");
-						$dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-		
-						if(!$dbc){
-							die("could not connect");
-						}
-						$uid = $_SESSION['uid'];
-
-						$query = "SELECT audited, program FROM student WHERE uid='$uid';";
-						$result = mysqli_query($dbc, $query);
-						$row = mysqli_fetch_array($result);
-						if($row['audited']){
-							echo '<script type="text/javascript">alert("You have already been audited");</script>';
-							exit;
-						}else if(strcmp($row['program'],"masters")!=0){
-							echo '<script type="text/javascript">alert("You are not in the Masters program");</script>';
-							exit;
-						}
-						
-						//core courses
-						$CSCI_6212 = false;
-						$CSCI_6221 = false;
-						$CSCI_6461 = false;
-
-						$gpa_sum = 0.0;
-						$credit_sum = 0;
-						$numOutsideCS = 0;
-						$numBs = 0;
-
-						$query = "SELECT * FROM transcript join course on transcript.cid = course.cid WHERE uid='$uid';";
-						$result = mysqli_query($dbc, $query);
-
-						while($row = mysqli_fetch_array($result)){
-							//core classes
-							if(!$CSCI_6212){
-								if(strcmp($row['department'],"CSCI")==0){
-									if($row['cid']==6212){
-										$CSCI_6212 = true;
-									}
-								}
-							}
-							if(!$CSCI_6221){
-								if(strcmp($row['department'],"CSCI")==0){
-									if($row['cid']==6221){
-										$CSCI_6221 = true;
-									}
-								}
-							}
-							if(!$CSCI_6461){
-								if(strcmp($row['department'],"CSCI")==0){
-									if($row['cid']==6461){
-										$CSCI_6461 = true;
-									}
-								}
-							}
-
-							//gpa calc
-							$cid = $row['cid'];
-							$dept = $row['department'];
-							$grade = $row['grade'];
-
-							if(strcmp($dept,"CSCI")!=0){
-								$numOutsideCS++;
-							}
-		
-							// $query = "SELECT credit FROM donotshowerror WHERE department='$dept' AND cid='$cid';";
-							// $credit_res = mysqli_query($dbc, $query);
-							// $credit_row = mysqli_fetch_array($credit_res);
-							$credit = $row['credit'];
-
-							if(strcmp($grade,"IP")==0){	//do not count incomplete classes
-								continue;
-							}
-
-							$credit_sum += $credit;
-
-							if(strcmp($grade,"A")==0){
-								$gpa_sum += ($credit * 4);
 				
-							}else if(strcmp($grade,"A-")==0){
-									$gpa_sum += ($credit * 3.7);
-							}else if(strcmp($grade,"B+")==0){
-									$gpa_sum += ($credit * 3.3);
-							}else if(strcmp($grade,"B")==0){
-									$gpa_sum += ($credit * 3);
-							}else if(strcmp($grade,"B-")==0){
-									$gpa_sum += ($credit * 2.7);
-									$numBs++;
-							}else if(strcmp($grade,"C+")==0){
-									$gpa_sum += ($credit * 2.3);
-									$numBs++;
-							}else if(strcmp($grade,"C")==0){
-									$gpa_sum += ($credit * 2);
-									$numBs++;
-							}else if(strcmp($grade,"F")==0){
-									//add zero
-									$numBs++;
-							}else{
-								//invalid grade
-							}
-
-
-
-						}
-
-						echo '<script type="text/javascript">alert("'.$credit_sum.'");</script>';
-
-						if($credit_sum!=0){
-							$gpa = round(($gpa_sum)/($credit_sum),2);
-						}else{
-							$gpa = 0;
-						}
-						/*if($CSCI_6212 && $CSCI_6221 && $CSCI_6461){
-							if($gpa >= 3.0){
-								if($credit_sum >=30){
-									if($numBs <= 2){
-										if($numOutsideCS <= 2){
-											$query = "UPDATE student SET audited=1 WHERE uid='$uid';";
-											mysqli_query($dbc, $query);
-											echo '<script type="text/javascript">alert("The system has approved you for graduation");</script>';
-										}else{
-											echo '<script type="text/javascript">alert("You have taken too many non-CS courses");</script>';
-										}
-									}else{
-										echo '<script type="text/javascript">alert("You have too many grades below B");</script>';
-									}
-								}else{
-									echo '<script type="text/javascript">alert("You have failed to take 30 credits");</script>';
-								}
-							}else{
-								echo '<script type="text/javascript">alert("You have failed to reach the gpa requirement");</script>';
-							}
-						}else{
-							echo '<script type="text/javascript">alert("You have failed to take core classes");</script>';
-						}*/
-
-						if($CSCI_6212 && $CSCI_6221 && $CSCI_6461 && $gpa >= 3.0 && $credit_sum >= 30 && $numBs <=2 && $numOutsideCS <=2){
-							$query = "UPDATE student SET audited=1 WHERE uid='$uid';";
-							mysqli_query($dbc, $query);
-							echo '<script type="text/javascript">alert("The system has approved you for a Masters degree");</script>';
-						}else{
-							echo '<script type="text/javascript">alert("You have failed to reach Masters degree requirements");</script>';
-							$error_msg = "Failed to meet degree requirements: ";
-							if(!($CSCI_6212 && $CSCI_6221 && $CSCI_6461)){
-								$error_msg .= "(Core CS classes not taken) ";
-							}
-							if(!($gpa>=3.0)){
-								$error_msg .= "(GPA is too low) ";
-							}
-							if(!($credit_sum>=30)){
-								$error_msg .= "(Not enough credits) ";
-							}
-							if(!($numBs<=2)){
-								$error_msg .= "(Too many grades below B) ";
-							}
-							if(!($numOutsideCS<=2)){
-								$error_msg .= "(Too many courses outside CS) ";
-							}
-							echo '<script type="text/javascript">alert("'.$error_msg.'");</script>';
-						}
-
-					}
-					if(isset($_POST['phd'])){
-						require_once("connectvars.php");
-						$dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-		
-						if(!$dbc){
-							die("could not connect");
-						}
-						$uid = $_SESSION['uid'];
-
-						$query = "SELECT audited, program FROM student WHERE uid='$uid';";
-						$result = mysqli_query($dbc, $query);
-						$row = mysqli_fetch_array($result);
-						if($row['audited']){
-							echo '<script type="text/javascript">alert("You have already been approved");</script>';
-							exit;
-						}else if(strcmp($row['program'],"phd")!=0){
-							echo '<script type="text/javascript">alert("You are not in the PHD program");</script>';
-							exit;
-						}
-
-						$gpa_sum = 0.0;
-						$credit_sum = 0;
-						$CS_credits = 0;
-						$numBs = 0;
-
-						$query = "SELECT * FROM transcript join course on transcript.cid = course.cid WHERE uid='$uid';";
-						$result = mysqli_query($dbc, $query);
-
-						while($row = mysqli_fetch_array($result)){
-							//gpa calc
-							$cid = $row['cid'];
-							$dept = $row['department'];
-							$grade = $row['grade'];
-
-							// $query = "SELECT credit FROM donotshowerror WHERE department='$dept' AND cid='$cid';";
-							// $credit_res = mysqli_query($dbc, $query);
-							// $credit_row = mysqli_fetch_array($credit_res);
-							$credit = $row['credit'];
-
-							
-							if(strcmp($grade,"IP")==0){	//do not count incomplete classes
-								continue;
-							}
-
-							$credit_sum += $credit;
-							if(strcmp($dept,"CSCI")==0){
-								$CS_credits +=$credit;
-							}
-
-							//calc gpa
-							if(strcmp($grade,"A")==0){
-								$gpa_sum += ($credit * 4);
-							}else if(strcmp($grade,"A-")==0){
-									$gpa_sum += ($credit * 3.7);
-							}else if(strcmp($grade,"B+")==0){
-									$gpa_sum += ($credit * 3.3);
-							}else if(strcmp($grade,"B")==0){
-									$gpa_sum += ($credit * 3);
-							}else if(strcmp($grade,"B-")==0){
-									$gpa_sum += ($credit * 2.7);
-									$numBs++;
-							}else if(strcmp($grade,"C+")==0){
-									$gpa_sum += ($credit * 2.3);
-									$numBs++;
-							}else if(strcmp($grade,"C")==0){
-									$gpa_sum += ($credit * 2);
-									$numBs++;
-							}else if(strcmp($grade,"F")==0){
-									//add zero
-									$numBs++;
-							}else{
-								//invalid grade
-							}
-
-						}
-						if($credit_sum!=0){
-							$gpa = round(($gpa_sum)/($credit_sum),2);
-						}else{
-							$gpa = 0;
-						}
-
-						$query = "SELECT thesis FROM student WHERE uid='$uid';";
-						$result = mysqli_query($dbc, $query);
-						$row = mysqli_fetch_array($result);
-						$thesis = $row['thesis'];
-						
-						
-						/*if($gpa >= 3.5){
-							if($credit_sum >=36){
-								if($CS_credits >= 30){
-									if($numBs <= 1){
-										if($thesis){
-											$query = "UPDATE student SET audited=1 WHERE uid='$uid';";
-											mysqli_query($dbc, $query);
-											echo '<script type="text/javascript">alert("The system has approved you for a PHD degree");</script>';
-										}else{
-											echo '<script type="text/javascript">alert("Your thesis is not approved");</script>';
-										}
-									}else{
-										echo '<script type="text/javascript">alert("You have too many grades below B");</script>';
-									}
-								}else{
-									echo '<script type="text/javascript">alert("You have failed to take 30 CS credits");</script>';
-								}
-							}else{
-								echo '<script type="text/javascript">alert("You have failed to take 36 credits");</script>';
-							}
-						}else{
-							echo '<script type="text/javascript">alert("You have failed to reach the gpa requirement");</script>';
-						}*/
-						
-						if($gpa >= 3.5 && $credit_sum >=36 && $CS_credits >= 30 && $numBs <=1 && $thesis){
-							$query = "UPDATE student SET audited=1 WHERE uid='$uid';";
-							mysqli_query($dbc, $query);
-							echo '<script type="text/javascript">alert("The system has approved you for a PHD degree");</script>';
-						}else{
-							//echo '<script type="text/javascript">alert("You have failed to reach PHD degree requirements");</script>';
-							$error_msg = "Failed to meet degree requirements: ";
-							if(!($gpa >= 3.5)){
-								$error_msg .= "(GPA is too low) ";
-							}
-							if(!($credit_sum >= 36)){
-								$error_msg .= "(Not enough credits) ";
-							}
-							if(!($CS_credits>=30)){
-								$error_msg .= "(Not enough CS credits) ";
-							}
-							if(!($numBs <= 1)){
-								$error_msg .= "(Too many grades below B) ";
-							}
-							if(!($thesis)){
-								$error_msg .= "(Thesis not approved) ";
-							}
-							echo '<script type="text/javascript">alert("'.$error_msg.'");</script>';
-						}
-
-					}
+				}
 				?>
 		
 
