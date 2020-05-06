@@ -1,4 +1,4 @@
-use gradymcpeak;
+use mdt_;
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS student CASCADE;
 DROP TABLE IF EXISTS form CASCADE;
@@ -21,11 +21,11 @@ DROP TABLE IF EXISTS people;
 
 
 CREATE TABLE form(
-  `uid` int, 
-  `department` VARCHAR(32),
-  `cid` int, 
-  FOREIGN KEY (`cid`) REFERENCES course(`cid`),
-  FOREIGN KEY (`uid`) REFERENCES student(`uid`)
+	`uid` int, 
+	`department` VARCHAR(32),
+	`cid` int, 	
+	FOREIGN KEY (`cid`) REFERENCES course(`cid`),
+	FOREIGN KEY (`uid`) REFERENCES student(`uid`)
 );
 
 CREATE TABLE people (
@@ -64,7 +64,7 @@ CREATE TABLE staff(
 );
 
 CREATE TABLE applicant (
-  `uid` int,
+	`uid` int,
   `aoi` varchar(256),
   `appExp` varchar(256),
   `degProgram` varchar(40),
@@ -161,17 +161,17 @@ CREATE TABLE transcript(
 );
 
 CREATE TABLE schedule (
-  cid int,
-  department VARCHAR(32),
-  year CHAR(4),
-  section INT(2),
-  semester VARCHAR(10),
-  day CHAR(1),
-  start_time DECIMAL(30,2),
-  end_time DECIMAL(30,2),
-  room VARCHAR(15),
-  PRIMARY KEY (cid, department, year, section, semester),
-  FOREIGN KEY (cid, department) references course(cid, department)
+	cid int,
+	department VARCHAR(32),
+	year CHAR(4),
+	section INT(2),
+	semester VARCHAR(10),
+	day CHAR(1),
+	start_time DECIMAL(30,2),
+	end_time DECIMAL(30,2),
+	room VARCHAR(15),
+	PRIMARY KEY (cid, department, year, section, semester),
+	FOREIGN KEY (cid, department) references course(cid, department)
 );
 
 CREATE TABLE takes (

@@ -12,6 +12,7 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	<script src="https://code.jquery.com/jquery-3.3.1.min.js" ></script>
 	<script src="./functions.js" ></script>
+	
 </head>
 <?php 
 session_start();
@@ -32,9 +33,15 @@ session_start();
 		$home_link = "./staff_home.php";
     }
 ?>
-<body id= "body"> 
+
 	</script> 
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+	
+	  
+
+
+
+<body id= "body">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
 		<a class="navbar-brand" index="test" href=<?php echo $home_link ?>>Home</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		  <span class="navbar-toggler-icon"></span>
@@ -70,12 +77,11 @@ session_start();
 			</script>
 			</ul>
 		  </div>
-	  </nav>
-	  
-</body>
-
-</html>
-
+	  </nav> 
+	  <div style="color:white">a</div>
+	  <div style="color:white">a</div>
+	  <div style="color:white">a</div>
+	  <div style="color:white">a</div>
 <script type="text/javascript"> 
 			$(document).ready(function(){
 				var type = <?php echo json_encode($title);?>;
@@ -103,7 +109,7 @@ session_start();
 								var l_id = "l_" + i.toString();
 								var l_text = getLabelText(k);
 								console.log(k);
-								addElement({pID: "form", tag: "div", cls: "for-group", id: f_id});
+								addElement({pID: "form", tag: "div", cls: "form-group", id: f_id});
 								addElement({pID: f_id, tag: "label", inner: l_text, for: i, id: l_id});
 								addElement({pID: f_id, tag: "input", cls: "form-control", id: i});
 								
@@ -152,7 +158,7 @@ session_start();
                                             location.href = "./staff_home.php";
                                         }
                                         else {
-                                            location.href = "./student_home.php";
+                                            location.href = "./index.php";
                                         }
 							            
 									}
@@ -166,3 +172,5 @@ session_start();
 
 			
 </script>
+</body>
+</html>

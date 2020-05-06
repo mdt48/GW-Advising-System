@@ -90,20 +90,30 @@ function viewF1(id, type){
         }
     });
     
-    addElement({pID:"z", id:id, tag:"button", cls: "btn btn-primary btn-md float-left f1", inner: "Approve"});
-    bindButtonClick();
-    function bindButtonClick() {
-        document.getElementById(id).addEventListener("click", function(){ 
+    addElement({pID:"z", id:id, tag:"button", cls: "btn btn-primary btn-md float-left f1 a", inner: "Approve"});
+    addElement({pID:"z", id:id, tag:"button", cls: "btn btn-primary btn-md float-left f1 d", inner: "Disapprove"});
+
+        $("#"+id+".a").on("click", function(){
             $.ajax({
-            url: "./query_runner.php",
-            type: "POST",
-            data: {uid: id, type: "f1"},
-            success: function(data){
-                alert("succesfully updated!")
-                }
-            });
+                    url: "./query_runner.php",
+                    type: "POST",
+                    data: {uid: id, type: "f1"},
+                    success: function(data){
+                        alert("succesfully updated!")
+                        }
+                    });
         });
-    }
+        $("#"+id+".d").on("click", function(){
+            $.ajax({
+                    url: "./query_runner.php",
+                    type: "POST",
+                    data: {uid: id, type: "f12"},
+                    success: function(data){
+                        alert("succesfully updated!")
+                        }
+                    });
+        });
+
     
 }
 function approveGrad(id) {
