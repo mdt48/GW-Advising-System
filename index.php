@@ -1,39 +1,7 @@
-<!DOCtype html>
-<html>
-<head>  
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
-  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<link rel = "stylesheet" href="/css/heroic-features.css" >
-<link rel="stylesheet" type="text/css" href="style.css">
-<title>Home</title>
-</head>
-<body data-gr-c-s-loaded = "true">
-
 <?php 
-	session_start();
-	require_once('connectvars.php');
+require_once('navBar.php');
 
-	if (isset($_SESSION['uid'])) {
-?>
-<!-- NAV BAR -->
-<nav class = "navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class = "container">
-		<a class = "navbar-brand" href = "landingPage.php">GW Graduate Program</a>
-		<div class = "navbar-collapse collapse" id = "navbarNavDropdown" > 
-			<ul class = "navbar-nav ml-auto">
-				<li class = "nav item active">
-					<a class = "nav-link" href = "index.php">Home</a>
-					</a>
-				</li>
-				<li class = "nav item">
-					<a class = "nav-link" href = "logout.php">Logout</a>
-					</a>
-				</li>
-			</ul>
-		</div>
-	</div>
-</nav>
-<?php 
+if (isset($_SESSION['uid'])) {
 	$dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
 	$uid = $_SESSION['uid'];
@@ -96,6 +64,7 @@
 		if (mysqli_num_rows($dataA) == 1) {	
 			echo '<a href="status.php"><h1>View Application Status</h1></a><br/>';
 			echo '<a href="viewApp.php"><h1>View Application Contents</h1></a><br/>';
+			echo '<a href="edit_user_info.php"><h1>Edit User Info</h1></a><br/>';
 		}
 		else if (mysqli_num_rows($dataS) == 1){
 			$query = "select type from staff where uid = '$uid'";
@@ -110,16 +79,14 @@
 					echo '<a href="grades.php"><h1>View Grades</h1></a><br/>';
 					echo '<a href="view-student-transcripts.php"><h1>View Transcripts</h1></a><br/>';
 					echo '<a href="view-classes.php"><h1>View Classes</h1></a><br/>';
-					echo '<a href="edit_user_info.php"><h1>Edit User Info</h1></a><br/>';
 				}
 				//gs
 				else if ($row['type'] == 1) {
 					echo '<a href="queue.php"><h1>Applications to review</h1></a><br/>';
-
-					echo '<a href="view_all_students.php"><h1>View Students</h1></a><br/>';
+					echo '<a href="queueMatriculate.php"><h1>Students to Matriculate</h1></a><br/>';
+					echo '<a href="view_transcript.php"><h1>View Transcript</h1></a><br/>';
 					echo '<a href="grades.php"><h1>View Grades</h1></a><br/>';
 					echo '<a href="view-classes.php"><h1>View Classes</h1></a><br/>';
-					echo '<a href="edit_user_info.php"><h1>Edit User Info</h1></a><br/>';
 					
 				}
 				//cac
@@ -133,7 +100,6 @@
 				//fa
 				else if ($row['type'] == 4) {
 					echo '<a href="view_all_students.php"><h1>View All Students</h1></a><br/>';
-					echo '<a href="edit_user_info.php"><h1>Edit User Info</h1></a><br/>';
 				}
 				//fi
 				else if ($row['type'] == 5) {
@@ -144,7 +110,6 @@
 				else if ($row['type'] == 6) {
 					echo '<a href="queue.php"><h1>Applications to review</h1></a>';					
 					echo '<a href="view_all_students.php"><h1>View All Students</h1></a><br/>';
-					echo '<a href="edit_user_info.php"><h1>Edit User Info</h1></a><br/>';
 				}
 				//fr&i
 				else if ($row['type'] == 7) {
@@ -155,7 +120,6 @@
 				//fi&a
 				else if ($row['type'] == 8) {
 					echo '<a href="view_all_students.php"><h1>View All Students</h1></a><br/>';
-					echo '<a href="edit_user_info.php"><h1>Edit User Info</h1></a><br/>';
 					echo '<a href="grades.php"><h1>View Grades</h1></a><br/>';
 					echo '<a href="view-student-transcripts.php"><h1>View Student Transcripts</h1></a><br/>';
 				}
@@ -163,10 +127,11 @@
 				else if ($row['type'] == 9) {
 					echo '<a href="queue.php"><h1>Applications to review</h1></a>';
 					echo '<a href="view_all_students.php"><h1>View All Students</h1></a><br/>';
-					echo '<a href="edit_user_info.php"><h1>Edit User Info</h1></a><br/>';
 					echo '<a href="grades.php"><h1>View Grades</h1></a><br/>';
 					echo '<a href="view-student-transcripts.php"><h1>View Student Transcripts</h1></a><br/>';
 				}
+				
+				echo '<a href="edit_user_info.php"><h1>Edit User Info</h1></a><br/>';
 			}
 
 		}

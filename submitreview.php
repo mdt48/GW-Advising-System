@@ -30,7 +30,6 @@
 
         $query = "INSERT INTO reviewForm (uid, studentuid".$missingCRequired.", gas".$commentsRequired.$reasonRequired.") VALUES (".$_SESSION['uid'].", ".$_POST['uid'].$missingC.", ".$_POST['rating'].$comments.$reason.")";
         $data = mysqli_query($dbc, $query);
-        
 
         if (isset($_POST['rating1'])) {
             $credible = 0;
