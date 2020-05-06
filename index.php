@@ -87,6 +87,7 @@ if (isset($_SESSION['uid'])) {
 					echo '<a href="view_transcript.php"><h1>View Transcript</h1></a><br/>';
 					echo '<a href="grades.php"><h1>View Grades</h1></a><br/>';
 					echo '<a href="view-classes.php"><h1>View Classes</h1></a><br/>';
+					echo '<a href="view_all_students.php"><h1>View All Students</h1></a><br/>';
 					
 				}
 				//cac

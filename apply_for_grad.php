@@ -247,8 +247,8 @@ session_start();
 
 								//echo "$dept";
 								//echo "$cid";
-								$query = "INSERT INTO form VALUES ($uid,'$dept',$fid,$cid);";
-
+								$query = "INSERT INTO form VALUES ($uid,'$dept', $cid);";
+								
 								
 								if (mysqli_query($dbc, $query)) {
 									//echo "New record created successfully";
@@ -256,7 +256,8 @@ session_start();
 									//echo "Error: " . $query . "<br>" . mysqli_error($dbc);
 									if(strcmp($dept,"")!=0){
 										//echo "ERROR: $dept $cid is not a class <br>";
-										echo '<script type="text/javascript">alert("ERROR: '.$dept.' '.$cid.' is not a class");</script>';
+										//echo '<script type="text/javascript">alert("ERROR: '.$dept.' '.$cid.' is not a class");</script>';
+										echo $query;
 									}
 								}
 							}							
