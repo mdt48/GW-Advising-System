@@ -115,6 +115,7 @@ function approveGrad(id) {
             data: {uid: id, type: "grad"},
             success: function(data){
                 alert("succesfully updated!")
+                window.location.reload(true); 
                 }
             });
         });

@@ -116,7 +116,7 @@
 				else if ($row['type'] == 1) {
 					echo '<a href="queue.php"><h1>Applications to review</h1></a><br/>';
 
-					echo '<a href="view_transcript.php"><h1>View Transcript</h1></a><br/>';
+					echo '<a href="view_all_students.php"><h1>View Students</h1></a><br/>';
 					echo '<a href="grades.php"><h1>View Grades</h1></a><br/>';
 					echo '<a href="view-classes.php"><h1>View Classes</h1></a><br/>';
 					echo '<a href="edit_user_info.php"><h1>Edit User Info</h1></a><br/>';
@@ -175,6 +175,8 @@
 			echo '<a href="edit_user_info.php"><h1>Edit User Info</h1></a><br/>';
 			echo '<a href="register.php"><h1>Register</h1></a><br/>';
 			echo '<a href="view-classes.php"><h1>View Classes</h1></a><br/>';
+			
+			echo '<a href="apply_for_grad.php"><h1>Apply for Graduation</h1></a><br/>';
 		}
 	}
 	?>

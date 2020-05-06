@@ -131,40 +131,45 @@
 
 										// query form table
 										$form_query = "select * from form where uid='$row->uid'";
+										
 										if ($form_result = $dbc ->query($form_query)) {
-											if (($nr = mysqli_num_rows($form_result)) != 0) {
+											if (($nr = mysqli_num_rows($form_result)) != 0 && $row->grad_year == null) { 
 												echo
 													"<td> 
-														<button type='submit' onclick='viewF1({$row->uid}, true);'class='btn btn-primary btn-md float-left f1' id='btnLogin'>View F1</button>
+														<button type='submit' onclick='viewF1({$row->uid}, true);' class='btn btn-primary btn-md float-left f1' id='btnLogin'>View F1</button>
 													</td>";
-											} else {
+											}else if ($row->grad_year != null) {
+												echo "<td>N/A for Alumni</td>";
+											} 
+											else {
 												echo "<td> No F1 Submitted</td>";
 											}
 										}
 										
 										// display thesis buttons
-										if (strcmp($row->program, "phd")== 0) {
-											if (!$row->thesis){
-												
-												echo "<td><div class='dropdown'>";
-												
-													echo "<button class='btn btn-primary dropdown-toggle' id='menu1' type='button' data-toggle='dropdown'>Approve/Disapprove";
-													echo "<span class='caret'></span></button>";
-													echo "<ul class='dropdown-menu' role='menu' aria-labelledby='menu1'>";
-													echo "<button type='submit class='btn btn-primary btn-md float-left f1' value= '$row->uid' id='approve'><li role='presentation'></li>Approve</button>";
-													echo "<button type='submit id='disapprove' value= '$row->uid'><li role='presentation'>Disapprove</li></button>";
-													echo "</ul>";
-													echo "</div> </td>";
+										if (strcmp($row->program, "phd") == 0) {
+											
+											if (!$row->thesis && $row->thesis != null){
+												echo
+												"<td> 
+													<button type='submit'class='btn btn-primary btn-md float-left thesis' value= '$row->uid'id='thesis'>Approve Thesis</button>
+												</td>";
 											} 
+											else if ($row->thesis == null){
+												echo "<td>No Thesis submitted</td>";
+											}
 											else {
 												echo "<td>Thesis Already Approved</td>";
 											}
-										} else {
+										} else if (strcmp($row->grad_status, "alumn") == 0) {
+											echo "<td>N/A for Alumni</td>";
+										}
+										else {
 											echo "<td>N/A for Masters Students</td>";
 										}
 										
 										if ($title == 1) {
-											if (strcmp($row->grad_status, "f1") == 0 && $row->audited){
+											if (strcmp($row->grad_status, "f1") == 0 && $row->audited && $row->thesis){
 												echo
 												"<td> 
 													<button type='submit' onclick='approveGrad({$row->uid});'class='btn btn-primary btn-md float-left f1' id='grad'>Approve Grad</button>
@@ -175,9 +180,9 @@
 													"<td> 
 														Must Have F1 Submitted/Audited
 													</td>";
-											} else if ($row->grad_year != null) {
-												echo
-												"<td> N/A for Alumni</td>";
+											} 
+											else if (strcmp($row->grad_status, "alumn") != 0) {
+												echo "<td>N/A for Alumni</td>";
 											}
 										} else {
 											
@@ -186,7 +191,7 @@
 														Must be GS for Graduation Approval
 													</td>";
 										}
-										$q = "select staff.uid, fname, lname from people join staff on people.uid = staff.uid where type = 4";
+										$q = "select staff.uid, fname, lname from people join staff on people.uid = staff.uid where type = 4 or type = 6";
 												
 										//$result2 = $dbc->query($q);
 								if ($result2 = $dbc->query($q)){	
@@ -228,5 +233,22 @@
 		</tbody>
 	  </table>  
 </body>
+<script> 
+25
 
+$(document).ready(function(){
+
+     $('#thesis').bind("click",function(){
+		var id = $('#thesis').val();
+		$.ajax ({
+			url: "./approve_thesis.php",
+			type: "POST",
+			data: {uid: id},
+			success: function(data){
+				window.location.reload(true); 
+			}
+		});
+     });
+});
+</script>
 </html>
