@@ -62,6 +62,7 @@ session_start();
 	  
 	</script>
 	  <!-- F1 -->
+	  
 	  <table class="table" id="tab">
 		<thead>
 		  <tr>
@@ -192,26 +193,15 @@ session_start();
 		</tbody>
 	  </table>
 	  <button type="submit" class="btn btn-primary btn-md float-left f1" id="btnLogin" name="btnLogin">Submit Form 1</button>
-	  <!--<script type="text/javascript">
-			document.getElementById("btnLogin").onclick = function() {
-				$(".table").hide();
-				$(".btn").hide();
-				alert("Application Submited");
-			};
-	  </script>-->
+
 
 			  <?php
+			  require_once("connectvars.php");
+			  $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+			  if(!$dbc){
+				die("could not connect");
+			}
 			  		if(isset($_POST['btnLogin'])){
-					
-						require_once("connectvars.php");
-						$dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-
-						if(!$dbc){
-							die("could not connect");
-						}
-
-						//make sure uid is a session variable
-						//$uid = 1;
 						$uid = $_SESSION['uid'];
 
 						$query = "SELECT * FROM form WHERE uid='$uid';";
@@ -247,7 +237,7 @@ session_start();
 
 								//echo "$dept";
 								//echo "$cid";
-								$query = "INSERT INTO form VALUES ($uid,'$dept', $cid);";
+								$query = "INSERT INTO form VALUES ($uid,'$dept', $cid, 0);";
 								
 								
 								if (mysqli_query($dbc, $query)) {
@@ -256,8 +246,8 @@ session_start();
 									//echo "Error: " . $query . "<br>" . mysqli_error($dbc);
 									if(strcmp($dept,"")!=0){
 										//echo "ERROR: $dept $cid is not a class <br>";
-										//echo '<script type="text/javascript">alert("ERROR: '.$dept.' '.$cid.' is not a class");</script>';
-										echo $query;
+										echo '<script type="text/javascript">alert("ERROR: '.$dept.' '.$cid.' is not a class");</script>';
+										// echo $query;
 									}
 								}
 							}							

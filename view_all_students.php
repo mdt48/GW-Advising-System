@@ -113,6 +113,9 @@
 				} else {
 					$query = "select * from student join people on student.uid = people.uid where advisoruid = '$uid'";
 				}
+
+				
+
 				if ($result = $dbc->query($query)){
 					if ($nr = $result->num_rows){
 						$i = 1;
