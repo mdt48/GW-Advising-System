@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>  
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel = "stylesheet" href="/css/heroic-features.css" >
+<link rel="stylesheet" type="text/css" href="style.css">
+<title> GW Graduate Program Landing Page </title>
+</head>
+
+<body data-gr-c-s-loaded = "true">
+<!-- NAV BAR -->
+<nav class = "navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class = "container">
+		<a class = "navbar-brand" href = "landingPage.php">GW Graduate Program</a>	
+	</div>
+</nav>
+<!-- HEADER -->
+<header class = "bg py-5 mb-5" style = "background-color: #033b59;">
+	<div class = "container h-100">
+		<div class = "row h-100 align-items-center">
+			<div class = "col-lg-12">
+				<h1 class = "display-4 text-center text-white mt-5 mb-2">GW Graduate Program Recommendation Letter Portal </h1>
+				<p class = "lead mb-20 text-center text-white-50" id = button>You have received this form because a potential GW Graduate applicant listed your 
+          contact information. Please fill out the required fields below and submit the letter. </p>
+			</div>
+		</div>
+    </div>
+</header>
+<!-- LETTER -->
+<div>
+    <form method = "post" action = "recommendation.php">
+        <div class="form-group">
+          <b><label for="name">Name*</label></b>
+          <input type="text" class="form-control" onkeypress="return (event.charCode > 64 && 
+          event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode == 32)" maxLength = "50" id="name" name = "name" placeholder="Enter name" required>
+        </div>
+        <div class="form-group">
+          <b><label for="recid">RecID*</label></b>
+          <input type="text" class="form-control" onkeypress = "return (event.charCode > 47 && event.charCode < 58)" maxLength = "10" id="recid" name = "recid" placeholder="Enter RecID" required>
+        </div>
+        <div class="form-group">
+          <b><label for="job">Job Title*</label></b>
+          <input type="text" class="form-control" onkeypress="return (event.charCode > 64 && 
+          event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode == 32)" maxlength = "40" id="job" name = "job" placeholder="Enter job title" required>
+        </div>
+        <div class="form-group">
+          <b><label for="org">Company/Organization*</label></b>
+          <input type="text" class="form-control" id="org" name = "org" maxLength = "30" placeholder="Enter company/organization name" required>
+        </div>
+        <div class="form-group">
+          <b><label for="email">Email*</label></b>
+          <input type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" class="form-control" id="email" maxLength = "32" name = "email" placeholder="Enter email" required>
+        </div>
+        <div class="form-group">
+          <b><label for="rel">Relationship with Applicant*</label></b>
+          <input type="text" class="form-control" id="rel" name = "rel" maxLength = "20" placeholder="Enter relation" required>
+        </div>
+        <div class="form-group">
+          <b><label for="letter">Letter of Recommendation for Applicant (max 255 characters)*</label></b>
+          <textarea class="form-control" id="letter" name = "letter" maxLength = "255" rows="20" placeholder="Write letter here"></textarea>
+        </div>
+          <input type="submit" value="Submit" name="submit">
+      </form>
+</div>
+</body>
+</html>
+
