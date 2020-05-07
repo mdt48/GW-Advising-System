@@ -23,10 +23,10 @@ function viewTrans(id, type){
         data: {uid: id, type: "t"},
         success: function(data){
             data = JSON.parse(data);
-            addElement({pID:"z", tag: "tbody", id: "tbody"});
+            addElement({pID:"z", tag: "tbody1", id: "tbody1"});
             for (var i = 0; i < data.length; i++){
                 var dynID = "tr" + i.toString();
-                addElement({pID: "tbody", tag:"tr", id: dynID});
+                addElement({pID: "tbody1", tag:"tr", id: dynID});
                 addElement({pID: dynID, tag: "th", scope: "row", inner: i+1});
                 addElement({pID: dynID, tag: "td", inner: data[i]["course"]});
                 addElement({pID: dynID, tag: "td", inner: data[i]["grade"]});
@@ -78,11 +78,11 @@ function viewF1(id, type){
         success: function(data){
             console.log(data);
             var d = JSON.parse(data);
-            addElement({pID:"z", tag: "tbody", id: "tbody"});
+            addElement({pID:"z", tag: "tbody1", id: "tbody1"});
             for (var i = 0; i < d.length; i++){
                 var dynID = "tr" + i.toString();
-                addElement({pID: "tbody", tag:"tr", id: dynID});
-                addElement({pID: dynID, tag: "th", scope: "row", inner: i+1});
+                addElement({pID: "tbody1", tag:"tr", id: dynID});
+                addElement({pID: dynID, tag: "td", scope: "row", inner: i+1});
                 addElement({pID: dynID, tag: "td", inner: d[i]["cid"]});
                 addElement({pID: dynID, tag: "td", inner: d[i]["dep"]});
             }

@@ -97,7 +97,9 @@ if (isset($_SESSION['uid'])) {
 					echo '<a href="view-student-transcripts.php"><h1>View Transcripts</h1></a><br/>';
 					echo '<a href="grades.php"><h1>View Grades</h1></a><br/>';
 					echo '<a href="view-classes.php"><h1>View Classes</h1></a><br/>';	
-					echo '<a href="view_all_students.php"><h1>View All Students</h1></a><br/>';				
+					echo '<a href="view_all_students.php"><h1>View All Students</h1></a><br/>';	
+					echo '<a href="searchStudents.php"><h1>Search Students Who are Approved for Graduation</h1></a><br/>';
+					echo '<a href="searchAlumni.php"><h1>Search Alumni</h1></a><br/>';							
 				}
 				//cac
 				else if ($row['type'] == 2) {
@@ -149,9 +151,18 @@ if (isset($_SESSION['uid'])) {
 		else {
 			echo '<a href="view-transcript.php"><h1>View Transcript</h1></a><br/>';
 			echo '<a href="edit_user_info.php"><h1>Edit User Info</h1></a><br/>';
-			echo '<a href="register.php"><h1>Register</h1></a><br/>';
-			echo '<a href="view-classes.php"><h1>View Classes</h1></a><br/>';
-			echo '<a href="apply_for_grad.php"><h1>Apply for Graduation</h1></a><br/>';
+
+			$q = "select grad_year from student where uid = '$uid'";
+			$r = mysqli_query($dbc, $q);
+			$row = mysqli_fetch_array($r);
+
+			if ($row['grad_year'] == null) {
+				echo '<a href="register.php"><h1>Register</h1></a><br/>';
+				echo '<a href="view-classes.php"><h1>View Classes</h1></a><br/>';
+				echo '<a href="apply_for_grad.php"><h1>Apply for Graduation</h1></a><br/>';
+			}
+
+			
 		}
 	}
 	?>

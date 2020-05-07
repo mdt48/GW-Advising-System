@@ -43,7 +43,7 @@
         $dbc->query($query);
     }else if (strcmp($type, "grad") == 0){
         $year = date("Y");
-        $query = "update student set grad_status = 'alumni',  grad_year = '$year' where uid = '$id'";
+        $query = "update student set grad_status = 'alumni',  grad_year = '$year', gsem = 'spring' where uid = '$id'";
         $dbc->query($query);
         
     } else {

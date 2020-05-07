@@ -180,11 +180,21 @@
 										}
 										
 										if ($title == 1) {
-											if (strcmp($row->grad_status, "f1") == 0 && $row->audited && $row->thesis){
-												echo
+											if (strcmp($row->grad_status, "f1") == 0 && $row->audited){
+												if (strcmp($row->program, "phd") == 0 && $row->thesis) {
+													echo
 												"<td> 
 													<button type='submit' onclick='approveGrad({$row->uid});'class='btn btn-primary btn-md float-left f1' id='grad'>Approve Grad</button>
 												</td>";
+												}
+												 
+												if (strcmp($row->program, "masters") == 0){
+													echo
+												"<td> 
+													<button type='submit' onclick='approveGrad({$row->uid});'class='btn btn-primary btn-md float-left f1' id='grad'>Approve Grad</button>
+												</td>";
+												}
+												
 											} 
 											else if  (!$row->audited){
 												echo
