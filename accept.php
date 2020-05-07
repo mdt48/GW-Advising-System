@@ -46,11 +46,18 @@
 			$query = "SELECT adv, degProgram from applicant where uid = ".$uidP;
 					
 			$data = mysqli_query($dbc, $query);
+
+			
 		
 			$row = mysqli_fetch_array($data);
 
+			if ($row['degProgram'] == "md") {
+				$row['degProgram'] = "masters";
+			}
+
 			$query = "INSERT INTO student (uid, advisoruid, program) values (".$uidP.", ".$row['adv'].", '".$row['degProgram']."')";
-			
+			$dbc->query($query);
+
 			$home_url = "queueMatriculate.php";
 				  
 			header('Location: ' . $home_url);
