@@ -233,7 +233,7 @@ insert into people (fname, lname, uid, username, password) values ('Gabe', 'Parm
 insert into people (fname, lname, uid, username, password) values ('Tim', 'Wood', 4, 'twood', 'pass');
 insert into people (fname, lname, uid, username, password) values ('Shelly', 'Heller', 5, 'sheller', 'pass');
 insert into people (fname, lname, uid, username, password) values ('Sarah', 'Morin', 6, 'smorin', 'pass');
-insert into people (fname, lname, uid, username, password) values ('Kevin', 'Deems', 7, 'kdeems', 'pass');
+insert into people (fname, lname, uid, username, password) values ('Kevin', 'Deems', 7, 'kdeemasters', 'pass');
 insert into people (fname, lname, uid, username, password) values ('Graduate', 'Secretary', 8, 'gs', 'pass');
 insert into people (fname, lname, uid, username, password) values ('Hyeong-Ah', 'Choi', 9, 'hchoi', 'pass');
 insert into people (fname, lname, uid, username, password) values ('Robert', 'Pless', 10, 'rpless', 'pass');
