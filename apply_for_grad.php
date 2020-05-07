@@ -20,7 +20,7 @@ session_start();
 <body> 
 <form method="post">
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-		<a class="navbar-brand" index="test" href="./student_home.php">Home</a>
+		<a class="navbar-brand" index="test" href="./index.php">Home</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		  <span class="navbar-toggler-icon"></span>
 		</button>
@@ -584,17 +584,19 @@ session_start();
 
 								//echo "$dept";
 								//echo "$cid";
-								$query = "INSERT INTO form VALUES ($uid,'$dept', $cid, 0);";
+								$query = "INSERT INTO form VALUES ($uid,'$dept', $cid);";
 								
 								
 								if (mysqli_query($dbc, $query)) {
-									//echo "New record created successfully";
+									echo '<script type="text/javascript">alert("Successfully Added");</script>';
 								} else {
 									//echo "Error: " . $query . "<br>" . mysqli_error($dbc);
 									if(strcmp($dept,"")!=0){
 										//echo "ERROR: $dept $cid is not a class <br>";
 										echo '<script type="text/javascript">alert("ERROR: '.$dept.' '.$cid.' is not a class");</script>';
+									break;
 										// echo $query;
+
 									}
 								}
 							}							

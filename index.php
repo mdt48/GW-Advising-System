@@ -94,7 +94,7 @@ if (isset($_SESSION['uid'])) {
 					echo '<a href="queue.php"><h1>Applications</h1></a><br/>';
 					echo '<a href="queueMatriculate.php"><h1>Students to Matriculate</h1></a><br/>';
 					echo '<a href="stats.php"><h1>Report</h1></a><br/>';
-					echo '<a href="view_transcript.php"><h1>View Transcript</h1></a><br/>';
+					echo '<a href="view-student-transcripts.php"><h1>View Transcripts</h1></a><br/>';
 					echo '<a href="grades.php"><h1>View Grades</h1></a><br/>';
 					echo '<a href="view-classes.php"><h1>View Classes</h1></a><br/>';	
 					echo '<a href="view_all_students.php"><h1>View All Students</h1></a><br/>';				
@@ -150,6 +150,7 @@ if (isset($_SESSION['uid'])) {
 			echo '<a href="edit_user_info.php"><h1>Edit User Info</h1></a><br/>';
 			echo '<a href="register.php"><h1>Register</h1></a><br/>';
 			echo '<a href="view-classes.php"><h1>View Classes</h1></a><br/>';
+			echo '<a href="apply_for_grad.php"><h1>Apply for Graduation</h1></a><br/>';
 		}
 	}
 	?>

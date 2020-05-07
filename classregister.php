@@ -133,7 +133,7 @@
             $cantake = false;
           } else if (($oldendtime >= $endtime) && ($oldstarttime <= $endtime)) {
             //ends during another class
-            echo "ERROR: You have a time conflict with " . $conflictrow["dept"] . " " . $conflictrow["c_id"];
+            echo "ERROR: Not registered. You have a time conflict with " . $conflictrow["department"] . " " . $conflictrow["cid"];
             $cantake = false;
           }
         }

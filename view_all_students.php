@@ -14,6 +14,7 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
 	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<link rel = "stylesheet" href="/css/heroic-features.css" >
+	<script src = "jquery.sortElements.js" type = "text/javascript"></script>
 </head>
 <?php 
 	$uid = $_SESSION['uid'];
@@ -33,7 +34,7 @@
 		}; 
 	</script> 
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-		<a class="navbar-brand" index="test" href="./staff_home.php">Home</a>
+		<a class="navbar-brand" index="test" href="./index.php">Home</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		  <span class="navbar-toggler-icon"></span>
 		</button>
@@ -87,7 +88,7 @@
 		</div>
     </div>
 </header>
-	  
+
 	</script>
 	  <!-- F1 -->
 	  <table class="table" id="tab1">
@@ -96,6 +97,8 @@
 			<th scope="col">User id</th>
 			<th scope="col">Name</th>
 			<th scope="col">Program</th>
+			<th scope="col" id="major">Major</th>
+			<th scope="col" id="ayear">Admit Year</th>
 			<th scope="col">Transcript</th>
 			<th scope="col">Form 1</th>	
 			<th scope='col'>Thesis</th>
@@ -104,15 +107,18 @@
 		  </tr>
 		</thead>
 
-		<tbody>
+		<tbody id="tbody">
 			<?php
 				//UID will be from session, change once login completed
 				// $UID = $_SESSION['uid'];
-				if ($title == 1) {
-					$query = "select * from student join people on student.uid = people.uid ";
-				} else {
-					$query = "select * from student join people on student.uid = people.uid where advisoruid = '$uid'";
-				}
+				
+					if ($title == 1) {
+						$query = "select * from student join people on student.uid = people.uid order by student.uid";
+					} else {
+						$query = "select * from student join people on student.uid = people.uid where advisoruid = '$uid' order by student.uid";
+					}
+				
+				
 
 				
 
@@ -126,12 +132,14 @@
 									echo "<th  scope='row'>{$row->uid}</th>";
 										echo "<td>{$row->fname} {$row->lname}</td>";
 										echo "<td>{$row->program}</td>";
+										echo "<td>{$row->department}</td>";
+										echo "<td>{$row->ayear}</td>";
 										echo
 											"<td> 
 												<button type='submit' onclick='viewTrans({$row->uid});' class='btn btn-primary btn-md float-left f1' id='btnLogin'>View Transcript</button>
 											</td>";
 										// display f1 buttons
-
+										
 										// query form table
 										$form_query = "select * from form where uid='$row->uid'";
 										
@@ -155,7 +163,7 @@
 											if (!$row->thesis && $row->thesis != null){
 												echo
 												"<td> 
-													<button type='submit'class='btn btn-primary btn-md float-left thesis' value= '$row->uid'id='thesis'>Approve Thesis</button>
+													<button type='submit'class='btn btn-primary btn-md float-left thesis' value= '$row->uid' id='thesis'>Approve Thesis</button>
 												</td>";
 											} 
 											else if ($row->thesis == null){
@@ -237,7 +245,7 @@
 	  </table>  
 </body>
 <script> 
-25
+
 
 $(document).ready(function(){
 
@@ -253,5 +261,42 @@ $(document).ready(function(){
 		});
      });
 });
+</script>
+
+<script language="javascript">
+  var table = $('table');
+    
+    $('#major, #ayear')
+        .wrapInner('<span title="sort this column"/>')
+        .each(function(){
+            
+            var th = $(this),
+                thIndex = th.index(),
+                inverse = false;
+            
+            th.click(function(){
+                
+                table.find('td').filter(function(){
+                    
+                    return $(this).index() === thIndex;
+                    
+                }).sortElements(function(a, b){
+                    
+                    return $.text([a]) > $.text([b]) ?
+                        inverse ? -1 : 1
+                        : inverse ? 1 : -1;
+                    
+                }, function(){
+                    
+                    // parentNode is the element we want to move
+                    return this.parentNode; 
+                    
+                });
+                
+                inverse = !inverse;
+                    
+            });
+                
+        });
 </script>
 </html>
