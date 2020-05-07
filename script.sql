@@ -50,6 +50,9 @@ CREATE TABLE student(
   `program` VARCHAR(32),
   `grad_year` int,
   `department` varchar(32),
+  ayear int,
+  asem varchar(12),
+  gsem varchar(12),
   primary key (`uid`),
   foreign key (`uid`) references people(`uid`)
 );
@@ -251,7 +254,7 @@ insert into staff (uid, type) values (10, 2);
 
 
 INSERT into people (uid, username, password, fname, lname) values (77777777, 'eclapton', 'pass', 'Eric', 'Clapton');
-INSERT into student values (77777777, 'alumni', 1, 1, 6, 'masters', 2014, 'CSCI');
+INSERT into student values (77777777, 'alumni', 1, 1, 6, 'masters', 2014, 'CSCI', null, null, "spring");
 
 -- student trans
 INSERT INTO transcript VALUES (77777777,'CSCI',6221,'B',2014,'masters');
@@ -267,7 +270,7 @@ INSERT INTO transcript VALUES (77777777,'CSCI',6286,'B',2014,'masters');
 
 
 INSERT into people (uid, username, password, fname, lname) values (34567890, 'kcobain', 'pass', 'Kurt', 'Cobain');
-INSERT into student values (34567890, 'alumni', 1, 1, 3, 'masters', 2015, 'CSCI');
+INSERT into student values (34567890, 'alumni', 1, 1, 3, 'masters', 2015, 'CSCI', null, null, "spring");
 
 -- student trans
 INSERT INTO transcript VALUES (34567890,'CSCI',6221,'A',2015,'masters');
@@ -285,16 +288,16 @@ INSERT INTO transcript VALUES (34567890,'CSCI',6254,'B',2015,'masters');
 
 -- students
 insert into people values (88888888, "Billy", "pass", "Billy", "Holliday", "address", "email@gwu.edu", "1990-02-20", 2873192);
-insert into student values (88888888, 0, null, 0, 6, "masters", null, "CSCI");
+insert into student values (88888888, 0, null, 0, 6, "masters", null, "CSCI", 2018, null, null);
 
 insert into people values (99999999, "Krall", "pass", "Diana", "Krall", "address", "email@gwu.edu", "1990-02-20", 2873191);
-insert into student values (99999999, 0, null, 0, 3, "masters", null, "CSCI");
+insert into student values (99999999, 0, null, 0, 3, "masters", null, "CSCI", 2019, "fall", null);
 
 insert into people values (23456789, "Ella", "pass", "Ella", "Fitzgerald", "address", "email@gwu.edu", "1990-02-20", 2873190);
-insert into student values (23456789, 0, null, 0, 1, "phd", null, "CSCI");
+insert into student values (23456789, 0, null, 0, 1, "phd", null, "CSCI", 2019, "fall", null);
 
 insert into people values (87654321, "Eva", "pass", "Eva", "Cassidy", "address", "email@gwu.edu", "1990-02-20", 2873193);
-insert into student values (87654321, null, null, 0, 1, "masters", null, "CSCI");
+insert into student values (87654321, null, null, 0, 1, "masters", null, "CSCI", 2017, "fall", null);
 insert into transcript values(87654321, "CSCI", 6221, "C", 2017, "masters");
 insert into transcript values(87654321, "CSCI", 6212, "C", 2017, "masters");
 insert into transcript values(87654321, "CSCI", 6461, "C", 2017, "masters");
@@ -311,7 +314,7 @@ insert into form values (87654321, "CSCI", 6284);
 insert into form values (87654321, "CSCI", 6286);
 
 insert into people values (45678901, "Jimi", "pass", "Jimi", "Hendrix", "address", "email@gwu.edu", "1990-02-20", 2873198);
-insert into student values (45678901, null , null, 0, 4, "masters", null, "CSCI");
+insert into student values (45678901, null , null, 0, 4, "masters", null, "CSCI", 2017, "fall", null);
 insert into transcript values(45678901, "CSCI", 6221, "A", 2017, "masters");
 insert into transcript values(45678901, "CSCI", 6212, "A", 2017, "masters");
 insert into transcript values(45678901, "CSCI", 6461, "A", 2017, "masters");
@@ -326,7 +329,7 @@ insert into transcript values(45678901, "MATH", 6210, "B", 2017, "masters");
 
 
 insert into people values (1444444, "Paul", "pass", "Paul", "Mccartney", "address", "email@gwu.edu", "1990-02-20", 2873188);
-insert into student values (1444444, null , null, 0, 1, "masters", null, "CSCI");
+insert into student values (1444444, null , null, 0, 1, "masters", null, "CSCI", 2017, "fall", null);
 insert into transcript values(1444444, "CSCI", 6221, "A", 2017, "masters");
 insert into transcript values(1444444, "CSCI", 6212, "A", 2017, "masters");
 insert into transcript values(1444444, "CSCI", 6461, "A", 2017, "masters");
@@ -350,7 +353,7 @@ insert into form values (1444444, "CSCI", 6242);
 
 
 insert into people values (16666666, "George", "pass", "George", "Harrison", "address", "email@gwu.edu", "1990-02-20", 2875188);
-insert into student values (16666666, null , null, 0, 4, "masters", null, "CSCI");
+insert into student values (16666666, null , null, 0, 4, "masters", null, "CSCI", 2016, "fall", null);
 insert into transcript values(16666666, "ECE", 6242, "C", 2017, "masters");
 insert into transcript values(16666666, "CSCI", 6221, "B", 2017, "masters");
 insert into transcript values(16666666, "CSCI", 6461, "B", 2017, "masters");
@@ -364,7 +367,7 @@ insert into transcript values(16666666, "CSCI", 6284, "B", 2017, "masters");
 
 
 insert into people values (12345678, "Stevie", "pass", "Stevie", "Nicks", "address", "email@gwu.edu", "1990-02-20", 2173188);
-insert into student values (12345678, null , 0, 0, 6, "phd", null, "CSCI");
+insert into student values (12345678, null , 0, 0, 6, "phd", null, "CSCI", 2017, "fall", null);
 insert into transcript values(12345678, "CSCI", 6221, "A", 2017, "phd");
 insert into transcript values(12345678, "CSCI", 6212, "A", 2017, "phd");
 insert into transcript values(12345678, "CSCI", 6461, "A", 2017, "phd");
@@ -487,10 +490,9 @@ insert into examScore values (00001236, 'total', 200, 1983);
 insert into examScore values (00001236, 'verbal', 100, 1983);
 insert into examScore values (00001236, 'quantitative', 100, 1983);
 
+insert into teaches values (6254, 'CSCI', 2020, 1, 'Spring', 4);
 insert into teaches values (6461, 'CSCI', 2020, 1, 'Spring', 1);
-insert into teaches values (6212, 'CSCI', 2020, 1, 'Spring', 9);
-insert into teaches values (6221, 'CSCI', 2020, 1, 'Spring', 9);
-insert into teaches values (6232, 'CSCI', 2020, 1, 'Spring', 9);
-insert into teaches values (6233, 'CSCI', 2020, 1, 'Spring', 4);
-insert into teaches values (6242, 'CSCI', 2020, 1, 'Spring', 4);
-insert into teaches values (6241, 'CSCI', 2020, 1, 'Spring', 7);
+insert into teaches values (6262, 'CSCI', 2020, 1, 'Spring', 10);
+insert into teaches values (6251, 'CSCI', 2020, 1, 'Spring', 9);
+insert into teaches values (6246, 'CSCI', 2020, 1, 'Spring', 3);
+insert into teaches values (6260, 'CSCI', 2020, 1, 'Spring', 4);
