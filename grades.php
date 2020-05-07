@@ -40,9 +40,6 @@
       $theusername = $_SESSION['username'];
 
       $userquery = "SELECT uid FROM people WHERE username='$theusername'";
-
-
-      $userquery = "SELECT u_id FROM person WHERE username='$theusername'";
       $userdata = mysqli_query($dbc, $userquery);
       $userrow = mysqli_fetch_array($userdata);
       $user = $userrow["uid"];

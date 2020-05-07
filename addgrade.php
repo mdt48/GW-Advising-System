@@ -46,7 +46,7 @@
     }
 
     if ($_SESSION['type'] == 5 || $_SESSION['type'] == 7 || $_SESSION['type'] == 8 || $_SESSION['type'] == 9) {
-        $classquery = "SELECT * FROM takes c JOIN teaches d ON (c.cid = d.cid AND c.department = d.department AND c.year = d.year AND c.section = d.section AND c.semester = d.semester) WHERE d.uid = '$teach_id' AND c.grade = 'IP' AND c.u_id = '$uid'";
+        $classquery = "SELECT * FROM takes c JOIN teaches d ON (c.cid = d.cid AND c.department = d.department AND c.year = d.year AND c.section = d.section AND c.semester = d.semester) WHERE d.uid = '$teach_id' AND c.grade = 'IP' AND c.uid = '$u_id'";
         $classdata = mysqli_query($dbc, $classquery);
     } else {
         $classquery = "SELECT * FROM takes WHERE uid = '$u_id'";
@@ -56,7 +56,7 @@
     echo '<table>';
     while ($row = mysqli_fetch_array($classdata)) { //show the classes with a button to add a grade for each one
         ?><form action="newgrade.php" method="GET">
-            <input type="text" name="grade" />
+            <input type="text" name="grade" required />
             <input type="submit" name="submit" value="Grade" />
             <input type="hidden" name ="dept" value="<?php echo $row["department"]; ?>" />
             <input type="hidden" name ="c_id" value="<?php echo $row["cid"]; ?>" />

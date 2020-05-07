@@ -1,4 +1,4 @@
-use mdt_;
+use gradymcpeak;
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS student CASCADE;
 DROP TABLE IF EXISTS form CASCADE;
@@ -486,3 +486,10 @@ insert into applicant (uid, aoi, degProgram, appStatus, transcript, admissionYea
 insert into examScore values (00001236, 'total', 200, 1983);
 insert into examScore values (00001236, 'verbal', 100, 1983);
 insert into examScore values (00001236, 'quantitative', 100, 1983);
+
+insert into teaches values (6254, 'CSCI', 2020, 1, 'Spring', 4);
+insert into teaches values (6461, 'CSCI', 2020, 1, 'Spring', 1);
+insert into teaches values (6262, 'CSCI', 2020, 1, 'Spring', 10);
+insert into teaches values (6251, 'CSCI', 2020, 1, 'Spring', 9);
+insert into teaches values (6246, 'CSCI', 2020, 1, 'Spring', 3);
+insert into teaches values (6260, 'CSCI', 2020, 1, 'Spring', 4);

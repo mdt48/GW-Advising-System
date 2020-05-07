@@ -35,6 +35,7 @@
     if (isset($_GET["grade"])) {
         $newgrade = $_GET["grade"];
     }
+    
 
     //grade was entered
     if (isset($_GET["grade"])) {
