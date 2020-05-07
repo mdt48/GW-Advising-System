@@ -6,8 +6,6 @@
 		$dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME); 
 
         if (isset($_POST['hide'])) {
-            $query = "DELETE FROM examScore WHERE uid = ".$uid;
-            $dbc->query($query);
             $query = "DELETE FROM recs WHERE uid = ".$uid;
             $dbc->query($query);
             $query = "DELETE FROM degree WHERE uid = ".$uid;
@@ -23,8 +21,9 @@
 		
 			$row = mysqli_fetch_array($data);
 
-			$query = "DELETE FROM applicant WHERE uid = ".$uid;
-			$dbc->query($query);
+			if ($row['degProgram'] == "md") {
+				$row['degProgram'] = "masters";
+			}
 
 			$query = "INSERT INTO student (uid, advisoruid, program) values (".$uid.", ".$row['adv'].", '".$row['degProgram']."')";
 			$dbc->query($query);
@@ -46,8 +45,6 @@
 			$query = "SELECT adv, degProgram from applicant where uid = ".$uidP;
 					
 			$data = mysqli_query($dbc, $query);
-
-			
 		
 			$row = mysqli_fetch_array($data);
 
