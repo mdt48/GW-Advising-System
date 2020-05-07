@@ -53,7 +53,7 @@ if (isset($_SESSION['uid'])) {
 <div class = "container">
 	<?php 
 	
-		$queryA = "select uid from applicant where uid = '$uid'";
+		$queryA = "select uid from applicant where uid = '$uid' and uid not in (select uid from student)";
 							
 		$dataA = mysqli_query($dbc, $queryA);
 		
@@ -94,7 +94,7 @@ if (isset($_SESSION['uid'])) {
 					echo '<a href="queue.php"><h1>Applications</h1></a><br/>';
 					echo '<a href="queueMatriculate.php"><h1>Students to Matriculate</h1></a><br/>';
 					echo '<a href="stats.php"><h1>Report</h1></a><br/>';
-					echo '<a href="view_transcript.php"><h1>View Transcript</h1></a><br/>';
+					echo '<a href="view-student-transcripts.php"><h1>View Transcripts</h1></a><br/>';
 					echo '<a href="grades.php"><h1>View Grades</h1></a><br/>';
 					echo '<a href="view-classes.php"><h1>View Classes</h1></a><br/>';	
 					echo '<a href="view_all_students.php"><h1>View All Students</h1></a><br/>';				
