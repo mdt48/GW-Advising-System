@@ -594,6 +594,7 @@ session_start();
 									if(strcmp($dept,"")!=0){
 										//echo "ERROR: $dept $cid is not a class <br>";
 										echo '<script type="text/javascript">alert("ERROR: '.$dept.' '.$cid.' is not a class");</script>';
+									break;
 										// echo $query;
 									}
 								}

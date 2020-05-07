@@ -155,7 +155,7 @@
 											if (!$row->thesis && $row->thesis != null){
 												echo
 												"<td> 
-													<button type='submit'class='btn btn-primary btn-md float-left thesis' value= '$row->uid'id='thesis'>Approve Thesis</button>
+													<button type='submit'class='btn btn-primary btn-md float-left thesis' value= '$row->uid' id='thesis'>Approve Thesis</button>
 												</td>";
 											} 
 											else if ($row->thesis == null){
@@ -237,7 +237,7 @@
 	  </table>  
 </body>
 <script> 
-25
+
 
 $(document).ready(function(){
 
