@@ -121,7 +121,6 @@
             $query = "SELECT * FROM people JOIN student ON people.uid = student.uid where ".$where;
             
         }
-        echo $query;
         $data = mysqli_query($dbc, $query);
         if($data) {
         } else {
@@ -136,9 +135,6 @@
                     <td><?php echo $row['fname']; ?></td>
                     <td><?php echo $row['gsem']; ?></td>
                     <td><?php echo $row['email']; ?></td>
-                    <input type="hidden" name="uid" value="<?php echo $row['uid']; ?>">
-                    <input type="hidden" name="matriculate" value="<?php echo $row['uid']; ?>">
-                    <td><button type="submit" name="review" class="btn btn-primary">Matriculate</button></td>
                 </tr>
             </form>
             <?php
