@@ -25,7 +25,7 @@
 				$row['degProgram'] = "masters";
 			}
 
-			$query = "INSERT INTO student (uid, advisoruid, program, ayear, asem) values (".$uid.", ".$row['adv'].", '".$row['degProgram']."', ".$row['admissionYear'].", ".$row['admissionSemester']." )";
+			$query = "INSERT INTO student (uid, advisoruid, program, ayear, asem) values (".$uid.", ".$row['adv'].", '".$row['degProgram']."', ".$row['admissionYear'].", '".$row['admissionSemester']."' )";
 			$dbc->query($query);
 
 			echo "<script>window.location.href='index.php';</script>";
@@ -42,19 +42,18 @@
 			$query = "DELETE FROM reviewForm WHERE studentuid = ".$uidP;
 			$dbc->query($query);
 
-			$query = "SELECT adv, degProgram, admissionYear, admissionSemester from applicant where uid = ".$uid;
+			$query = "select adv, degProgram, admissionYear, admissionSemester from applicant where uid = ".$uidP;
 					
 			$data = mysqli_query($dbc, $query);
 		
 			$row = mysqli_fetch_array($data);
-
+			
 			if ($row['degProgram'] == "md") {
 				$row['degProgram'] = "masters";
 			}
 
-			$query = "INSERT INTO student (uid, advisoruid, program, ayear, asem) values (".$uid.", ".$row['adv'].", '".$row['degProgram']."', ".$row['admissionYear'].", ".$row['admissionSemester']." )";
+			$query = "INSERT INTO student (uid, advisoruid, program, ayear, asem) values (".$uidP.", ".$row['adv'].", '".$row['degProgram']."', ".$row['admissionYear'].", '".$row['admissionSemester']."' )";
 			$dbc->query($query);
-
 			$home_url = "queueMatriculate.php";
 				  
 			header('Location: ' . $home_url);
@@ -131,15 +130,7 @@
 											}
 										?>
 									</select> 
-								</div>
-								<div class="form-group" onchange="yesnoCheck()">
-									<label for="degree">*Billing Address <br> Same as on file address?</label> </br>
-									<input type="radio" id="yesCheck" name="ba" value="yes" required>
-									<label for="yes">Yes</label><br>
-									<input type="radio" id="noCheck" name="ba" value="no">
-									<label for="no">No</label><br>
-								</div>
-								
+								</div>								
 								<div class="form-group">
 									<label for="address" id="ifYes">Address: </label>
 									<input type="text" id="ifYes"class="form-control" maxlength="255" id="address" name = "address" placeholder="Enter address" required>
@@ -177,14 +168,3 @@
 
 </body>
 </html>
-
-<script type="text/javascript">
-    function yesnoCheck() {
-        if (document.getElementById("yesCheck").checked) {
-			document.getElementById("address").required = true;
-
-        } else {
-			document.getElementById("address").required = false;
-        }
-    }
-</script>

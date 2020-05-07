@@ -85,7 +85,7 @@
 				echo 'Thank you for applying to <i>The George Washington University</i>.<br/>At this moment we are unable to receive you as a student.<br/>Please contact us if you have any questions about our decision process.';
 			}
 			else {
-				echo 'We are sorry to inform you that the period for matriculation has passed.';
+				echo 'Missing more than transcript and / or recommendations. Please complete the application at your earliest convenience.';
 			}
 		}
 	?>

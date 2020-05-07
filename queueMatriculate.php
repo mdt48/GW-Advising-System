@@ -34,6 +34,7 @@
                         $uidP = $_POST['uid'];
                         $lname = $_POST['lname'];
                         $order = $_POST['order'];
+                        $by = $_POST['by'];
 
                         $result = "";
 
@@ -86,8 +87,8 @@
                         if ($yearSelected == false && $semesterSelected == false && $programSelected == false && $uidSelected == false && $lnameSelected == false) {
                             $where = "";
                         }
-                        $where = $where." order by lname ".$order;
-                        $result = $result.", order by ".$order;
+                        $where = $where." order by ".$by." ".$order;
+                        $result = $result.", order by ".$by." ".$order;
                     }
                 ?>
                     <form class="form-inline" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
@@ -113,6 +114,11 @@
                         <option value="asc">Ascending</option>
                         <option value="desc">Descending</option>     
                     </select>
+                    <select name="by" class="form-control mr-sm-2"  id= "search_bar" aria-label="Search"> 
+                        <option value="lname" selected hidden>By</option>                 
+                        <option value="lname">Last Name</option>
+                        <option value="appDate">Date</option>     
+                    </select>
                         <input class="form-control mr-sm-2" name="submit" type="submit" id= "search_bar" aria-label="Search">
                     </form> 
                     <br>
@@ -124,7 +130,10 @@
                             <th scope="col">User Id</th>
                             <th scope="col">Last Name</th>
                             <th scope="col">First Name</th>
-                            <th scope="col">Email Address</th>
+                            <th scope="col">Date Admitted</th>
+                            <th scope="col">Year</th>
+                            <th scope="col">Semester</th>
+                            <th scope="col">Program</th>
                             <th scope="col"></th>
                         </tr>
                     </thead>
@@ -139,7 +148,10 @@
                     <th scope="row"><?php echo $row['uid']; ?>
                     <td><?php echo $row['lname']; ?></td>
                     <td><?php echo $row['fname']; ?></td>
-                    <td><?php echo $row['email']; ?></td>
+                    <td><?php echo $row['accDate']; ?></td>
+                    <td><?php echo $row['admissionYear']; ?></td>
+                    <td><?php echo $row['admissionSemester']; ?></td>
+                    <td><?php if ($row['degProgram'] == "md") echo "Masters"; else echo "PhD"; ?></td>
                     <input type="hidden" name="uid" value="<?php echo $row['uid']; ?>">
                     <input type="hidden" name="matriculate" value="<?php echo $row['uid']; ?>">
                     <td><button type="submit" name="review" class="btn btn-primary">Matriculate</button></td>

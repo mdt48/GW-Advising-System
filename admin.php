@@ -84,7 +84,7 @@
                 $lname = mysqli_real_escape_string($dbc, $_POST['lname']);
                 $address = mysqli_real_escape_string($dbc, $_POST['address']);
 
-                $query = "INSERT INTO people (ssn, username, email, birthDate, userPassword, fname, lname, userAddress) VALUES (".$ssn.", '".$username."', '".$email."', '".$date."', '".$password."', '".$fname."', '".$lname."', '".$address."')";
+                $query = "INSERT INTO people (ssn, username, email, birthDate, password, fname, lname, address) VALUES (".$ssn.", '".$username."', '".$email."', '".$date."', '".$password."', '".$fname."', '".$lname."', '".$address."')";
                 $data = mysqli_query($dbc, $query);
 
                 $query = "SELECT uid FROM people WHERE username = '".$_POST['username']."'";
@@ -160,8 +160,15 @@
                 $lname = mysqli_real_escape_string($dbc, $_POST['applname']);
                 $address = mysqli_real_escape_string($dbc, $_POST['appaddress']);
 
-                $query = "INSERT INTO people (ssn, username, email, birthDate, userPassword, fname, lname, userAddress) VALUES (".$ssn.", '".$username."', '".$email."', '".$date."', '".$password."', '".$fname."', '".$lname."', '".$address."')";
-                $data = mysqli_query($dbc, $query);
+                $query = "INSERT INTO people (ssn, username, email, birthDate, password, fname, lname, address) VALUES (".$ssn.", '".$username."', '".$email."', '".$date."', '".$password."', '".$fname."', '".$lname."', '".$address."')";
+                mysqli_query($dbc, $query);
+
+                $query = "select uid from people where username = '".$username."'";
+                $data = mysqli_query($dbc, $query); 
+                $row = mysqli_fetch_array($data);
+
+                $query = "insert into applicant (uid, appStatus) values (".$row['uid'].",1)";
+                mysqli_query($dbc, $query);
 
                 ?>
                 <div class="container">
@@ -462,6 +469,76 @@
         </form>
 
         <br>
+        <h1>Add Student</h1>
+        <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+            <div class="form-row">
+                <div class="form-group col-md-5">
+                    <label for="appfname">First Name</label>
+                    <input required name="appfname" type="text" class="form-control" maxlength="256" onkeypress="return (event.charCode > 64 && 
+                        event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)">
+                </div>
+                <div class="form-group col-md-5">
+                    <label for="applname">Last Name</label>
+                    <input required name="applname" type="text" class="form-control" maxlength="256" onkeypress="return (event.charCode > 64 &&
+                        event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode == 32)">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="appssn">SSN</label>
+                    <input required name="appssn" type="text" class="form-control" maxlength="9" minlength="9" onkeypress="return (event.charCode > 47 && 
+                        event.charCode < 58)">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="appusername">Username</label>
+                    <input required name="appusername" type="text" class="form-control" maxlength="256" onkeypress="return (event.charCode > 96 && event.charCode < 123) || (event.charCode > 47 && event.charCode < 58)">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="apppassword">Password</label>
+                    <input required name="apppassword" type="password" class="form-control" maxlength="256" onkeypress="return (event.charCode > 32 &&
+                        event.charCode < 127)">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-5">
+                    <label for="appbday">Birthdate</label>
+                    <input required name="appbday" type="date" class="form-control">
+                </div>
+                <div class="form-group col-md-7">
+                    <label for="appemail">Email Address</label>
+                    <input required name="appemail" type="email" class="form-control" maxlength="256">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="appaddress">Address</label>
+                    <input required name="appaddress" type="text" class="form-control" placeholder="800 22nd St NW, Washington, D.C. 20052" maxlength="256" onkeypress="return (event.charCode > 64 &&
+                        event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode > 47 && event.charCode < 58) || (event.charCode == 46) || 
+                        (event.charCode == 44)  || (event.charCode == 32)">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="program">Program</label>
+                    <select name="program" class="form-control" required>
+                        <option value="masters">Masters</option>
+                        <option value="phd">PhD</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="dept">Department</label>
+                    <input required name="dept" type="text" maxlength="256" class="form-control">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="dept">Department</label>
+                    <input required name="dept" type="text" maxlength="256" class="form-control">
+                </div>
+            </div>
+            <button type="submit" name="student" class="btn btn-primary">Submit</button>
+
+        </form>
+
+        <br>
 
         <h1>Delete staff</h1>
         <p>Delete a staff member by specifying their username, uid, or both. The system will find and delete the staff member whose information best matches the provided information.</p>
@@ -563,3 +640,39 @@
 
 </body>
 </html>
+
+<script type="text/javascript">
+    function yesnoCheck() {
+        if (document.getElementById("yesCheck").checked) {
+			document.getElementById("total").required = true;
+			document.getElementById("quant").required = true;
+			document.getElementById("verbal").required = true;
+
+        } else {
+			document.getElementById("total").required = false;
+			document.getElementById("quant").required = false;
+			document.getElementById("verbal").required = false;
+        }
+    }
+	
+	function sumFunct() {
+		var sum = 0;
+		if (parseInt(document.getElementById("quant").value) > 170 || parseInt(document.getElementById("quant").value) <= 0) {
+			document.getElementById("quant").value = 0;
+		}
+		else if (parseInt(document.getElementById("verbal").value) > 170 || parseInt(document.getElementById("verbal").value) <= 0) {
+			document.getElementById("verbal").value = 0;
+		}
+		else {
+			sum += parseInt(document.getElementById("quant").value);
+			sum += parseInt(document.getElementById("verbal").value);
+		}
+		document.getElementById("total1").value = sum;
+		document.getElementById("total").value = sum;
+    }
+
+	/*function disableReq() {
+
+	}*/
+
+</script>

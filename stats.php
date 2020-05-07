@@ -6,7 +6,6 @@
         $query = "SELECT * FROM staff WHERE uid = '".$_SESSION['uid']."'";
         $data = mysqli_query($dbc, $query);
         if (mysqli_num_rows($data) > 0) {
-            
             // user is a staff, allow access to page
             $row = mysqli_fetch_array($data);
             // user is a staff, allow access to page
@@ -93,16 +92,7 @@
                         <option value="spring">Spring</option>     
                     </select>
                     <input class="form-control mr-sm-2" name="year" type="search" placeholder="Year" id= "search_bar" aria-label="Search">
-                    <!--<input class="form-control mr-sm-2" name="uid" onkeypress = "return (event.charCode > 47 && event.charCode < 58)"  maxlength="7" type="search" placeholder="UID" id= "search_bar" aria-label="Search">
-                    <input class="form-control mr-sm-2" name="lname" type="search" placeholder="Last Name" id= "search_bar" aria-label="Search" maxlength="255" onkeypress="return (event.charCode > 64 && 
-			        event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode == 32) || (event.charCode == 45)">
-                    <br><br><br>
-                    <select name="order" class="form-control mr-sm-2"  id= "search_bar" aria-label="Search"> 
-                        <option selected hidden>Order</option>                 
-                        <option value="asc">Ascending</option>
-                        <option value="desc">Descending</option>     
-                    </select>-->
-                        <input class="form-control mr-sm-2" name="submit" type="submit" id= "search_bar" aria-label="Search">
+                    <input class="form-control mr-sm-2" name="submit" type="submit" id= "search_bar" aria-label="Search">
                     </form> 
                 <br>
                 <b><?php echo $result;?></b>

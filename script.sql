@@ -50,6 +50,9 @@ CREATE TABLE student(
   `program` VARCHAR(32),
   `grad_year` int,
   `department` varchar(32),
+  ayear int,
+  asem varchar(12),
+  gsem varchar(12),
   primary key (`uid`),
   foreign key (`uid`) references people(`uid`)
 );
@@ -73,6 +76,8 @@ CREATE TABLE applicant (
   `admissionYear` year,
   `admissionSemester` varchar(10),
   `adv` int,
+  `appDate` date,
+  `accDate` date,
   primary key (`uid`),
   foreign key (`uid`) references people(`uid`)
 );
@@ -251,7 +256,7 @@ insert into staff (uid, type) values (10, 2);
 
 
 INSERT into people (uid, username, password, fname, lname) values (77777777, 'eclapton', 'pass', 'Eric', 'Clapton');
-INSERT into student values (77777777, 'alumni', 1, 1, 6, 'masters', 2014, 'CSCI');
+INSERT into student values (77777777, 'alumni', 1, 1, 6, 'masters', 2014, 'CSCI', null, null, "spring");
 
 -- student trans
 INSERT INTO transcript VALUES (77777777,'CSCI',6221,'B',2014,'masters');
@@ -267,7 +272,7 @@ INSERT INTO transcript VALUES (77777777,'CSCI',6286,'B',2014,'masters');
 
 
 INSERT into people (uid, username, password, fname, lname) values (34567890, 'kcobain', 'pass', 'Kurt', 'Cobain');
-INSERT into student values (34567890, 'alumni', 1, 1, 3, 'masters', 2015, 'CSCI');
+INSERT into student values (34567890, 'alumni', 1, 1, 3, 'masters', 2015, 'CSCI', null, null, "spring");
 
 -- student trans
 INSERT INTO transcript VALUES (34567890,'CSCI',6221,'A',2015,'masters');
@@ -284,17 +289,17 @@ INSERT INTO transcript VALUES (34567890,'CSCI',6251,'B',2015,'masters');
 INSERT INTO transcript VALUES (34567890,'CSCI',6254,'B',2015,'masters');
 
 -- students
-insert into people values (88888888, "Billie", "pass", "Billie", "Holiday", "address", "email@gwu.edu", "1990-02-20", 2873192);
-insert into student values (88888888, 0, null, 0, 6, "masters", null, "CSCI");
+insert into people values (88888888, "Billy", "pass", "Billy", "Holliday", "address", "email@gwu.edu", "1990-02-20", 2873192);
+insert into student values (88888888, 0, null, 0, 6, "masters", null, "CSCI", 2018, null, null);
 
 insert into people values (99999999, "Krall", "pass", "Diana", "Krall", "address", "email@gwu.edu", "1990-02-20", 2873191);
-insert into student values (99999999, 0, null, 0, 3, "masters", null, "CSCI");
+insert into student values (99999999, 0, null, 0, 3, "masters", null, "CSCI", 2019, "fall", null);
 
 insert into people values (23456789, "Ella", "pass", "Ella", "Fitzgerald", "address", "email@gwu.edu", "1990-02-20", 2873190);
-insert into student values (23456789, 0, null, 0, 1, "phd", null, "CSCI");
+insert into student values (23456789, 0, null, 0, 1, "phd", null, "CSCI", 2019, "fall", null);
 
 insert into people values (87654321, "Eva", "pass", "Eva", "Cassidy", "address", "email@gwu.edu", "1990-02-20", 2873193);
-insert into student values (87654321, null, null, 0, 1, "masters", null, "CSCI");
+insert into student values (87654321, null, null, 0, 1, "masters", null, "CSCI", 2017, "fall", null);
 insert into transcript values(87654321, "CSCI", 6221, "C", 2017, "masters");
 insert into transcript values(87654321, "CSCI", 6212, "C", 2017, "masters");
 insert into transcript values(87654321, "CSCI", 6461, "C", 2017, "masters");
@@ -311,7 +316,7 @@ insert into form values (87654321, "CSCI", 6284);
 insert into form values (87654321, "CSCI", 6286);
 
 insert into people values (45678901, "Jimi", "pass", "Jimi", "Hendrix", "address", "email@gwu.edu", "1990-02-20", 2873198);
-insert into student values (45678901, null , null, 0, 4, "masters", null, "CSCI");
+insert into student values (45678901, null , null, 0, 4, "masters", null, "CSCI", 2017, "fall", null);
 insert into transcript values(45678901, "CSCI", 6221, "A", 2017, "masters");
 insert into transcript values(45678901, "CSCI", 6212, "A", 2017, "masters");
 insert into transcript values(45678901, "CSCI", 6461, "A", 2017, "masters");
@@ -326,7 +331,7 @@ insert into transcript values(45678901, "MATH", 6210, "B", 2017, "masters");
 
 
 insert into people values (1444444, "Paul", "pass", "Paul", "Mccartney", "address", "email@gwu.edu", "1990-02-20", 2873188);
-insert into student values (1444444, null , null, 0, 1, "masters", null, "CSCI");
+insert into student values (1444444, null , null, 0, 1, "masters", null, "CSCI", 2017, "fall", null);
 insert into transcript values(1444444, "CSCI", 6221, "A", 2017, "masters");
 insert into transcript values(1444444, "CSCI", 6212, "A", 2017, "masters");
 insert into transcript values(1444444, "CSCI", 6461, "A", 2017, "masters");
@@ -350,7 +355,7 @@ insert into form values (1444444, "CSCI", 6242);
 
 
 insert into people values (16666666, "George", "pass", "George", "Harrison", "address", "email@gwu.edu", "1990-02-20", 2875188);
-insert into student values (16666666, null , null, 0, 4, "masters", null, "CSCI");
+insert into student values (16666666, null , null, 0, 4, "masters", null, "CSCI", 2016, "fall", null);
 insert into transcript values(16666666, "ECE", 6242, "C", 2017, "masters");
 insert into transcript values(16666666, "CSCI", 6221, "B", 2017, "masters");
 insert into transcript values(16666666, "CSCI", 6461, "B", 2017, "masters");
@@ -364,7 +369,7 @@ insert into transcript values(16666666, "CSCI", 6284, "B", 2017, "masters");
 
 
 insert into people values (12345678, "Stevie", "pass", "Stevie", "Nicks", "address", "email@gwu.edu", "1990-02-20", 2173188);
-insert into student values (12345678, null , 0, 0, 6, "phd", null, "CSCI");
+insert into student values (12345678, null , 0, 0, 6, "phd", null, "CSCI", 2017, "fall", null);
 insert into transcript values(12345678, "CSCI", 6221, "A", 2017, "phd");
 insert into transcript values(12345678, "CSCI", 6212, "A", 2017, "phd");
 insert into transcript values(12345678, "CSCI", 6461, "A", 2017, "phd");
@@ -435,7 +440,7 @@ INSERT INTO schedule VALUES
 
 insert into people (ssn, username, email, birthDate, password, uid, fname, lname, address) values (111111111, 'jlennon', 'jlennon@gmail.com', '1940-10-09', 'pass', 55555555, 'John', 'Lennon', '72nd St & Central Park West, New York, NY, 10023');
 
-insert into applicant values (55555555, 'Music', 'Member of The Beatles, formerly', 'md', 2, 'Registrar link', 2020, 'fall', null);
+insert into applicant (uid, aoi, appExp, degProgram, appStatus, transcript, admissionYear, admissionSemester, appDate) values (55555555, 'Music', 'Member of The Beatles, formerly', 'md', 2, 'Registrar link', 2020, 'fall', '2019-05-07');
 
 insert into degree values (55555555, 'BA', 'Berkley', '4.0', 'Boyband', 1960);
 insert into degree values (55555555, 'BA', 'Columbia', '3.5', 'Rocket Science', 1969);
@@ -451,7 +456,7 @@ insert into recs (uid, recName, job, relation, email, content, org) values (5555
 
 insert into people (ssn, username, email, birthDate, password, uid, fname, lname, address) values (222111111, 'rstarr', 'rstarr@gmail.com', '1940-07-07', 'pass', 66666666, 'Ringo', 'Starr', '2 Glynde Mews, Chelsea, London SW3 1SB, United Kingdom');
 
-insert into applicant (uid, aoi, appExp, degProgram, appStatus, transcript, admissionYear, admissionSemester) values (66666666, 'Music', 'Member of The Beatles, formerly', 'md', 1, NULL, 2020, 'fall');
+insert into applicant (uid, aoi, appExp, degProgram, appStatus, transcript, admissionYear, admissionSemester, appDate) values (66666666, 'Music', 'Member of The Beatles, formerly', 'md', 1, NULL, 2020, 'fall', '2020-05-07');
 
 insert into degree values (66666666, 'BA', 'NYU', '3.8', 'Boyband', 1968);
 
@@ -461,7 +466,7 @@ insert into examScore values (66666666, 'quantitative', 170, 1983);
 
 insert into recs (uid, recName, job, relation, email, content, org) values (66666666, 'Daffy Duck', 'Duck', 'Acquaintance', 'dduck@aol.com', 'Not a rabbit, cannot complain', 'Toons');
 insert into recs (uid, recName, job, relation, email, content, org) values (66666666, 'Rogger Rabbit', 'Rock Star', 'Employer', 'rrabbit@hotmail.com', 'Wonderful man.', 'Wouldnt you like to know');
-insert into recs (uid, email) values (55555555, 'madonna@gmail.com');
+--insert into recs (uid, email) values (66666666, 'madonna@gmail.com');
 
 insert into people (ssn, username, email, password, uid, fname, lname) values (555111111, 'larmstrong', 'larmstrong@gmail.com', 'pass', 00001234, 'Louis', 'Armstrong');
 

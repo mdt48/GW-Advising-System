@@ -108,8 +108,9 @@
 		}
 		else $status = 1; //there's no transcript
 
+		$date = date('Y-m-d');
 		//update the information in applicant
-		$appsql = "UPDATE applicant SET aoi = '$aoi', appExp = '$workExp', admissionYear = '$appYear', admissionSemester = '$appSem', degProgram = '$program', appStatus = '$status', transcript = '$transcript' WHERE uid = '$uid'";
+		$appsql = "UPDATE applicant SET aoi = '$aoi', appExp = '$workExp', admissionYear = '$appYear', admissionSemester = '$appSem', degProgram = '$program', appStatus = '$status', transcript = '$transcript', appDate = '$date' WHERE uid = '$uid'";
         if (mysqli_query($dbc, $appsql) == false)
         {   
 			$flag = false;
@@ -740,9 +741,9 @@
 
 		$queryStaff = "SELECT * FROM staff WHERE uid = '".$_SESSION['uid']."'";
 		$dataStaff = mysqli_query($dbc, $queryStaff);
-		$rowStaff = mysqli_num_rows($dataStaff);
- 
-		if ($row['total'] == 0 || $row['total'] == $rowCheck['total'] || $rowStaff['type'] == 1 || $rowStaff['type'] == 0) {
+		$rowStaff = mysqli_fetch_array($dataStaff);
+
+		if ($row['total'] == 0 || $row['total'] == $rowCheck['total'] || (($rowStaff['type'] == 1 || $rowStaff['type'] == 0) && $rowStaff['type'] != NULL)) {
 			?>
 			<div class="form-group">
 				<b><label for="recs">Recommendation Letter Contacts</label></br></b>

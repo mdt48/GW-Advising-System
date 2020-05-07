@@ -90,7 +90,9 @@ if (isset($_POST['submit']))
     if ($transcript != NULL && $rec1Email == NULL && $rec2Email == NULL && $rec3Email == NULL) $status = 2;
     else $status = 1;
 
-    $applicantsql = "INSERT INTO applicant (uid, aoi, appExp, admissionYear, admissionSemester, degProgram, appStatus, transcript) VALUES ('$uid', '$aoi', '$workExp', '$appYear', '$appSem', '$program', '$status', '$transcript')";
+    $date = date('Y-m-d');
+
+    $applicantsql = "INSERT INTO applicant (uid, aoi, appExp, admissionYear, admissionSemester, degProgram, appStatus, transcript, appDate) VALUES ('$uid', '$aoi', '$workExp', '$appYear', '$appSem', '$program', '$status', '$transcript', '$date')";
     
     if (mysqli_query($dbc, $applicantsql) == false)
     {

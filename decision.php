@@ -37,16 +37,17 @@ else
         $row = mysqli_fetch_array($data);
     }
 
-    if ($row['type'] == 1 || $row['type'] == 0)
+    if ($row['type'] == 1 || $row['type'] == 0 || $row['type'] == 2) 
     {
         // User is staff, allow to access page
         // Check if submit is activated to set decision
         if (isset($_POST['submit'])) {
 
+            $date = date('Y-m-d');
             // Update application with final decision
-            $decisionQuery = "UPDATE applicant SET appStatus = ".$_POST['appStatus'].", adv = ".$_POST['adv']." WHERE uid = ".$_POST['uid'];
+            $decisionQuery = "UPDATE applicant SET appStatus = ".$_POST['appStatus'].", adv = ".$_POST['adv'].", accDate = '".$date."' WHERE uid = ".$_POST['uid'];
             $decisionData = mysqli_query($dbc, $decisionQuery);
-
+            echo $decisionQuery;
             header('Location: queue.php');
 
         }
