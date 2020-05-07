@@ -16,7 +16,8 @@
     </div>
 </header>
 <div class = "container">
-	<div class = "row">
+	<h1>General Information</h1> <br>
+    <dl class="row">
 	<?php 
 		$query = "select * from applicant where uid = '$uid'";
 							
@@ -35,71 +36,167 @@
             $dataD = mysqli_query($dbc, $queryD);  
 
             //info from examScore
-            $queryE = "select * from examScore where uid = '$uid'";				
+            $queryE = 'select * from examScore where uid = '.$uid.' and examSubject != "total" and examSubject != "verbal" and examSubject != "quantitative" order by examSubject asc';				
 			$dataE = mysqli_query($dbc, $queryE);    
 			
             //info from recs
             $queryR = "select email from recs where uid = '$uid'";				
-            $dataR = mysqli_query($dbc, $queryR);    
+			$dataR = mysqli_query($dbc, $queryR);  
+			?> 
+			<dt class="col-sm-3">First Name</dt>
+			<dd class="col-sm-9"><?php echo $rowU['fname']; ?></dd>
 
-			echo 'General information <br/><br/>';
+			<dt class="col-sm-3">Last Name</dt>
+			<dd class="col-sm-9"><?php echo $rowU['lname']; ?></dd>
 
-			echo 'First Name: '.$rowU['fname'].' <br/>
-			Last Name: '.$rowU['lname'].'<br/>
-			Username: '.$rowU['username'].'<br/>
-			Birthday: '.$rowU['birthDate'].'<br/>
-			User Id: '.$rowU['uid'].'<br/>
-			Address: '.$rowU['address'].'<br/><br/><br/>
+			<dt class="col-sm-3">Email Address</dt>
+			<dd class="col-sm-9"><?php echo $rowU['email']; ?></dd>
+			
+			<dt class="col-sm-3">Username</dt>
+			<dd class="col-sm-9"><?php echo $rowU['username']; ?></dd>
+			
+			<dt class="col-sm-3">Birthday</dt>
+			<dd class="col-sm-9"><?php echo $rowU['birthDate']; ?></dd>
+			
+			<dt class="col-sm-3">User ID</dt>
+			<dd class="col-sm-9"><?php echo $rowU['uid']; ?></dd>
+			
+			<dt class="col-sm-3">Address</dt>
+        	<dd class="col-sm-9"><?php echo $rowU['address']; ?></dd>
+			</dl>
+			<h1>Application</h1> <br/>
+			<dl class="row">
+			<dt class="col-sm-3">Degree Program</dt>
+			<dd class="col-sm-9"><?php if ($rowA['degProgram'] == "md") {
+					echo 'MD<br/>';
+				}
+				else {
+					echo 'PHD<br/>';
+				} ?></dd>
 
-			Application Information <br/> <br/>
-			Applying to: ';
-			if ($rowA['degProgram'] == "md") {
-				echo 'MD<br/>';
-			}
-			else {
-				echo 'PHD<br/>';
-			}
-			echo 'Areas of Interest: '.$rowA['aoi'].'<br/>
-			Experience: '.$rowA['appExp'].'<br/>
-			Transcript: ';
-			if ($rowA['transcript'] == 0) {
-				echo 'No<br/>';
-			}
-			else {
-				echo 'Yes<br/>';
-			}
-			echo 'Admission: '.$rowA['admissionSemester'].' '.$rowA['admissionYear'].'<br/><br/><br/>';
-			echo 'Previous Degrees <br/><br/>';
+			<dt class="col-sm-3">Admission Semester/Year</dt>
+			<dd class="col-sm-9"><?php echo $rowA['admissionSemester']." ".$rowA['admissionYear']; ?></dd>
+
+			<dt class="col-sm-3">Areas of Interest</dt>
+			<dd class="col-sm-9"><?php echo $rowA['aoi']; ?></dd>
+			
+			<dt class="col-sm-3">Transcript Link</dt>
+			<dd class="col-sm-9"><?php echo $rowA['transcript']; ?></dd>
+
+			<?php 
+            	if (!($rowA['appExp'] == NULL)) {
+			?>
+				<dt class="col-sm-3">Experience</dt>
+				<dd class="col-sm-9"><?php echo $rowA['appExp']; ?></dd>
+			<?php }
+			
+			$degCount = 1;
 
 			while ($rowD = mysqli_fetch_array($dataD)) {
-				echo 'Degree Type: '.$rowD['degType'].'<br/>
-				School: '.$rowD['school'].'<br/>
-				GPA: '.$rowD['gpa'].'<br/>
-				Major: '.$rowD['major'].'<br/>
-				Year of Graduation: '.$rowD['yearGrad'].'<br/>
-				';
-			}
-			echo '<br/>';
-			echo 'Exam Scores <br/><br/>';
+				?>
 
-			while ($rowE = mysqli_fetch_array($dataE)) {
-				echo 'Subject: '.$rowE['examSubject'].'<br/>
-				Score: '.$rowE['score'].'<br/>
-				Year Taken: '.$rowE['yearTake'].'<br/><br/>
-				';
+				<dt class="col-sm-3">Degree <?php echo $degCount; ?></dt>
+				<dd class="col-sm-9">
+				<dl class="row">
+					<dt class="col-sm-4">Type of Degree</dt>
+					<dd class="col-sm-8"><?php echo $rowD['degType']; ?></dd>
+
+					<dt class="col-sm-4">Issuing University</dt>
+					<dd class="col-sm-8"><?php echo $rowD['school']; ?></dd>
+
+					<dt class="col-sm-4">GPA</dt>
+					<dd class="col-sm-8"><?php echo $rowD['gpa']; ?></dd>
+
+					<dt class="col-sm-4">Field of Study</dt>
+					<dd class="col-sm-8"><?php echo $rowD['major']; ?></dd>
+
+					<dt class="col-sm-4">Year Graduating</dt>
+					<dd class="col-sm-8"><?php echo $rowD['yearGrad']; ?></dd>
+
+				</dl>
+			</dd>
+				<?php				
+				$degCount++;
 			}
-			echo '<br/>';
-			echo 'Recommendations emailed to:<br/><br/>';
-			while ($rowR = mysqli_fetch_array($dataR)) {
-				echo $rowR['email'].'<br/>';
+			
+            $queryEQ = 'select * from examScore where uid = '.$uid.' and examSubject = "quantitative"';				
+			$dataEQ = mysqli_query($dbc, $queryEQ); 
+			if ($rowEQ = mysqli_fetch_array($dataEQ)) { //if there is a GRE			
+				$queryEV = 'select * from examScore where uid = '.$uid.' and examSubject = "verbal"';				
+				$dataEV = mysqli_query($dbc, $queryEV);
+				$rowEV = mysqli_fetch_array($dataEV);
+				$queryET = 'select * from examScore where uid = '.$uid.' and examSubject = "total"';				
+				$dataET = mysqli_query($dbc, $queryET);
+				$rowET = mysqli_fetch_array($dataET);?>
+				
+				<dt class="col-sm-3">GRE</dt>
+				<dd class="col-sm-9">
+				<dl class="row">
+						<dt class="col-sm-4">Verbal</dt>
+						<dd class="col-sm-8"><?php echo $rowEV['score']; ?></dd>
+
+						<dt class="col-sm-4">Quantitative</dt>
+						<dd class="col-sm-8"><?php echo $rowEQ ['score']; ?></dd>
+						
+						<dt class="col-sm-4">Total</dt>
+						<dd class="col-sm-8"><?php echo $rowET['score']; ?></dd>
+
+						<dt class="col-sm-4">Year Taken</dt>
+						<dd class="col-sm-8"><?php echo $rowET['yearTake']; ?></dd>
+					</dl>
+
+				</dd>
+
+				<?php
+			}
+			
+			$examCount = 1;
+
+			while ($rowE = mysqli_fetch_array($dataE)) { 
+				?>
+				<dt class="col-sm-3">Exam <?php echo $examCount; ?></dt>
+				<dd class="col-sm-9">
+
+					<dl class="row">
+						<dt class="col-sm-4">Subject</dt>
+						<dd class="col-sm-8"><?php echo $rowE['examSubject']; ?></dd>
+
+						<dt class="col-sm-4">Score</dt>
+						<dd class="col-sm-8"><?php echo $rowE['score']; ?></dd>
+
+						<dt class="col-sm-4">Year Taken</dt>
+						<dd class="col-sm-8"><?php echo $rowE['yearTake']; ?></dd>
+					</dl>
+
+				</dd>
+				<?php
+				$examCount++;
+			}
+			if (mysqli_num_rows($dataR) >= 1) { ?>
+
+				<dt class="col-sm-3">Reccomendations emailed to:</dt>
+				 
+				<dd class="col-sm-9"> 
+					
+    			<dl class="row">
+				<?php
+			}
+			while ($rowR = mysqli_fetch_array($dataR)) { ?>
+
+				
+				<dd class="col-sm-8"><?php echo $rowR['email']; ?></dd>
+
+				<?php 
 			}
 
-			echo '
-            </div>
-			<div class = "row"><p>';
+			?>
+			</dl>
+			</dd>
+			<?php
 		}
 	?>
-	<br/><br/>
+	</div>
+	<div class = "row"><p>
 			<a class="btn text-white btn-lg" style = "background-color: #033b59;" href = "index.php">Go Back</a>
 		</p>
 	</div>
