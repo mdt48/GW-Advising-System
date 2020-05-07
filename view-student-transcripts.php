@@ -29,8 +29,8 @@
   <title>Transcripts</title>
 </head>
 
-<body>
-  <form method="post">
+<body style = "text-align: center;">
+  <form method="post" style = "display: inline-block;">
     <input type="text" name="input_id" placeholder="Enter student id">
     <div></div></br>
     <input type="text" name="input_fname" placeholder="Enter student first name">
@@ -60,7 +60,7 @@
 	      	echo "<h2>Transcript for ".$student_result['fname']." ".$student_result['lname'].":</h2>";
 	      	echo "id: ".$u_id;
 	        //print out table
-	        echo "<table>";
+	        echo "<table style = 'margin-left:auto;margin-right:auto;'>";
 	        echo "<tr><td><b>Class name</b></td><td><b>Department</b></td><td><b>Grade</b></td></tr>";        
 	        while ($takes_result = mysqli_fetch_array($takes_query)) {
 	          echo "<tr>";
@@ -78,5 +78,5 @@
 	  	}
 	}
   ?>
-  <a href="index.php">Home</a>
+  <br></br><a href="index.php"><p style="text-align:center">Home</p></a>
 </body>  

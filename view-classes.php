@@ -29,8 +29,8 @@
   <title>Class Schedule</title>
 </head>
 
-<body>
-  <form method="post">
+<body style = "text-align: center;">
+  <form method="post" style = "display: inline-block;">
     <input type="text" name="input_season" placeholder="Season (Fall or Spring)" required>
     <input type="text" name="input_year" placeholder="Year" required>
     <input name="Submit" type="submit">
@@ -49,31 +49,38 @@
 ");
       //display results
       if ($classes_query != false) {
-        //print out table
-        echo "<table>";
-        echo "<tr><td><b>Class ID</b></td><td><b>Class Name</b></td><td><b>Day</b></td><td><b>Start Time</b></td><td><b>End Time</b></td><td><b>Room</b></td><td><b>Credit Hours</b></td><td><b>Instructor</b></td></tr>";
-        while ($classes_result = mysqli_fetch_array($classes_query)) {
-          echo "<tr>";
-          echo "<td>".$classes_result['cid']."</td>";
-          echo "<td>".$classes_result['subject']."</td>";
-          echo "<td>".$classes_result['day']."</td>";
-          echo "<td>".$classes_result['start_time']."</td>";
-          echo "<td>".$classes_result['end_time']."</td>";
-          echo "<td>".$classes_result['room']."</td>";
-          echo "<td>".$classes_result['credit']."</td>";
-          echo "<td>".$classes_result['fname']."";
-          echo " ".$classes_result['lname']."</td>";
-          echo "</tr>";
+        if (mysqli_num_rows($classes_query) != 0) {
+          //print out table
+          echo "</br></br>";
+          echo "<table style = 'margin-left:auto;margin-right:auto;'>";
+          echo "<tr><td><b>Class ID</b></td><td><b>Class Name</b></td><td><b>Day</b></td><td><b>Start Time</b></td><td><b>End Time</b></td><td><b>Room</b></td><td><b>Credit Hours</b></td><td><b>Instructor</b></td></tr>";
+          while ($classes_result = mysqli_fetch_array($classes_query)) {
+            echo "<tr>";
+            echo "<td>".$classes_result['cid']."</td>";
+            echo "<td>".$classes_result['subject']."</td>";
+            echo "<td>".$classes_result['day']."</td>";
+            echo "<td>".$classes_result['start_time']."</td>";
+            echo "<td>".$classes_result['end_time']."</td>";
+            echo "<td>".$classes_result['room']."</td>";
+            echo "<td>".$classes_result['credit']."</td>";
+            echo "<td>".$classes_result['fname']."";
+            echo " ".$classes_result['lname']."</td>";
+            echo "</tr>";
+          }
+          echo "</table>";
+        } else {
+          echo "</br></br>There are no listed classes available for this time priod.";
         }
-        echo "</table>";
       } else {
         echo "ERROR: No classes have been found!";
       }
     }
   ?>
   <br/>
+  </br>
     <a href="index.php">Home</a>
   <br/>
+  </br>
 </body>
 
 <?php

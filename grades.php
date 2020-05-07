@@ -28,7 +28,7 @@
         </div>
     </div>
   </header>
-
+<body style = "text-align: center;">
 
 <?php
   
@@ -59,29 +59,34 @@
 
     $data = mysqli_query($dbc, $query);
 
-    echo '<h4>Students:</h4>';
-    echo '<table>';
-    $student_id = "";
-    while ($row = mysqli_fetch_array($data)) { //show the students with a button to add a grade for them
-      if ($row["uid"] != $student_id) {
-        ?>
-        <form action="addgrade.php" method="GET">
-          <input type="hidden" name ="u_id" value="<?php echo $row["uid"]; ?>" />
-          <input type="hidden" name ="teach_id" value="<?php echo $user; ?>" />
-          <input type="submit" name="addgrade" value="Add grade" />
-	      </form><?php
-        echo $row["fname"]." ". $row["lname"];?><br><?php
-        $student_id = $row["uid"];
-      }
-    }
+    
+    if (mysqli_num_rows($data) != 0) {
+      echo '<h4>Students:</h4>';
+      echo '<table>';
+      $student_id = "";
 
-    echo '</table>';
+      while ($row = mysqli_fetch_array($data)) { //show the students with a button to add a grade for them
+        if ($row["uid"] != $student_id) {
+          echo $row["fname"]." ". $row["lname"];?>
+          <form action="addgrade.php" method="GET" style = "display: inline-block;">
+            <input type="hidden" name ="u_id" value="<?php echo $row["uid"]; ?>" />
+            <input type="hidden" name ="teach_id" value="<?php echo $user; ?>" />
+            <input type="submit" name="addgrade" value="Add grade" />
+  	      </form><br><?php
+          $student_id = $row["uid"];
+        }
+      }
+      echo '</table>';
+    } else {
+      echo '<p style="text-align:center;">No students currently have ungraded clases!</p>';
+    }
 
 
   }
 
   //link to homepage
-  echo '<br/><br/><a href="index.php">Home</a>';
+  echo '<br/><br/><a href="index.php"><p style="text-align:center">Home</p></a>';
 
 
 ?>
+</body>

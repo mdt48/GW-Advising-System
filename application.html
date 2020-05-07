@@ -50,7 +50,7 @@
         <div class="form-group">
             <b><label for="lname">Last Name*</label></b>
             <input type="text" class="form-control" id="lname" maxlength="255" onkeypress="return (event.charCode > 64 && 
-			event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode == 32)" name = "lname" placeholder="Enter last name" required>
+			event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode == 32) || (event.charCode == 45)" name = "lname" placeholder="Enter last name" required>
         </div>
 		<div class="form-group">
             <b><label for="SSN">Social Security Number*</label></b>
@@ -95,124 +95,6 @@
 			<label for="phd">Doctoral Program</label><br>
 		</div>
 		<div class="form-group">
-			<table id="ifYes" style="display: none;" class="form">
-				<!-- <b><label for="gre">GRE Scores (Only required for Doctoral Candidates)</label> </br></b> -->
-				<tbody>
-					<tr>
-							<th>GRE Total Score</th>
-							<th>GRE Verbal Score</th>
-							<th>GRE Quantitative Score</th>
-							<th>GRE Year Taken</th>
-					</tr>
-					<tr>
-							<td>
-								<input type="text" class="small" maxlength="3" onkeypress = "return (event.charCode > 47 && event.charCode < 58)" id = "total" name="total">
-							</td>
-							<td>
-								<input type="text" class="small" maxlength="3" onkeypress = "return (event.charCode > 47 && event.charCode < 58)" id = "verbal" name="verbal">
-							</td>
-							<td>
-								<input type="text" class="small" maxlength="3" onkeypress = "return (event.charCode > 47 && event.charCode < 58)" id = "quant" name="quant">
-							</td>
-							<td>
-								<input type="number" min="1940" max="2020" step="1" value="2020" id = "greYearTaken" name="greYearTaken">
-							</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<div class="form-group">
-			<b><label for="greSubj">GRE Advanced and TOEFL Tests (Optional)</label> </br></b>
-				<table id="dataTable" rowspan = "7" colspan = "3" class="form" border="1">
-					<thread>
-						<tr>
-							<th>Subject</th>
-							<th>Score</th>
-							<th>Year Taken</th>
-						</tr>
-						<tbody>
-						<tr>
-							<td>
-								<input type="text" class="small"  maxlength="255" onkeypress="return (event.charCode > 64 && 
-								event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode == 32)" id = "subj1" name="subj1">
-							<td>
-								<input type="text" class="small" maxlength="3" onkeypress = "return (event.charCode > 47 && event.charCode < 58)" id = "subjScore1" name="subjScore1">
-							</td>
-							<td>
-								<input type="number" min="1940" max="2020" step="1" value="2020" id = "subjYearTaken1" name="subjYearTaken1">
-							</td>
-						</tr>	
-						<tr>
-							<td>
-								<input type="text" class="small"  maxlength="255" onkeypress="return (event.charCode > 64 && 
-								event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode == 32)" id = "subj" name="subj2">
-							<td>
-								<input type="text" class="small" maxlength="3" onkeypress = "return (event.charCode > 47 && event.charCode < 58)" id = "subjScore" name="subjScore2">
-							</td>
-							<td>
-								<input type="number" min="1940" max="2020" step="1" value="2020" id = "subjYearTaken2" name="subjYearTaken2">
-							</td>
-						</tr>	
-						<tr>
-							<td>
-								<input type="text" class="small"  maxlength="255" onkeypress="return (event.charCode > 64 && 
-								event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode == 32)" id = "subj" name="subj3">
-							<td>
-								<input type="text" class="small" maxlength="3" onkeypress = "return (event.charCode > 47 && event.charCode < 58)" id = "subjScore" name="subjScore3">
-							</td>
-							<td>
-								<input type="number" min="1940" max="2020" step="1" value="2020" id = "subjYearTaken3" name="subjYearTaken3">
-							</td>
-						</tr>	
-						<tr>
-							<td>
-								<input type="text" class="small" maxlength="255" onkeypress="return (event.charCode > 64 && 
-								event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode == 32)"  id = "subj" name="subj4">
-							<td>
-								<input type="text" class="small"  maxlength="3" onkeypress = "return (event.charCode > 47 && event.charCode < 58)" id = "subjScore" name="subjScore4">
-							</td>
-							<td>
-								<input type="number" min="1940" max="2020" step="1" value="2020" id = "subjYearTaken4" name="subjYearTaken4">
-							</td>
-						</tr>	
-						<tr>
-							<td>
-								<input type="text" class="small"  maxlength="255" onkeypress="return (event.charCode > 64 && 
-								event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode == 32)" id = "subj" name="subj5">
-							<td>
-								<input type="text" class="small" maxlength="3" onkeypress = "return (event.charCode > 47 && event.charCode < 58)" id = "subjScore" name="subjScore5">
-							</td>
-							<td>
-								<input type="number" min="1940" max="2020" step="1" value="2020" id = "subjYearTaken5" name="subjYearTaken5">
-							</td>
-						</tr>	
-						<tr>
-							<td>
-								<input type="text" class="small"  maxlength="255" onkeypress="return (event.charCode > 64 && 
-								event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode == 32)" id = "subj" name="subj6">
-							<td>
-								<input type="text" class="small" maxlength="3" onkeypress = "return (event.charCode > 47 && event.charCode < 58)" id = "subjScore" name="subjScore6">
-							</td>
-							<td>
-								<input type="number" min="1940" max="2020" step="1" value="2020" id = "subjYearTaken6" name="subjYearTaken6">
-							</td>
-						</tr>	
-						<tr>
-							<td>
-								<input type="text" class="small"  maxlength="255" onkeypress="return (event.charCode > 64 && 
-								event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode == 32)" id = "subj7" name="subj7">
-							<td>
-								<input type="text" class="small" maxlength="3" onkeypress = "return (event.charCode > 47 && event.charCode < 58)" id = "subjScore7" name="subjScore7">
-							</td>
-							<td>
-								<input type="number" min="1940" max="2020" step="1" value="2020" id = "subjYearTaken7" name="subjYearTaken7">
-							</td>
-						</tr>
-						</tbody>
-					</thead>
-				</table>
-		</div>
-		<div class="form-group">
 			<b><label for="pDeg">Prior Degrees (Optional)</label> </br></b>
 			<table id="pDeg" class="form" border="1">
 				<tbody>
@@ -236,14 +118,14 @@
 								<input type="number" min = "1940" max = "2020" step = "1" value = "2020" id ="pdYear1" name="pdYear1">
 							</td>
 							<td>
-								<input type="text" class="small" onkeypress="return (event.charCode > 64 && 
+								<input type="text"  onkeypress="return (event.charCode > 64 && 
 								event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode == 32)" maxLength = "255" id ="pdMajor1" name="pdMajor1">
 							</td>
 							<td>
-								<input type="text" class="small" maxLength = "4" onkeypress = "return (event.charCode > 47 && event.charCode < 58) || (event.charCode == 46)" id = "pdGPA1" name="pdGPA1">
+								<input type="text"  maxLength = "4" onkeypress = "return (event.charCode > 47 && event.charCode < 58) || (event.charCode == 46)" id = "pdGPA1" name="pdGPA1">
 							</td>
 							<td>
-								<input type="text" class="small" onkeypress="return (event.charCode > 64 && 
+								<input type="text"  onkeypress="return (event.charCode > 64 && 
 								event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode == 32)" maxlength = "255" id = "pdCollege1" name="pdCollege1">
 							</td>
 					</tr>
@@ -260,19 +142,142 @@
 								<input type="number" min = "1940" max = "2020" step = "1" value = "2020" id ="pdYear2" name="pdYear2">
 							</td>
 							<td>
-								<input type="text" class="small" onkeypress="return (event.charCode > 64 && 
+								<input type="text"  onkeypress="return (event.charCode > 64 && 
 								event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode == 32)" maxLength = "255" id ="pdMajor2" name="pdMajor2">
 							</td>
 							<td>
-								<input type="text" class="small" maxLength = "4" onkeypress = "return (event.charCode > 47 && event.charCode < 58) || (event.charCode == 46)" id = "pdGPA2" name="pdGPA2">
+								<input type="text"  maxLength = "4" onkeypress = "return (event.charCode > 47 && event.charCode < 58) || (event.charCode == 46)" id = "pdGPA2" name="pdGPA2">
 							</td>
 							<td>
-								<input type="text" class="small" onkeypress="return (event.charCode > 64 && 
+								<input type="text"  onkeypress="return (event.charCode > 64 && 
 								event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode == 32)" maxlength = "255" id = "pdCollege2" name="pdCollege2">
 							</td>
 					</tr>
 				</tbody>
 			</table>
+		</div>
+		<div class="form-group">
+            <b><label for="transcript">Transcript (if link not given, transcript must be emailed)</label></b>
+            <input type="text" class="form-control" maxlength="255" id="transcript" name = "transcript" placeholder="Enter link to registrar" >
+		</div>
+		<div class="form-group">
+			<table id="ifYes" class="form">
+				<tbody>
+					<tr><th>GRE Scores</th></tr>
+					<tr>
+							<th>Verbal</th>
+							<th>Quantitative</th>
+							<th>Total</th>
+							<th>Year Taken</th>
+					</tr>
+					<tr>
+							<td>
+								<input type="text" maxlength="3" onchange="sumFunct()" onkeypress = "return (event.charCode > 47 && event.charCode < 58)" id = "verbal" name="verbal">
+							</td>
+							<td>
+								<input type="text" maxlength="3" onchange="sumFunct()" onkeypress = "return (event.charCode > 47 && event.charCode < 58)" id = "quant" name="quant">
+							</td>
+							<td>
+								<input type="text" maxlength="3" id = "total1" name="total1" disabled>
+								<input type="hidden" maxlength="3" id = "total" name="total">
+							</td>
+							<td>
+								<input type="number" min="1940" max="2020" step="1" value="2020" id = "greYearTaken" name="greYearTaken">
+							</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="form-group">
+			<b><label for="greSubj">GRE Advanced and TOEFL Tests (Optional)</label> </br></b>
+				<table id="dataTable" rowspan = "7" colspan = "3" class="form" border="1">
+					<thread>
+						<tr>
+							<th>Subject</th>
+							<th>Score</th>
+							<th>Year Taken</th>
+						</tr>
+						<tbody>
+						<tr>
+							<td>
+								<input type="text"   maxlength="255" value = "Biology" id = "subj1" name="subj1" onkeypress = "return (event.charCode > 0 && event.charCode < 1)">
+							</td>
+							<td>
+								<input type="text"  maxlength="3" onkeypress = "return (event.charCode > 47 && event.charCode < 58)" id = "subjScore1" name="subjScore1">
+							</td>
+							<td>
+								<input type="number" min="1940" max="2020" step="1" value="2020" id = "subjYearTaken1" name="subjYearTaken1">
+							</td>
+						</tr>	
+						<tr>
+							<td>
+								<input type="text"   maxlength="255" value = "Chemistry" id = "subj2" name="subj2" onkeypress = "return (event.charCode > 0 && event.charCode < 1)">
+							</td>
+							<td>
+								<input type="text"  maxlength="3" onkeypress = "return (event.charCode > 47 && event.charCode < 58)" id = "subjScore2" name="subjScore2">
+							</td>
+							<td>
+								<input type="number" min="1940" max="2020" step="1" value="2020" id = "subjYearTaken2" name="subjYearTaken2">
+							</td>
+						</tr>	
+						<tr>
+							<td>
+								<input type="text"   maxlength="255" value = "Literature" id = "subj3" name="subj3" onkeypress = "return (event.charCode > 0 && event.charCode < 1)">
+							</td>
+							<td>
+								<input type="text"  maxlength="3" onkeypress = "return (event.charCode > 47 && event.charCode < 58)" id = "subjScore3" name="subjScore3">
+							</td>
+							<td>
+								<input type="number" min="1940" max="2020" step="1" value="2020" id = "subjYearTaken3" name="subjYearTaken3">
+							</td>
+						</tr>	
+						<tr>
+							<td>
+								<input type="text"  maxlength="255" value = "Mathematics"  id = "subj4" name="subj4" onkeypress = "return (event.charCode > 0 && event.charCode < 1)">
+							</td>
+							<td>
+								<input type="text"   maxlength="3" onkeypress = "return (event.charCode > 47 && event.charCode < 58)" id = "subjScore4" name="subjScore4">
+							</td>
+							<td>
+								<input type="number" min="1940" max="2020" step="1" value="2020" id = "subjYearTaken4" name="subjYearTaken4">
+							</td>
+						</tr>	
+						<tr>
+							<td>
+								<input type="text"   maxlength="255" value = "Physics" id = "subj5" name="subj5" onkeypress = "return (event.charCode > 0 && event.charCode < 1)">
+							</td>
+							<td>
+								<input type="text"  maxlength="3" onkeypress = "return (event.charCode > 47 && event.charCode < 58)" id = "subjScore5" name="subjScore5">
+							</td>
+							<td>
+								<input type="number" min="1940" max="2020" step="1" value="2020" id = "subjYearTaken5" name="subjYearTaken5">
+							</td>
+						</tr>	
+						<tr>
+							<td>
+								<input type="text"   maxlength="255" value = "Psychology" id = "subj6" name="subj6" onkeypress = "return (event.charCode > 0 && event.charCode < 1)">
+							</td>
+							<td>
+								<input type="text"  maxlength="3" onkeypress = "return (event.charCode > 47 && event.charCode < 58)" id = "subjScore6" name="subjScore6">
+							</td>
+							<td>
+								<input type="number" min="1940" max="2020" step="1" value="2020" id = "subjYearTaken6" name="subjYearTaken6">
+							</td>
+						</tr>	
+						<tr>
+							<td>
+								<input type="text"   maxlength="255" value = "TOEFL" id = "subj8" name="subj8" onkeypress = "return (event.charCode > 0 && event.charCode < 1)">
+							</td>
+							<td>
+								<input type="text"  maxlength="3" onkeypress = "return (event.charCode > 47 && event.charCode < 58)" id = "subjScore8" name="subjScore8">
+							</td>
+							<td>
+								<input type="number" min="1940" max="2020" step="1" value="2020" id = "subjYearTaken8" name="subjYearTaken8">
+							</td>
+						</tr>
+						</tbody>
+					</thead>
+				</table>
 		</div>
 		<div class="form-group">
 			<b><label for="recs">Recommendation Letter Contacts</label></br></b>
@@ -301,22 +306,38 @@
 			<input type="submit" value="Submit" name="submit">
 	  </form>
 </div>
+<br> <br> <br>
 </body>
 </html>
 
 <script type="text/javascript">
     function yesnoCheck() {
         if (document.getElementById("yesCheck").checked) {
-            document.getElementById("ifYes").style.display = "block";
 			document.getElementById("total").required = true;
 			document.getElementById("quant").required = true;
 			document.getElementById("verbal").required = true;
 
         } else {
-            document.getElementById("ifYes").style.display = "block";
 			document.getElementById("total").required = false;
 			document.getElementById("quant").required = false;
 			document.getElementById("verbal").required = false;
         }
     }
+	
+	function sumFunct() {
+		var sum = 0;
+		if (parseInt(document.getElementById("quant").value) > 170 || parseInt(document.getElementById("quant").value) <= 0) {
+			document.getElementById("quant").value = 0;
+		}
+		else if (parseInt(document.getElementById("verbal").value) > 170 || parseInt(document.getElementById("verbal").value) <= 0) {
+			document.getElementById("verbal").value = 0;
+		}
+		else {
+			sum += parseInt(document.getElementById("quant").value);
+			sum += parseInt(document.getElementById("verbal").value);
+		}
+		document.getElementById("total1").value = sum;
+		document.getElementById("total").value = sum;
+    }
+
 </script>
