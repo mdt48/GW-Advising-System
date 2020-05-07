@@ -76,6 +76,8 @@ CREATE TABLE applicant (
   `admissionYear` year,
   `admissionSemester` varchar(10),
   `adv` int,
+  `appDate` date,
+  `accDate` date,
   primary key (`uid`),
   foreign key (`uid`) references people(`uid`)
 );
@@ -438,7 +440,7 @@ INSERT INTO schedule VALUES
 
 insert into people (ssn, username, email, birthDate, password, uid, fname, lname, address) values (111111111, 'jlennon', 'jlennon@gmail.com', '1940-10-09', 'pass', 55555555, 'John', 'Lennon', '72nd St & Central Park West, New York, NY, 10023');
 
-insert into applicant values (55555555, 'Music', 'Member of The Beatles, formerly', 'md', 2, 'Registrar link', 2020, 'fall', null);
+insert into applicant (uid, aoi, appExp, degProgram, appStatus, transcript, admissionYear, admissionSemester, appDate) values (55555555, 'Music', 'Member of The Beatles, formerly', 'md', 2, 'Registrar link', 2020, 'fall', '2019-05-07');
 
 insert into degree values (55555555, 'BA', 'Berkley', '4.0', 'Boyband', 1960);
 insert into degree values (55555555, 'BA', 'Columbia', '3.5', 'Rocket Science', 1969);
@@ -454,7 +456,7 @@ insert into recs (uid, recName, job, relation, email, content, org) values (5555
 
 insert into people (ssn, username, email, birthDate, password, uid, fname, lname, address) values (222111111, 'rstarr', 'rstarr@gmail.com', '1940-07-07', 'pass', 66666666, 'Ringo', 'Starr', '2 Glynde Mews, Chelsea, London SW3 1SB, United Kingdom');
 
-insert into applicant (uid, aoi, appExp, degProgram, appStatus, transcript, admissionYear, admissionSemester) values (66666666, 'Music', 'Member of The Beatles, formerly', 'md', 1, NULL, 2020, 'fall');
+insert into applicant (uid, aoi, appExp, degProgram, appStatus, transcript, admissionYear, admissionSemester, appDate) values (66666666, 'Music', 'Member of The Beatles, formerly', 'md', 1, NULL, 2020, 'fall', '2020-05-07');
 
 insert into degree values (66666666, 'BA', 'NYU', '3.8', 'Boyband', 1968);
 
@@ -464,7 +466,7 @@ insert into examScore values (66666666, 'quantitative', 170, 1983);
 
 insert into recs (uid, recName, job, relation, email, content, org) values (66666666, 'Daffy Duck', 'Duck', 'Acquaintance', 'dduck@aol.com', 'Not a rabbit, cannot complain', 'Toons');
 insert into recs (uid, recName, job, relation, email, content, org) values (66666666, 'Rogger Rabbit', 'Rock Star', 'Employer', 'rrabbit@hotmail.com', 'Wonderful man.', 'Wouldnt you like to know');
-insert into recs (uid, email) values (55555555, 'madonna@gmail.com');
+--insert into recs (uid, email) values (66666666, 'madonna@gmail.com');
 
 insert into people (ssn, username, email, password, uid, fname, lname) values (555111111, 'larmstrong', 'larmstrong@gmail.com', 'pass', 00001234, 'Louis', 'Armstrong');
 
@@ -476,7 +478,7 @@ insert into examScore values (00001234, 'quantitative', 100, 1983);
 
 insert into people (ssn, username, email, password, uid, fname, lname) values (666111111, 'afranklin', 'afranklin@gmail.com', 'pass', 00001235, 'Aretha', 'Franklin');
 
-insert into applicant (uid, aoi, degProgram, appStatus, transcript, admissionYear, admissionSemester) values (00001235, 'Music', 'md', 6, "Link", 2017, 'fall');
+insert into applicant (uid, aoi, degProgram, appStatus, transcript, admissionYear, admissionSemester) values (00001235, 'Music', 'md', 4, "Link", 2017, 'fall');
 
 insert into examScore values (00001235, 'total', 250, 1983);
 insert into examScore values (00001235, 'verbal', 150, 1983);
@@ -484,7 +486,7 @@ insert into examScore values (00001235, 'quantitative', 100, 1983);
 
 insert into people (ssn, username, email, password, uid, fname, lname) values (777111111, 'csantana', 'csantana@gmail.com', 'pass', 00001236, 'Carlos', 'Santana');
 
-insert into applicant (uid, aoi, degProgram, appStatus, transcript, admissionYear, admissionSemester) values (00001236, 'Music', 'phd', 6, "Link", 2017, 'fall');
+insert into applicant (uid, aoi, degProgram, appStatus, transcript, admissionYear, admissionSemester) values (00001236, 'Music', 'phd', 4, "Link", 2017, 'fall');
 
 insert into examScore values (00001236, 'total', 200, 1983);
 insert into examScore values (00001236, 'verbal', 100, 1983);

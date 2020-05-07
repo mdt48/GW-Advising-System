@@ -9,7 +9,7 @@ if (!isset($_SESSION['uid']))
 		<div class = "container h-100">
 					<h3 class = "display-4 text-center text-white mt-5 mb-2">Error: Not logged in</h3>
 					<p class = "lead mb-5 text-center text-white-50" id = button>
-					Want to log in? <a href = "login.php">Log In</a> <br/>
+					Want to log in? <a href = "login.html">Log In</a> <br/>
 					Don't have an account yet? <a href = "createAcc.php">Create Account</a> <br/>
 					Want to go home?
 					</p>
@@ -37,16 +37,17 @@ else
         $row = mysqli_fetch_array($data);
     }
 
-    if ($row['type'] == 1 || $row['type'] == 0)
+    if ($row['type'] == 1 || $row['type'] == 0 || $row['type'] == 2) 
     {
         // User is staff, allow to access page
         // Check if submit is activated to set decision
         if (isset($_POST['submit'])) {
 
+            $date = date('Y-m-d');
             // Update application with final decision
-            $decisionQuery = "UPDATE applicant SET appStatus = ".$_POST['appStatus'].", adv = ".$_POST['adv']." WHERE uid = ".$_POST['uid'];
+            $decisionQuery = "UPDATE applicant SET appStatus = ".$_POST['appStatus'].", adv = ".$_POST['adv'].", accDate = '".$date."' WHERE uid = ".$_POST['uid'];
             $decisionData = mysqli_query($dbc, $decisionQuery);
-
+            echo $decisionQuery;
             header('Location: queue.php');
 
         }
