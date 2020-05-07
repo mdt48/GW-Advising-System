@@ -227,16 +227,16 @@ INSERT INTO course VALUES (6210,'MATH','Logic',2);
 
 
 -- staff
-insert into people (fname, lname, uid, username, password) values ('Bhagi', 'Narahari', 1, 'bnarahari', '1234');
-insert into people (fname, lname, uid, username, password) values ('Admin', 'Admin', 2, 'admin', '1234');
-insert into people (fname, lname, uid, username, password) values ('Gabe', 'Parmer', 3, 'gparmer', '1234');
-insert into people (fname, lname, uid, username, password) values ('Tim', 'Wood', 4, 'twood', '1234');
-insert into people (fname, lname, uid, username, password) values ('Shelly', 'Heller', 5, 'sheller', '1234');
-insert into people (fname, lname, uid, username, password) values ('Sarah', 'Morin', 6, 'smorin', '1234');
-insert into people (fname, lname, uid, username, password) values ('Kevin', 'Deemasters', 7, 'kdeemasters', '1234');
-insert into people (fname, lname, uid, username, password) values ('Graduate', 'Secretary', 8, 'gs', '1234');
-insert into people (fname, lname, uid, username, password) values ('Hyeong-Ah', 'Choi', 9, 'hchoi', '1234');
-insert into people (fname, lname, uid, username, password) values ('Robert', 'Pless', 10, 'rpless', '1234');
+insert into people (fname, lname, uid, username, password) values ('Bhagi', 'Narahari', 1, 'bnarahari', 'pass');
+insert into people (fname, lname, uid, username, password) values ('Admin', 'Admin', 2, 'admin', 'pass');
+insert into people (fname, lname, uid, username, password) values ('Gabe', 'Parmer', 3, 'gparmer', 'pass');
+insert into people (fname, lname, uid, username, password) values ('Tim', 'Wood', 4, 'twood', 'pass');
+insert into people (fname, lname, uid, username, password) values ('Shelly', 'Heller', 5, 'sheller', 'pass');
+insert into people (fname, lname, uid, username, password) values ('Sarah', 'Morin', 6, 'smorin', 'pass');
+insert into people (fname, lname, uid, username, password) values ('Kevin', 'Deemasters', 7, 'kdeemasters', 'pass');
+insert into people (fname, lname, uid, username, password) values ('Graduate', 'Secretary', 8, 'gs', 'pass');
+insert into people (fname, lname, uid, username, password) values ('Hyeong-Ah', 'Choi', 9, 'hchoi', 'pass');
+insert into people (fname, lname, uid, username, password) values ('Robert', 'Pless', 10, 'rpless', 'pass');
 
 insert into staff (uid, type) values (1, 9);
 insert into staff (uid, type) values (2, 0);
@@ -250,7 +250,7 @@ insert into staff (uid, type) values (9, 5);
 insert into staff (uid, type) values (10, 2);
 
 
-INSERT into people (uid, username, password, fname, lname) values (77777777, 'eclapton', '1234', 'Eric', 'Clapton');
+INSERT into people (uid, username, password, fname, lname) values (77777777, 'eclapton', 'pass', 'Eric', 'Clapton');
 INSERT into student values (77777777, 'alumni', 1, 1, 6, 'masters', 2014, 'CS');
 
 -- student trans
@@ -266,7 +266,7 @@ INSERT INTO transcript VALUES (77777777,'CSCI',6284,'B',2014,'masters');
 INSERT INTO transcript VALUES (77777777,'CSCI',6286,'B',2014,'masters');
 
 
-INSERT into people (uid, username, password, fname, lname) values (34567890, 'kcobain', '1234', 'Kurt', 'Cobain');
+INSERT into people (uid, username, password, fname, lname) values (34567890, 'kcobain', 'pass', 'Kurt', 'Cobain');
 INSERT into student values (34567890, 'alumni', 1, 1, 3, 'masters', 2015, 'CS');
 
 -- student trans
