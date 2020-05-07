@@ -14,6 +14,7 @@
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
 	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<link rel = "stylesheet" href="/css/heroic-features.css" >
+	<script src = "jquery.sortElements.js" type = "text/javascript"></script>
 </head>
 <?php 
 	$uid = $_SESSION['uid'];
@@ -33,7 +34,7 @@
 		}; 
 	</script> 
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-		<a class="navbar-brand" index="test" href="./staff_home.php">Home</a>
+		<a class="navbar-brand" index="test" href="./index.php">Home</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		  <span class="navbar-toggler-icon"></span>
 		</button>
@@ -87,7 +88,7 @@
 		</div>
     </div>
 </header>
-	  
+
 	</script>
 	  <!-- F1 -->
 	  <table class="table" id="tab1">
@@ -96,6 +97,8 @@
 			<th scope="col">User id</th>
 			<th scope="col">Name</th>
 			<th scope="col">Program</th>
+			<th scope="col" id="major">Major</th>
+			<th scope="col" id="ayear">Admit Year</th>
 			<th scope="col">Transcript</th>
 			<th scope="col">Form 1</th>	
 			<th scope='col'>Thesis</th>
@@ -104,15 +107,21 @@
 		  </tr>
 		</thead>
 
-		<tbody>
+		<tbody id="tbody">
 			<?php
 				//UID will be from session, change once login completed
 				// $UID = $_SESSION['uid'];
-				if ($title == 1) {
-					$query = "select * from student join people on student.uid = people.uid ";
-				} else {
-					$query = "select * from student join people on student.uid = people.uid where advisoruid = '$uid'";
-				}
+				
+					if ($title == 1) {
+						$query = "select * from student join people on student.uid = people.uid order by student.uid";
+					} else {
+						$query = "select * from student join people on student.uid = people.uid where advisoruid = '$uid' order by student.uid";
+					}
+				
+				
+
+				
+
 				if ($result = $dbc->query($query)){
 					if ($nr = $result->num_rows){
 						$i = 1;
@@ -123,48 +132,55 @@
 									echo "<th  scope='row'>{$row->uid}</th>";
 										echo "<td>{$row->fname} {$row->lname}</td>";
 										echo "<td>{$row->program}</td>";
+										echo "<td>{$row->department}</td>";
+										echo "<td>{$row->ayear}</td>";
 										echo
 											"<td> 
 												<button type='submit' onclick='viewTrans({$row->uid});' class='btn btn-primary btn-md float-left f1' id='btnLogin'>View Transcript</button>
 											</td>";
 										// display f1 buttons
-
+										
 										// query form table
 										$form_query = "select * from form where uid='$row->uid'";
+										
 										if ($form_result = $dbc ->query($form_query)) {
-											if (($nr = mysqli_num_rows($form_result)) != 0) {
+											if (($nr = mysqli_num_rows($form_result)) != 0 && $row->grad_year == null) { 
 												echo
 													"<td> 
-														<button type='submit' onclick='viewF1({$row->uid}, true);'class='btn btn-primary btn-md float-left f1' id='btnLogin'>View F1</button>
+														<button type='submit' onclick='viewF1({$row->uid}, true);' class='btn btn-primary btn-md float-left f1' id='btnLogin'>View F1</button>
 													</td>";
-											} else {
+											}else if ($row->grad_year != null) {
+												echo "<td>N/A for Alumni</td>";
+											} 
+											else {
 												echo "<td> No F1 Submitted</td>";
 											}
 										}
 										
 										// display thesis buttons
-										if (strcmp($row->program, "phd")== 0) {
-											if (!$row->thesis){
-												
-												echo "<td><div class='dropdown'>";
-												
-													echo "<button class='btn btn-primary dropdown-toggle' id='menu1' type='button' data-toggle='dropdown'>Approve/Disapprove";
-													echo "<span class='caret'></span></button>";
-													echo "<ul class='dropdown-menu' role='menu' aria-labelledby='menu1'>";
-													echo "<button type='submit class='btn btn-primary btn-md float-left f1' value= '$row->uid' id='approve'><li role='presentation'></li>Approve</button>";
-													echo "<button type='submit id='disapprove' value= '$row->uid'><li role='presentation'>Disapprove</li></button>";
-													echo "</ul>";
-													echo "</div> </td>";
+										if (strcmp($row->program, "phd") == 0) {
+											
+											if (!$row->thesis && $row->thesis != null){
+												echo
+												"<td> 
+													<button type='submit'class='btn btn-primary btn-md float-left thesis' value= '$row->uid' id='thesis'>Approve Thesis</button>
+												</td>";
 											} 
+											else if ($row->thesis == null){
+												echo "<td>No Thesis submitted</td>";
+											}
 											else {
 												echo "<td>Thesis Already Approved</td>";
 											}
-										} else {
+										} else if (strcmp($row->grad_status, "alumn") == 0) {
+											echo "<td>N/A for Alumni</td>";
+										}
+										else {
 											echo "<td>N/A for Masters Students</td>";
 										}
 										
 										if ($title == 1) {
-											if (strcmp($row->grad_status, "f1") == 0 && $row->audited){
+											if (strcmp($row->grad_status, "f1") == 0 && $row->audited && $row->thesis){
 												echo
 												"<td> 
 													<button type='submit' onclick='approveGrad({$row->uid});'class='btn btn-primary btn-md float-left f1' id='grad'>Approve Grad</button>
@@ -175,9 +191,9 @@
 													"<td> 
 														Must Have F1 Submitted/Audited
 													</td>";
-											} else if ($row->grad_year != null) {
-												echo
-												"<td> N/A for Alumni</td>";
+											} 
+											else if (strcmp($row->grad_status, "alumn") != 0) {
+												echo "<td>N/A for Alumni</td>";
 											}
 										} else {
 											
@@ -186,7 +202,7 @@
 														Must be GS for Graduation Approval
 													</td>";
 										}
-										$q = "select staff.uid, fname, lname from people join staff on people.uid = staff.uid where type = 4";
+										$q = "select staff.uid, fname, lname from people join staff on people.uid = staff.uid where type = 4 or type = 6";
 												
 										//$result2 = $dbc->query($q);
 								if ($result2 = $dbc->query($q)){	
@@ -228,5 +244,59 @@
 		</tbody>
 	  </table>  
 </body>
+<script> 
 
+
+$(document).ready(function(){
+
+     $('#thesis').bind("click",function(){
+		var id = $('#thesis').val();
+		$.ajax ({
+			url: "./approve_thesis.php",
+			type: "POST",
+			data: {uid: id},
+			success: function(data){
+				window.location.reload(true); 
+			}
+		});
+     });
+});
+</script>
+
+<script language="javascript">
+  var table = $('table');
+    
+    $('#major, #ayear')
+        .wrapInner('<span title="sort this column"/>')
+        .each(function(){
+            
+            var th = $(this),
+                thIndex = th.index(),
+                inverse = false;
+            
+            th.click(function(){
+                
+                table.find('td').filter(function(){
+                    
+                    return $(this).index() === thIndex;
+                    
+                }).sortElements(function(a, b){
+                    
+                    return $.text([a]) > $.text([b]) ?
+                        inverse ? -1 : 1
+                        : inverse ? 1 : -1;
+                    
+                }, function(){
+                    
+                    // parentNode is the element we want to move
+                    return this.parentNode; 
+                    
+                });
+                
+                inverse = !inverse;
+                    
+            });
+                
+        });
+</script>
 </html>

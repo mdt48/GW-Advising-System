@@ -48,6 +48,7 @@
             $uidP = $_POST['uid'];
             $lname = $_POST['lname'];
             $order = $_POST['order'];
+            $by = $_POST['by'];
 
             $result = "";
 
@@ -74,8 +75,8 @@
             if ($uidSelected == false && $lnameSelected == false) {
                 $where = "";
             }
-            $where = $where." order by lname ".$order;
-            $result = $result.", order by ".$order;
+            $where = $where." order by ".$by." ".$order;
+            $result = $result.", order by ".$by." ".$order;
         }
     ?>
     <form class="form-inline" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
@@ -88,6 +89,11 @@
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>     
         </select>
+        <select name="by" class="form-control mr-sm-2"  id= "search_bar" aria-label="Search"> 
+            <option value="lname" selected hidden>By</option>                 
+            <option value="lname">Last Name</option>
+            <option value="appDate">Date</option>     
+        </select>
             <input class="form-control mr-sm-2" name="submit" type="submit" id= "search_bar" aria-label="Search">
         </form> 
         
@@ -99,7 +105,10 @@
                 <th scope="col">User Id</th>
                 <th scope="col">Last Name</th>
                 <th scope="col">First Name</th>
-                <th scope="col">Email Address</th>                
+                <th scope="col">Date Applied</th>
+                <th scope="col">Year</th>
+                <th scope="col">Semester</th>
+                <th scope="col">Program</th>               
                 <th scope="col">Number Reviews</th>
                 <th scope="col"></th>
                 <th scope="col"></th>
@@ -120,7 +129,10 @@
                     <th scope="row"><?php echo $row['uid']; ?>
                     <td><?php echo $row['lname']; ?></td>
                     <td><?php echo $row['fname']; ?></td>
-                    <td><?php echo $row['email']; ?></td>                    
+                    <td><?php echo $row['appDate']; ?></td>
+                    <td><?php echo $row['admissionYear']; ?></td>
+                    <td><?php echo $row['admissionSemester']; ?></td>
+                    <td><?php if ($row['degProgram'] == "md") echo "Masters"; else if ($row['degProgram'] == "phd") echo "PhD"; ?></td>                   
                     <td><?php echo $subrow['count']; ?></td>
                     <td><input type="hidden" name="uid" value="<?php echo $row['uid']; ?>"></td>
                     <td><button type="submit" name="review" class="btn btn-primary">Review</button></td>
@@ -164,6 +176,7 @@
             $lname = $_POST['lname'];
             $status = $_POST['status'];
             $order = $_POST['order'];
+            $by = $_POST['by'];
 
             if ($program == "Program" || $program == "all") $programSelected = false;
             else $programSelected = true;
@@ -221,8 +234,8 @@
                 $result = $result.", last name is ".$lname;
             }
 
-            $where = $where." order by lname ".$order;
-            $result = $result.", order by ".$order;
+            $where = $where." order by ".$by." ".$order;
+            $result = $result.", order by ".$by." ".$order;
         }
     ?>
         <form class="form-inline" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
@@ -254,6 +267,11 @@
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>     
         </select>
+        <select name="by" class="form-control mr-sm-2"  id= "search_bar" aria-label="Search"> 
+            <option value="lname" selected hidden>By</option>                 
+            <option value="lname">Last Name</option>
+            <option value="appDate">Date</option>     
+        </select>
             <input class="form-control mr-sm-2" name="submit" type="submit" id= "search_bar" aria-label="Search">
         </form> 
         <br>
@@ -265,7 +283,10 @@
             <th scope="col">User Id</th>
             <th scope="col">Last Name</th>
             <th scope="col">First Name</th>
-            <th scope="col">Email Address</th>
+            <th scope="col">Date Applied</th>
+            <th scope="col">Year</th>
+            <th scope="col">Semester</th>
+            <th scope="col">Program</th>
             <th scope="col">Application Status</th>
             <th scope="col">Number Reviews</th>
             <th scope="col"></th>
@@ -285,7 +306,10 @@
             <th scope="row"><?php echo $row['uid']; ?></th>
             <td><?php echo $row['lname']; ?></td>
             <td><?php echo $row['fname']; ?></td>
-            <td><?php echo $row['email']; ?></td>
+            <td><?php echo $row['appDate']; ?></td>
+            <td><?php echo $row['admissionYear']; ?></td>
+            <td><?php echo $row['admissionSemester']; ?></td>
+            <td><?php if ($row['degProgram'] == "md") echo "Masters"; else if ($row['degProgram'] == "phd") echo "PhD"; ?></td>
             <td><?php if ($row['appStatus'] == 1) echo "Incomplete"; else echo "Complete"; ?></td>
             <td><?php echo $subrow['count']; ?></td>
             <form method="POST" action="editAcademic.php">
@@ -346,7 +370,8 @@
             $uidP = $_POST['uid'];
             $lname = $_POST['lname'];
             $status = $_POST['status'];
-            $order = $_POST['order'];
+           
+            $by = $_POST['by'];
 
             if ($program == "Program" || $program == "all") $programSelected = false;
             else $programSelected = true;
@@ -404,8 +429,8 @@
                 $result = $result.", last name is ".$lname;
             }
 
-            $where = $where." order by lname ".$order;
-            $result = $result.", order by ".$order;
+            $where = $where." order by ".$by." ".$order;
+            $result = $result.", order by ".$by." ".$order;
         }
     ?>
         <form class="form-inline" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
@@ -436,6 +461,11 @@
             <option value="asc" selected hidden>Order</option>                 
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>     
+        </select>        
+        <select name="by" class="form-control mr-sm-2"  id= "search_bar" aria-label="Search"> 
+            <option value="lname" selected hidden>By</option>                 
+            <option value="lname">Last Name</option>
+            <option value="appDate">Date</option>     
         </select>
             <input class="form-control mr-sm-2" name="submit" type="submit" id= "search_bar" aria-label="Search">
         </form> 
@@ -448,7 +478,10 @@
             <th scope="col">User Id</th>
             <th scope="col">Last Name</th>
             <th scope="col">First Name</th>
-            <th scope="col">Email Address</th>
+            <th scope="col">Date Applied</th>
+            <th scope="col">Year</th>
+            <th scope="col">Semester</th>
+            <th scope="col">Program</th>
             <th scope="col">Application Status</th>
             <th scope="col">Number Reviews</th>
             <th scope="col"></th>
@@ -471,13 +504,12 @@
             <th scope="row"><?php echo $row['uid']; ?></th>
             <td><?php echo $row['lname']; ?></td>
             <td><?php echo $row['fname']; ?></td>
-            <td><?php echo $row['email']; ?></td>
+            <td><?php echo $row['appDate']; ?></td>
+            <td><?php echo $row['admissionYear']; ?></td>
+            <td><?php echo $row['admissionSemester']; ?></td>
+            <td><?php if ($row['degProgram'] == "md") echo "Masters"; else if ($row['degProgram'] == "phd") echo "PhD"; ?></td>
             <td><?php if ($row['appStatus'] == 1) echo "Incomplete"; else echo "Complete"; ?></td>
             <td><?php echo $subrow['count']; ?></td>
-            <?php 
-                if ($subrow['count'] == 0) {
-
-            ?>
             <form method="POST" action="editAcademic.php">
             <td><input type="hidden" name="uid" value="<?php echo $row['uid']; ?>">
             <button type="submit" name="update" class="btn btn-primary">Update</button></td>
@@ -504,7 +536,7 @@
                     <td><input type="hidden" name="uid" value="<?php echo $row['uid']; ?>"><button type="submit" name="update" class="btn btn-primary" disabled>Review</button></td>
                     </form>
                     <?php }
-             }
+             
                 if ($subrow['count'] >= 1) {
             ?>
             <form method="POST" action="decision.php">
@@ -557,6 +589,7 @@
             $uidP = $_POST['uid'];
             $lname = $_POST['lname'];
             $order = $_POST['order'];
+            $by = $_POST['by'];
 
             $result = "";
 
@@ -583,8 +616,9 @@
             if ($uidSelected == false && $lnameSelected == false) {
                 $where = "";
             }
-            $where = $where." order by lname ".$order;
-            $result = $result.", order by ".$order;
+            
+            $where = $where." order by ".$by." ".$order;
+            $result = $result.", order by ".$by." ".$order;
         }
     ?>
     <form class="form-inline" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
@@ -597,10 +631,10 @@
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>     
         </select>
-        <select name="order" class="form-control mr-sm-2"  id= "search_bar" aria-label="Search"> 
-            <option value="asc" selected hidden>Order</option>                 
-            <option value="asc">Ascending</option>
-            <option value="desc">Descending</option>     
+        <select name="by" class="form-control mr-sm-2"  id= "search_bar" aria-label="Search"> 
+            <option value="lname" selected hidden>By</option>                 
+            <option value="lname">Last Name</option>
+            <option value="appDate">Date</option>     
         </select>
             <input class="form-control mr-sm-2" name="submit" type="submit" id= "search_bar" aria-label="Search">
         </form> 
@@ -613,7 +647,10 @@
             <th scope="col">User Id</th>
             <th scope="col">Last Name</th>
             <th scope="col">First Name</th>
-            <th scope="col">Email Address</th>
+            <th scope="col">Date Applied</th>
+            <th scope="col">Year</th>
+            <th scope="col">Semester</th>
+            <th scope="col">Program</th>
             <th scope="col">Number Reviews</th>
             <th scope="col"></th>
             <th scope="col"></th>
@@ -635,7 +672,10 @@
             <th scope="row"><?php echo $row['uid']; ?></th>
             <td><?php echo $row['lname']; ?></td>
             <td><?php echo $row['fname']; ?></td>
-            <td><?php echo $row['email']; ?></td>
+            <td><?php echo $row['appDate']; ?></td>
+            <td><?php echo $row['admissionYear']; ?></td>
+            <td><?php echo $row['admissionSemester']; ?></td>
+            <td><?php if ($row['degProgram'] == "md") echo "Masters"; else if ($row['degProgram'] == "phd") echo "PhD"; ?></td>
             <td><?php echo $subrow['count']; ?></td>
             <?php if (mysqli_num_rows($reviewedData) == 0) {?>
             <form method="POST" action="review.php">

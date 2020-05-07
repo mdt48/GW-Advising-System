@@ -19,7 +19,7 @@
 	<div class = "row">
 		<p>
 	<?php 
-		$query = "select appStatus, transcript from applicant where uid = '$uid'";
+		$query = "select appStatus, transcript, admissionYear from applicant where uid = '$uid'";
 							
 		$data = mysqli_query($dbc, $query);
 
@@ -32,6 +32,9 @@
 			if ($row['appStatus'] == 1) {
 				if ($row['transcript'] == NULL) {
 					$missing += 1;
+				}
+				if ($row['admissionYear'] == NULL) {
+					$missing += 3;
 				}
 				$query = "select uid from recs where uid = '$uid'";					
 				$data = mysqli_query($dbc, $query);				
@@ -85,7 +88,7 @@
 				echo 'Thank you for applying to <i>The George Washington University</i>.<br/>At this moment we are unable to receive you as a student.<br/>Please contact us if you have any questions about our decision process.';
 			}
 			else {
-				echo 'We are sorry to inform you that the period for matriculation has passed.';
+				echo 'Missing more than transcript and / or recommendations. Please complete the application at your earliest convenience.';
 			}
 		}
 	?>
@@ -101,7 +104,7 @@
 		<div class = "container h-100">
 					<h3 class = "display-4 text-center text-white mt-5 mb-2">Error: Not logged in</h3>
 					<p class = "lead mb-5 text-center text-white-50" id = button>
-					Want to log in? <a href = "login.php">Log In</a> <br/>
+					Want to log in? <a href = "login.html">Log In</a> <br/>
 					Don't have an account yet? <a href = "createAcc.php">Create Account</a> <br/>
 					Want to go home?
 					</p>

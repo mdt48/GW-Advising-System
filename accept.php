@@ -6,8 +6,6 @@
 		$dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME); 
 
         if (isset($_POST['hide'])) {
-            $query = "DELETE FROM examScore WHERE uid = ".$uid;
-            $dbc->query($query);
             $query = "DELETE FROM recs WHERE uid = ".$uid;
             $dbc->query($query);
             $query = "DELETE FROM degree WHERE uid = ".$uid;
@@ -17,16 +15,17 @@
 			$query = "DELETE FROM reviewForm WHERE studentuid = ".$uid;
 			$dbc->query($query);
 
-			$query = "SELECT adv, degProgram from applicant where uid = ".$uid;
+			$query = "SELECT adv, degProgram, admissionYear, admissionSemester from applicant where uid = ".$uid;
 					
 			$data = mysqli_query($dbc, $query);
 		
 			$row = mysqli_fetch_array($data);
 
-			$query = "DELETE FROM applicant WHERE uid = ".$uid;
-			$dbc->query($query);
+			if ($row['degProgram'] == "md") {
+				$row['degProgram'] = "masters";
+			}
 
-			$query = "INSERT INTO student (uid, advisoruid, program) values (".$uid.", ".$row['adv'].", '".$row['degProgram']."')";
+			$query = "INSERT INTO student (uid, advisoruid, program, ayear, asem) values (".$uid.", ".$row['adv'].", '".$row['degProgram']."', ".$row['admissionYear'].", '".$row['admissionSemester']."' )";
 			$dbc->query($query);
 
 			echo "<script>window.location.href='index.php';</script>";
@@ -43,21 +42,20 @@
 			$query = "DELETE FROM reviewForm WHERE studentuid = ".$uidP;
 			$dbc->query($query);
 
-			$query = "SELECT adv, degProgram from applicant where uid = ".$uidP;
+			$query = "select adv, degProgram, admissionYear, admissionSemester from applicant where uid = ".$uidP;
 					
 			$data = mysqli_query($dbc, $query);
 
 			
 		
 			$row = mysqli_fetch_array($data);
-
+			
 			if ($row['degProgram'] == "md") {
 				$row['degProgram'] = "masters";
 			}
 
-			$query = "INSERT INTO student (uid, advisoruid, program) values (".$uidP.", ".$row['adv'].", '".$row['degProgram']."')";
+			$query = "INSERT INTO student (uid, advisoruid, program, ayear, asem) values (".$uidP.", ".$row['adv'].", '".$row['degProgram']."', ".$row['admissionYear'].", '".$row['admissionSemester']."' )";
 			$dbc->query($query);
-
 			$home_url = "queueMatriculate.php";
 				  
 			header('Location: ' . $home_url);
@@ -134,15 +132,7 @@
 											}
 										?>
 									</select> 
-								</div>
-								<div class="form-group" onchange="yesnoCheck()">
-									<label for="degree">*Billing Address <br> Same as on file address?</label> </br>
-									<input type="radio" id="yesCheck" name="ba" value="yes" required>
-									<label for="yes">Yes</label><br>
-									<input type="radio" id="noCheck" name="ba" value="no">
-									<label for="no">No</label><br>
-								</div>
-								
+								</div>								
 								<div class="form-group">
 									<label for="address" id="ifYes">Address: </label>
 									<input type="text" id="ifYes"class="form-control" maxlength="255" id="address" name = "address" placeholder="Enter address" required>
@@ -167,7 +157,7 @@
 		<div class = "container h-100">
 					<h3 class = "display-4 text-center text-white mt-5 mb-2">Error: Not logged in</h3>
 					<p class = "lead mb-5 text-center text-white-50" id = button>
-					Want to log in? <a href = "login.php">Log In</a> <br/>
+					Want to log in? <a href = "login.html">Log In</a> <br/>
 					Don't have an account yet? <a href = "createAcc.php">Create Account</a> <br/>
 					Want to go home?
 					</p>
@@ -180,14 +170,3 @@
 
 </body>
 </html>
-
-<script type="text/javascript">
-    function yesnoCheck() {
-        if (document.getElementById("yesCheck").checked) {
-			document.getElementById("address").required = true;
-
-        } else {
-			document.getElementById("address").required = false;
-        }
-    }
-</script>

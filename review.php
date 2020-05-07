@@ -183,7 +183,7 @@ while ($recRow = mysqli_fetch_array($recData)) {
     <dl class="row">
         <dt class="col-sm-4">Recommendation ID</dt>
         <dd class="col-sm-8"><?php echo $recRow['recId']; ?></dd>
-        <input type="hidden" name="rec<?php echo $recRow['recId']; ?>" value="<?php echo $recRow['recId']; ?>">
+        <input type="hidden" name="rec<?php echo $count; ?>" value="<?php echo $recRow['recId']; ?>">
 
         <dt class="col-sm-4">Recommender Email Address</dt>
         <dd class="col-sm-8"><?php echo $recRow['email']; ?></dd>
@@ -251,14 +251,15 @@ while ($recRow = mysqli_fetch_array($recData)) {
             </div>
         </div>
 
-        <input type="hidden" name="uid" value="<?php echo $row['uid']; ?>">
     
     <?php 
     
         }
+        
 
     ?>
 
+        <input type="hidden" name="uid" value="<?php echo $row['uid']; ?>">
         <h3>Graduate Admissions Committee</h3>
 
         <div class="form-group">
@@ -297,9 +298,11 @@ event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.
 
     </form>
 </div>
+<div class="row">	<p>
+				<a class="btn text-white btn-lg" style = "background-color: #033b59;" href = "queue.php">Go Back</a></p> </div>
+		<br> <br> <br>
 
     <?php
-
                 }
 
             }

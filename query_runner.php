@@ -30,7 +30,11 @@
     } else if (strcmp($type, "f1") == 0) {
         $query = "update student set grad_status = 'f1' where uid = '$id'";
         $dbc->query($query);
-    } else if (strcmp($type, "approve") == 0) {
+    }else if (strcmp($type, "f12") == 0) {
+        $query = "delete from form where uid = '$id'";
+        $dbc->query($query);
+    } 
+    else if (strcmp($type, "approve") == 0) {
         $query = "update student set thesis = true where uid = '$id'";
         print($query);
         $dbc->query($query);

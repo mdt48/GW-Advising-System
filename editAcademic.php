@@ -108,8 +108,9 @@
 		}
 		else $status = 1; //there's no transcript
 
+		$date = date('Y-m-d');
 		//update the information in applicant
-		$appsql = "UPDATE applicant SET aoi = '$aoi', appExp = '$workExp', admissionYear = '$appYear', admissionSemester = '$appSem', degProgram = '$program', appStatus = '$status', transcript = '$transcript' WHERE uid = '$uid'";
+		$appsql = "UPDATE applicant SET aoi = '$aoi', appExp = '$workExp', admissionYear = '$appYear', admissionSemester = '$appSem', degProgram = '$program', appStatus = '$status', transcript = '$transcript', appDate = '$date' WHERE uid = '$uid'";
         if (mysqli_query($dbc, $appsql) == false)
         {   
 			$flag = false;
@@ -740,9 +741,9 @@
 
 		$queryStaff = "SELECT * FROM staff WHERE uid = '".$_SESSION['uid']."'";
 		$dataStaff = mysqli_query($dbc, $queryStaff);
-		$rowStaff = mysqli_num_rows($dataStaff);
- 
-		if ($row['total'] == 0 || $row['total'] == $rowCheck['total'] || $rowStaff['type'] == 1 || $rowStaff['type'] == 0) {
+		$rowStaff = mysqli_fetch_array($dataStaff);
+
+		if ($row['total'] == 0 || $row['total'] == $rowCheck['total'] || (($rowStaff['type'] == 1 || $rowStaff['type'] == 0) && $rowStaff['type'] != NULL)) {
 			?>
 			<div class="form-group">
 				<b><label for="recs">Recommendation Letter Contacts</label></br></b>
@@ -816,7 +817,7 @@
 		<div class = "container h-100">
 					<h3 class = "display-4 text-center text-white mt-5 mb-2">Error: Not logged in</h3>
 					<p class = "lead mb-5 text-center text-white-50" id = button>
-					Want to log in? <a href = "login.php">Log In</a> <br/>
+					Want to log in? <a href = "login.html">Log In</a> <br/>
 					Don't have an account yet? <a href = "createAcc.php">Create Account</a> <br/>
 					Want to go home?
 					</p>

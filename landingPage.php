@@ -48,5 +48,46 @@
 <em><center></em>
 				<a class = "btn" href = "reset.php">Reset DB</a>
 
+				<?php
+					if (isset($_POST['uid'])) {
+						require_once('connectvars.php');
+						$dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+					
+						$uid = $_POST['uid'];
+
+						$query = "select * from student where uid = ".$uid;
+						$data = mysqli_query($dbc, $query);
+						$row = mysqli_num_rows($data);
+						if (mysqli_num_rows($data) == 1) {
+							$query = 'insert into transcript values('.$uid.', "CSCI", 6221, "B+", 2017, "phd OR masters")';
+							mysqli_query($dbc, $query);
+							$query = 'insert into transcript values('.$uid.', "CSCI", 6232, "A", 2017, "phd OR masters")';
+							mysqli_query($dbc, $query);
+							$query = 'insert into transcript values('.$uid.', "CSCI", 6233, "A", 2017, "phd OR masters")';
+							mysqli_query($dbc, $query);
+							$query = 'insert into transcript values('.$uid.', "CSCI", 6241, "A-", 2017, "phd OR masters")';
+							mysqli_query($dbc, $query);
+							$query = 'insert into transcript values('.$uid.', "CSCI", 6242, "A", 2017, "phd OR masters")';
+							mysqli_query($dbc, $query);
+							$query = 'insert into transcript values('.$uid.', "CSCI", 6283, "B", 2017, "phd OR masters")';
+							mysqli_query($dbc, $query);
+							$query = 'insert into transcript values('.$uid.', "CSCI", 6284, "B-", 2017, "phd OR masters")';
+							mysqli_query($dbc, $query);
+							$query = 'insert into transcript values('.$uid.', "CSCI", 6286, "C", 2017, "phd OR masters")';
+							mysqli_query($dbc, $query);
+						}						
+					}
+					
+				?>
+				
+				<div class="container">
+					<div class="row">
+						<form class="form-inline" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+							<input class="form-control mr-sm-2" name="uid" type="uid" placeholder="UID" id= "search_bar" aria-label="Search">
+							<input class="form-control mr-sm-2" name="submit" type="submit" id= "search_bar" aria-label="Search" value = "Transcript">
+						</form> 
+					</div>
+				</div>
+
 </body>
 </html>

@@ -33,7 +33,7 @@
 		}; 
 	</script>   
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-		<a class="navbar-brand" index="test" href="./staff_home.php">Home</a>
+		<a class="navbar-brand" index="test" href="./index.php">Home</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		  <span class="navbar-toggler-icon"></span>
 		</button>
@@ -41,9 +41,7 @@
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		<ul class="navbar-nav mr-auto">
 			  <!-- Admin tabs -->
-			<li class="nav-item">
-			  <a class="nav-link adm" id= "test" href="./create_account.php">Create New Account</a>
-			</li>
+			
 			<li class="nav-item">
 				<a class="nav-link adm" id= "test" href="./all_accounts.php">View All Accounts</a>
 			  </li>
@@ -174,7 +172,7 @@
 										}
 
 
-										$q = "select staff.uid, type,  fname, lname from people join staff on people.uid = staff.uid";
+										$q = "select staff.uid, type,  fname, lname from people join staff on people.uid = staff.uid where staff.type = 4 or staff.type = 6";
 
 										
 										if ($result2 = $dbc->query($q)){	
