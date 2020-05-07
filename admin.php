@@ -384,10 +384,16 @@
                 <div class="form-group col-md-4">
                     <label for="type">Type of staff</label>
                     <select name="type" class="form-control">
-                        <option value="0">Regular staff</option>
+                        <option value="0">System Administrator</option>
                         <option value="1">Graduate Secretary</option>
                         <option value="2">CAC staff</option>
-                        <option value="3">System Administrator</option>
+                        <option value="3">Faculty Reviewer</option>
+                        <option value="4">Faculty Advisor</option>
+                        <option value="5">Faculty Instructor</option>
+                        <option value="6">Faculty Reviewer and Advisor</option>
+                        <option value="7">Faculty Reviewer and Instructor</option>
+                        <option value="8">Faculty Advisor and Instructor</option>
+                        <option value="9">Faculty Reviewer, Advisor and Instructor</option>
                     </select>
                 </div>
                 <div class="form-group col-md-4">
