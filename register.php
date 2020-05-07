@@ -22,6 +22,7 @@ $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
         </div>
     </div>
   </header>
+  <body style = "text-align: center;">
 
 <?php
 if (isset($_SESSION['username'])) { //only display things if they are logged in
@@ -41,11 +42,14 @@ if (isset($_SESSION['username'])) { //only display things if they are logged in
   $data = mysqli_query($dbc, $query);
 
 
-  echo '<h4>Classes:</h4>';
+  echo '<h4 style="text-align: center;">Classes:</h4>';
   echo '<table>';
   while ($row = mysqli_fetch_array($data)) { //show all the classes available to them with a button to register
 ?>
-    <form action="classregister.php" method="GET">
+    <?php
+    echo $row["department"]." ".$row["cid"]." ".$row["semester"]." ".$row["year"]."\n"; ?>
+    <br>
+    <form action="classregister.php" method="GET" style = "display: inline-block;">
       <input type="hidden" name="cid" value="<?php echo $row["cid"]; ?>" />
       <input type="hidden" name="dept" value="<?php echo $row["department"]; ?>" />
       <input type="hidden" name="semester" value="<?php echo $row["semester"]; ?>" />
@@ -55,8 +59,7 @@ if (isset($_SESSION['username'])) { //only display things if they are logged in
       <input type="submit" name="registerclass" value="Register" />
     </form>
     
-    <?php
-    echo $row["department"]." ".$row["cid"]." ".$row["semester"]." ".$row["year"]; ?><br><br><?php
+    <br><br><?php
   }
 
   echo '</table>';
@@ -66,3 +69,6 @@ if (isset($_SESSION['username'])) { //only display things if they are logged in
   echo '<a href="index.php">Home</a>';
 
 ?>
+</br>
+</br>
+</body>
