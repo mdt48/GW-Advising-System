@@ -233,7 +233,7 @@ insert into people (fname, lname, uid, username, password) values ('Gabe', 'Parm
 insert into people (fname, lname, uid, username, password) values ('Tim', 'Wood', 4, 'twood', 'pass');
 insert into people (fname, lname, uid, username, password) values ('Shelly', 'Heller', 5, 'sheller', 'pass');
 insert into people (fname, lname, uid, username, password) values ('Sarah', 'Morin', 6, 'smorin', 'pass');
-insert into people (fname, lname, uid, username, password) values ('Kevin', 'Deems', 7, 'kdeemasters', 'pass');
+insert into people (fname, lname, uid, username, password) values ('Kevin', 'Deems', 7, 'kdeems', 'pass');
 insert into people (fname, lname, uid, username, password) values ('Graduate', 'Secretary', 8, 'gs', 'pass');
 insert into people (fname, lname, uid, username, password) values ('Hyeong-Ah', 'Choi', 9, 'hchoi', 'pass');
 insert into people (fname, lname, uid, username, password) values ('Robert', 'Pless', 10, 'rpless', 'pass');
@@ -284,7 +284,7 @@ INSERT INTO transcript VALUES (34567890,'CSCI',6251,'B',2015,'masters');
 INSERT INTO transcript VALUES (34567890,'CSCI',6254,'B',2015,'masters');
 
 -- students
-insert into people values (88888888, "Billy", "pass", "Billy", "Holliday", "address", "email@gwu.edu", "1990-02-20", 2873192);
+insert into people values (88888888, "Billie", "pass", "Billie", "Holiday", "address", "email@gwu.edu", "1990-02-20", 2873192);
 insert into student values (88888888, 0, null, 0, 6, "masters", null, "CSCI");
 
 insert into people values (99999999, "Krall", "pass", "Diana", "Krall", "address", "email@gwu.edu", "1990-02-20", 2873191);
@@ -473,7 +473,7 @@ insert into examScore values (00001234, 'quantitative', 100, 1983);
 
 insert into people (ssn, username, email, password, uid, fname, lname) values (666111111, 'afranklin', 'afranklin@gmail.com', 'pass', 00001235, 'Aretha', 'Franklin');
 
-insert into applicant (uid, aoi, degProgram, appStatus, transcript, admissionYear, admissionSemester) values (00001235, 'Music', 'md', 6, "Link", 2017, 'fall');
+insert into applicant (uid, aoi, degProgram, appStatus, transcript, admissionYear, admissionSemester) values (00001235, 'Music', 'md', 4, "Link", 2017, 'fall');
 
 insert into examScore values (00001235, 'total', 250, 1983);
 insert into examScore values (00001235, 'verbal', 150, 1983);
@@ -481,7 +481,7 @@ insert into examScore values (00001235, 'quantitative', 100, 1983);
 
 insert into people (ssn, username, email, password, uid, fname, lname) values (777111111, 'csantana', 'csantana@gmail.com', 'pass', 00001236, 'Carlos', 'Santana');
 
-insert into applicant (uid, aoi, degProgram, appStatus, transcript, admissionYear, admissionSemester) values (00001236, 'Music', 'phd', 6, "Link", 2017, 'fall');
+insert into applicant (uid, aoi, degProgram, appStatus, transcript, admissionYear, admissionSemester) values (00001236, 'Music', 'phd', 4, "Link", 2017, 'fall');
 
 insert into examScore values (00001236, 'total', 200, 1983);
 insert into examScore values (00001236, 'verbal', 100, 1983);
