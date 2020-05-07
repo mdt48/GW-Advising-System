@@ -261,10 +261,7 @@
 				if ($rec2Email != NULL)
 				{
 					$rec2sql = "INSERT INTO recs (uid, email) VALUES ('$uid', '$rec2Email')";
-					if (mysqli_query($dbc, $rec2sql) == false)
-					{
-						$flag = false;
-					}
+					if (mysqli_query($dbc, $rec2sql) == false) $flag = false; 
 					else {
 						$result = $dbc->query("SELECT recId FROM recs WHERE uid = '$uid' AND email = '$rec2Email'");
 						$row = $result->fetch_object();
