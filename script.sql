@@ -1,4 +1,4 @@
-use gradymcpeak;
+use mdt_;
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS student CASCADE;
 DROP TABLE IF EXISTS form CASCADE;
@@ -201,9 +201,9 @@ CREATE TABLE teaches (
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- courses 
-INSERT INTO course VALUES (6221,'CSCI','SW Paradigmasters',3);
+INSERT INTO course VALUES (6221,'CSCI','SW Paradigms',3);
 INSERT INTO course VALUES (6461,'CSCI','Computer Architecture',3);
-INSERT INTO course VALUES (6212,'CSCI','Algorithmasters',3);
+INSERT INTO course VALUES (6212,'CSCI','Algorithms',3);
 INSERT INTO course VALUES (6220,'CSCI','Machine Learning',3);
 INSERT INTO course VALUES (6232,'CSCI','Networks 1',3);
 INSERT INTO course VALUES (6233,'CSCI','Networks 2',3);
@@ -217,8 +217,8 @@ INSERT INTO course VALUES (6262,'CSCI','Graphics 1',3);
 INSERT INTO course VALUES (6283,'CSCI','Security 1',3);
 INSERT INTO course VALUES (6284,'CSCI','Cryptography',3);
 INSERT INTO course VALUES (6286,'CSCI','Network Security',3);
-INSERT INTO course VALUES (6325,'CSCI','Algorithmasters 2',3);
-INSERT INTO course VALUES (6339,'CSCI','Embedded Systemasters',3);
+INSERT INTO course VALUES (6325,'CSCI','Algorithms 2',3);
+INSERT INTO course VALUES (6339,'CSCI','Embedded Systems',3);
 INSERT INTO course VALUES (6384,'CSCI','Cryptography 2',3);
 INSERT INTO course VALUES (6241,'ECE','Communication Theory',3);
 INSERT INTO course VALUES (6242,'ECE','Information Theory',2);
@@ -233,7 +233,7 @@ insert into people (fname, lname, uid, username, password) values ('Gabe', 'Parm
 insert into people (fname, lname, uid, username, password) values ('Tim', 'Wood', 4, 'twood', 'pass');
 insert into people (fname, lname, uid, username, password) values ('Shelly', 'Heller', 5, 'sheller', 'pass');
 insert into people (fname, lname, uid, username, password) values ('Sarah', 'Morin', 6, 'smorin', 'pass');
-insert into people (fname, lname, uid, username, password) values ('Kevin', 'Deemasters', 7, 'kdeemasters', 'pass');
+insert into people (fname, lname, uid, username, password) values ('Kevin', 'Deems', 7, 'kdeemasters', 'pass');
 insert into people (fname, lname, uid, username, password) values ('Graduate', 'Secretary', 8, 'gs', 'pass');
 insert into people (fname, lname, uid, username, password) values ('Hyeong-Ah', 'Choi', 9, 'hchoi', 'pass');
 insert into people (fname, lname, uid, username, password) values ('Robert', 'Pless', 10, 'rpless', 'pass');
@@ -251,7 +251,7 @@ insert into staff (uid, type) values (10, 2);
 
 
 INSERT into people (uid, username, password, fname, lname) values (77777777, 'eclapton', 'pass', 'Eric', 'Clapton');
-INSERT into student values (77777777, 'alumni', 1, 1, 6, 'masters', 2014, 'CS');
+INSERT into student values (77777777, 'alumni', 1, 1, 6, 'masters', 2014, 'CSCI');
 
 -- student trans
 INSERT INTO transcript VALUES (77777777,'CSCI',6221,'B',2014,'masters');
@@ -267,7 +267,7 @@ INSERT INTO transcript VALUES (77777777,'CSCI',6286,'B',2014,'masters');
 
 
 INSERT into people (uid, username, password, fname, lname) values (34567890, 'kcobain', 'pass', 'Kurt', 'Cobain');
-INSERT into student values (34567890, 'alumni', 1, 1, 3, 'masters', 2015, 'CS');
+INSERT into student values (34567890, 'alumni', 1, 1, 3, 'masters', 2015, 'CSCI');
 
 -- student trans
 INSERT INTO transcript VALUES (34567890,'CSCI',6221,'A',2015,'masters');
