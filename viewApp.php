@@ -209,7 +209,7 @@
 		<div class = "container h-100">
 					<h3 class = "display-4 text-center text-white mt-5 mb-2">Error: Not logged in</h3>
 					<p class = "lead mb-5 text-center text-white-50" id = button>
-					Want to log in? <a href = "login.php">Log In</a> <br/>
+					Want to log in? <a href = "login.html">Log In</a> <br/>
 					Don't have an account yet? <a href = "createAcc.php">Create Account</a> <br/>
 					Want to go home?
 					</p>

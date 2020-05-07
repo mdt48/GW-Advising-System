@@ -98,7 +98,7 @@
 					</a>
 				</li>
 				 <li class = "nav item">
-					<a class = "nav-link" href = "login.php">Log In</a>
+					<a class = "nav-link" href = "login.html">Log In</a>
 				</li>
 			</ul>
 		</div>
@@ -170,7 +170,7 @@
 	  	</form>
 	<div class = "container"> 
 		<div class = "row"> 
-			<p> Have an account already? <a href = "login.php">Log in!</a>	
+			<p> Have an account already? <a href = "login.html">Log in!</a>	
 			</p>
 		</div>
 	</div>
