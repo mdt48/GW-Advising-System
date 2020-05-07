@@ -97,7 +97,9 @@ if (isset($_SESSION['uid'])) {
 					echo '<a href="view-student-transcripts.php"><h1>View Transcripts</h1></a><br/>';
 					echo '<a href="grades.php"><h1>View Grades</h1></a><br/>';
 					echo '<a href="view-classes.php"><h1>View Classes</h1></a><br/>';	
-					echo '<a href="view_all_students.php"><h1>View All Students</h1></a><br/>';				
+					echo '<a href="view_all_students.php"><h1>View All Students</h1></a><br/>';	
+					echo '<a href="searchStudents.php"><h1>Search Students Who are Approved for Graduation</h1></a><br/>';
+					echo '<a href="searchAlumni.php"><h1>Search Alumni</h1></a><br/>';							
 				}
 				//cac
 				else if ($row['type'] == 2) {
