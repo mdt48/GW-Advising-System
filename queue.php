@@ -132,7 +132,7 @@
                     <td><?php echo $row['appDate']; ?></td>
                     <td><?php echo $row['admissionYear']; ?></td>
                     <td><?php echo $row['admissionSemester']; ?></td>
-                    <td><?php if ($row['degProgram'] == "md") echo "Masters"; else echo "PhD"; ?></td>                   
+                    <td><?php if ($row['degProgram'] == "md") echo "Masters"; else if ($row['degProgram'] == "phd") echo "PhD"; ?></td>                   
                     <td><?php echo $subrow['count']; ?></td>
                     <td><input type="hidden" name="uid" value="<?php echo $row['uid']; ?>"></td>
                     <td><button type="submit" name="review" class="btn btn-primary">Review</button></td>
@@ -309,7 +309,7 @@
             <td><?php echo $row['appDate']; ?></td>
             <td><?php echo $row['admissionYear']; ?></td>
             <td><?php echo $row['admissionSemester']; ?></td>
-            <td><?php if ($row['degProgram'] == "md") echo "Masters"; else echo "PhD"; ?></td>
+            <td><?php if ($row['degProgram'] == "md") echo "Masters"; else if ($row['degProgram'] == "phd") echo "PhD"; ?></td>
             <td><?php if ($row['appStatus'] == 1) echo "Incomplete"; else echo "Complete"; ?></td>
             <td><?php echo $subrow['count']; ?></td>
             <form method="POST" action="editAcademic.php">
@@ -370,7 +370,7 @@
             $uidP = $_POST['uid'];
             $lname = $_POST['lname'];
             $status = $_POST['status'];
-            $order = $_POST['order'];
+           
             $by = $_POST['by'];
 
             if ($program == "Program" || $program == "all") $programSelected = false;
@@ -507,7 +507,7 @@
             <td><?php echo $row['appDate']; ?></td>
             <td><?php echo $row['admissionYear']; ?></td>
             <td><?php echo $row['admissionSemester']; ?></td>
-            <td><?php if ($row['degProgram'] == "md") echo "Masters"; else echo "PhD"; ?></td>
+            <td><?php if ($row['degProgram'] == "md") echo "Masters"; else if ($row['degProgram'] == "phd") echo "PhD"; ?></td>
             <td><?php if ($row['appStatus'] == 1) echo "Incomplete"; else echo "Complete"; ?></td>
             <td><?php echo $subrow['count']; ?></td>
             <form method="POST" action="editAcademic.php">
@@ -675,7 +675,7 @@
             <td><?php echo $row['appDate']; ?></td>
             <td><?php echo $row['admissionYear']; ?></td>
             <td><?php echo $row['admissionSemester']; ?></td>
-            <td><?php if ($row['degProgram'] == "md") echo "Masters"; else echo "PhD"; ?></td>
+            <td><?php if ($row['degProgram'] == "md") echo "Masters"; else if ($row['degProgram'] == "phd") echo "PhD"; ?></td>
             <td><?php echo $subrow['count']; ?></td>
             <?php if (mysqli_num_rows($reviewedData) == 0) {?>
             <form method="POST" action="review.php">

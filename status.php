@@ -19,7 +19,7 @@
 	<div class = "row">
 		<p>
 	<?php 
-		$query = "select appStatus, transcript from applicant where uid = '$uid'";
+		$query = "select appStatus, transcript, admissionYear from applicant where uid = '$uid'";
 							
 		$data = mysqli_query($dbc, $query);
 
@@ -32,6 +32,9 @@
 			if ($row['appStatus'] == 1) {
 				if ($row['transcript'] == NULL) {
 					$missing += 1;
+				}
+				if ($row['admissionYear'] == NULL) {
+					$missing += 3;
 				}
 				$query = "select uid from recs where uid = '$uid'";					
 				$data = mysqli_query($dbc, $query);				

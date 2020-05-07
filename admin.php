@@ -73,9 +73,6 @@
             $data = mysqli_query($dbc, $query);
 
             if (mysqli_num_rows($data) == 0) {
-                $input_date=$_POST['bday'];
-                $date=date("Y-m-d H:i:s",strtotime($input_date));
-
                 $username = mysqli_real_escape_string($dbc, $_POST['username']);
                 $password = mysqli_real_escape_string($dbc, $_POST['password']);
                 $ssn = mysqli_real_escape_string($dbc, $_POST['ssn']);
@@ -83,6 +80,7 @@
                 $fname = mysqli_real_escape_string($dbc, $_POST['fname']);
                 $lname = mysqli_real_escape_string($dbc, $_POST['lname']);
                 $address = mysqli_real_escape_string($dbc, $_POST['address']);
+                $date = mysqli_real_escape_string($dbc,$_POST['appbday']);
 
                 $query = "INSERT INTO people (ssn, username, email, birthDate, password, fname, lname, address) VALUES (".$ssn.", '".$username."', '".$email."', '".$date."', '".$password."', '".$fname."', '".$lname."', '".$address."')";
                 $data = mysqli_query($dbc, $query);
@@ -104,6 +102,8 @@
                     $data = mysqli_query($dbc, $query);
 
                     if (mysqli_num_rows($data) != 0) {
+                        $msg = "Here is your login info: \n Username: $username \n Password: $password";
+						mail($email, "GW Graduate Program Login Info", $msg);
                         ?>
                         <div class="container">
                         <div class="alert alert-success" role="alert">Successfully added staff to the system!</div>
@@ -147,10 +147,7 @@
             $query = "SELECT uid FROM people WHERE username = '".$username."'";
             $data = mysqli_query($dbc, $query);
 
-            if (mysqli_num_rows($data) == 0) {
-
-                $input_date=$_POST['appbday'];
-                $date=date("Y-m-d H:i:s",strtotime($input_date));
+            if (mysqli_num_rows($data) == 0) {           
 
                 $username = mysqli_real_escape_string($dbc, $_POST['appusername']);
                 $password = mysqli_real_escape_string($dbc, $_POST['apppassword']);
@@ -159,6 +156,7 @@
                 $fname = mysqli_real_escape_string($dbc, $_POST['appfname']);
                 $lname = mysqli_real_escape_string($dbc, $_POST['applname']);
                 $address = mysqli_real_escape_string($dbc, $_POST['appaddress']);
+                $date = mysqli_real_escape_string($dbc,$_POST['appbday']);
 
                 $query = "INSERT INTO people (ssn, username, email, birthDate, password, fname, lname, address) VALUES (".$ssn.", '".$username."', '".$email."', '".$date."', '".$password."', '".$fname."', '".$lname."', '".$address."')";
                 mysqli_query($dbc, $query);
@@ -169,6 +167,110 @@
 
                 $query = "insert into applicant (uid, appStatus) values (".$row['uid'].",1)";
                 mysqli_query($dbc, $query);
+                
+                $msg = "Here is your login info: \n Username: $username \n Password: $password";
+                mail($email, "GW Graduate Program Login Info", $msg);
+
+                ?>
+                <div class="container">
+                <div class="alert alert-success" role="alert">Successfully added applicant to the system!</div>
+                </div>
+                <?php
+            }
+            else {
+                ?>
+                <div class="container">
+                <div class="alert alert-danger" role="alert">ERROR: The username you tried to add already exists!</div>
+                </div>
+                <?php
+            }
+        }
+
+        if (isset($_POST['student'])) {
+
+            // Search for existing user with name
+            $username = mysqli_real_escape_string($dbc, $_POST['appusername']);
+            $query = "SELECT uid FROM people WHERE username = '".$username."'";
+            $data = mysqli_query($dbc, $query);
+
+            if (mysqli_num_rows($data) == 0) {
+                $username = mysqli_real_escape_string($dbc, $_POST['appusername']);
+                $password = mysqli_real_escape_string($dbc, $_POST['apppassword']);
+                $ssn = mysqli_real_escape_string($dbc, $_POST['appssn']);
+                $email = mysqli_real_escape_string($dbc, $_POST['appemail']);
+                $fname = mysqli_real_escape_string($dbc, $_POST['appfname']);
+                $lname = mysqli_real_escape_string($dbc, $_POST['applname']);
+                $address = mysqli_real_escape_string($dbc, $_POST['appaddress']);
+                $date = mysqli_real_escape_string($dbc,$_POST['appbday']);
+                $program = $_POST['program'];
+                $dept = $_POST['dept'];
+                $adv = $_POST['adv'];
+                $sem = $_POST['sem'];
+                $year = $_POST['year'];
+
+                $query = "INSERT INTO people (ssn, username, email, birthDate, password, fname, lname, address) VALUES (".$ssn.", '".$username."', '".$email."', '".$date."', '".$password."', '".$fname."', '".$lname."', '".$address."')";
+                mysqli_query($dbc, $query);
+
+                $query = "select uid from people where username = '".$username."'";
+                $data = mysqli_query($dbc, $query); 
+                $row = mysqli_fetch_array($data);
+
+                $query = "INSERT INTO student (uid, advisoruid, program, ayear, asem, department) values (".$row['uid'].", ".$adv.", '".$program."', ".$year.", '".$sem."', '".$dept."')";
+                mysqli_query($dbc, $query);
+                
+                $msg = "Here is your login info: \n Username: $username \n Password: $password";
+                mail($email, "GW Graduate Program Login Info", $msg);
+
+                ?>
+                <div class="container">
+                <div class="alert alert-success" role="alert">Successfully added applicant to the system!</div>
+                </div>
+                <?php
+            }
+            else {
+                ?>
+                <div class="container">
+                <div class="alert alert-danger" role="alert">ERROR: The username you tried to add already exists!</div>
+                </div>
+                <?php
+            }
+        }
+        if (isset($_POST['alumn'])) {
+
+            // Search for existing user with name
+            $username = mysqli_real_escape_string($dbc, $_POST['appusername']);
+            $query = "SELECT uid FROM people WHERE username = '".$username."'";
+            $data = mysqli_query($dbc, $query);
+
+            if (mysqli_num_rows($data) == 0) {
+                $username = mysqli_real_escape_string($dbc, $_POST['appusername']);
+                $password = mysqli_real_escape_string($dbc, $_POST['apppassword']);
+                $ssn = mysqli_real_escape_string($dbc, $_POST['appssn']);
+                $email = mysqli_real_escape_string($dbc, $_POST['appemail']);
+                $fname = mysqli_real_escape_string($dbc, $_POST['appfname']);
+                $lname = mysqli_real_escape_string($dbc, $_POST['applname']);
+                $address = mysqli_real_escape_string($dbc, $_POST['appaddress']);
+                $date = mysqli_real_escape_string($dbc,$_POST['appbday']);
+                $program = $_POST['program'];
+                $dept = $_POST['dept'];
+                $adv = $_POST['adv'];
+                $sem = $_POST['sem'];
+                $year = $_POST['year'];
+                $gsem = $_POST['gsem'];
+                $gyear = $_POST['gyear'];
+
+                $query = "INSERT INTO people (ssn, username, email, birthDate, password, fname, lname, address) VALUES (".$ssn.", '".$username."', '".$email."', '".$date."', '".$password."', '".$fname."', '".$lname."', '".$address."')";
+                mysqli_query($dbc, $query);
+
+                $query = "select uid from people where username = '".$username."'";
+                $data = mysqli_query($dbc, $query); 
+                $row = mysqli_fetch_array($data);
+
+                $query = "INSERT INTO student (uid, advisoruid, program, ayear, asem, department, grad_status, thesis, audited, grad_year, gsem) values (".$row['uid'].", ".$adv.", '".$program."', ".$year.", '".$sem."', '".$dept."', 'alumni', 1, 1, ".$gyear.", '".$sem."')";
+                mysqli_query($dbc, $query);
+                
+                $msg = "Here is your login info: \n Username: $username \n Password: $password";
+                mail($email, "GW Graduate Program Login Info", $msg);
 
                 ?>
                 <div class="container">
@@ -333,7 +435,81 @@
                 <?php
             }
         }
+        if (isset($_POST['delstudent'])) {
 
+            if (!empty($_POST['delusername']) || !empty($_POST['deluid'])) {
+
+                // Search for existing user with name
+                // Search for existing user with name
+                $username = mysqli_real_escape_string($dbc, $_POST['delusername']);
+                $uid = mysqli_real_escape_string($dbc, $_POST['deluid']);
+                $username = "username = '".$username."'";
+                $uid = "people.uid = ".$uid;
+                // Input for uid or Username is empty, clear strings if this is the case
+                if ($_POST['deluid'] == "") {
+                    $uid = "";
+                }
+                if ($_POST['delusername'] == "") {
+                    $username = "";
+                }
+                // Both have inputs, add OR condition
+                if (!empty($_POST['delusername']) && !empty($_POST['deluid'])) {
+                    $uid = " OR ".$uid;
+                }
+                $query = "SELECT people.uid FROM people JOIN student ON people.uid = student.uid WHERE ".$username.$uid;
+                $data = mysqli_query($dbc, $query);
+                echo mysqli_error($dbc);
+
+                if (mysqli_num_rows($data) == 1) {
+
+                    $row = mysqli_fetch_array($data);
+                    $uid = $row['uid'];
+
+                    echo mysqli_error($dbc);
+                    $query = "DELETE FROM transcript WHERE uid = ".$uid;
+                    $data = mysqli_query($dbc, $query);
+                    echo mysqli_error($dbc);
+                    $query = "DELETE FROM form WHERE uid = ".$uid;
+                    $data = mysqli_query($dbc, $query);
+                    echo mysqli_error($dbc);
+                    $query = "DELETE FROM takes WHERE uid = ".$uid;
+                    $data = mysqli_query($dbc, $query);
+                    echo mysqli_error($dbc);
+                    $query = "DELETE FROM student WHERE uid = ".$uid;
+                    $data = mysqli_query($dbc, $query);
+                    $query = "DELETE FROM people WHERE uid = ".$uid;
+                    $data = mysqli_query($dbc, $query);
+                    echo mysqli_error($dbc);
+
+                    ?>
+                    <div class="container">
+                    <div class="alert alert-success" role="alert">Successfully deleted student from the system!</div>
+                    </div>
+                    <?php
+                }
+                else if (mysqli_num_rows($data) == 0) {
+                    ?>
+                    <div class="container">
+                    <div class="alert alert-danger" role="alert">ERROR: No match! The user you are trying to delete either does not exist or is not an student. Please check your input and try again.</div>
+                    </div>
+                    <?php
+                }
+                else if (mysqli_num_rows($data) > 1) {
+                    ?>
+                    <div class="container">
+                    <div class="alert alert-danger" role="alert">ERROR: No exact match! The uid and Username provided match more than one user. Please check your input and try again.</div>
+                    </div>
+                    <?php
+                }
+            }
+            else {
+                ?>
+                <div class="container">
+                <div class="alert alert-danger" role="alert">ERROR: Not enough information! Please ensure that you are specifying either a uid or a Username for the user you wish to delete.</div>
+                </div>
+                <?php
+            }
+        }
     
     ?>
 
@@ -530,11 +706,143 @@
                     <input required name="dept" type="text" maxlength="256" class="form-control">
                 </div>
                 <div class="form-group col-md-4">
-                    <label for="dept">Department</label>
-                    <input required name="dept" type="text" maxlength="256" class="form-control">
+                    <label for="adv">Advisor</label>
+                    <select name="adv" class="form-control" required>
+                        <?php
+
+                        $queryAdv = "select people.uid, people.fname, people.lname from staff join people on people.uid = staff.uid where staff.type = 4 or staff.type = 6 or staff.type = 8 or staff.type = 9;";
+                        			
+                        $adv = mysqli_query($dbc, $queryAdv);
+                        while ($rowAdv = mysqli_fetch_array($adv)) {
+                            ?>
+                                <option value="<?php echo $rowAdv['uid'];?>"><?php echo $rowAdv['fname'].' '.$rowAdv['lname'];?></option>
+                            <?php
+                        }
+                        ?>
+                    </select>
+                </div>
+            </div><div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="sem">Semester</label>
+                    <select name="sem" class="form-control" required>
+                        <option value="fall">Fall</option>
+                        <option value="spring">Spring</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="year">Year</label>	
+                    <input type="number" class="form-control" min="2020" max="2050" step="1" value="2020" name="year" required>
                 </div>
             </div>
             <button type="submit" name="student" class="btn btn-primary">Submit</button>
+
+        </form>
+
+        <br>
+        <h1>Add Alumni</h1>
+        <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+            <div class="form-row">
+                <div class="form-group col-md-5">
+                    <label for="appfname">First Name</label>
+                    <input required name="appfname" type="text" class="form-control" maxlength="256" onkeypress="return (event.charCode > 64 && 
+                        event.charCode < 91) || (event.charCode > 96 && event.charCode < 123)">
+                </div>
+                <div class="form-group col-md-5">
+                    <label for="applname">Last Name</label>
+                    <input required name="applname" type="text" class="form-control" maxlength="256" onkeypress="return (event.charCode > 64 &&
+                        event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode == 32)">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="appssn">SSN</label>
+                    <input required name="appssn" type="text" class="form-control" maxlength="9" minlength="9" onkeypress="return (event.charCode > 47 && 
+                        event.charCode < 58)">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="appusername">Username</label>
+                    <input required name="appusername" type="text" class="form-control" maxlength="256" onkeypress="return (event.charCode > 96 && event.charCode < 123) || (event.charCode > 47 && event.charCode < 58)">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="apppassword">Password</label>
+                    <input required name="apppassword" type="password" class="form-control" maxlength="256" onkeypress="return (event.charCode > 32 &&
+                        event.charCode < 127)">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-5">
+                    <label for="appbday">Birthdate</label>
+                    <input required name="appbday" type="date" class="form-control">
+                </div>
+                <div class="form-group col-md-7">
+                    <label for="appemail">Email Address</label>
+                    <input required name="appemail" type="email" class="form-control" maxlength="256">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="appaddress">Address</label>
+                    <input required name="appaddress" type="text" class="form-control" placeholder="800 22nd St NW, Washington, D.C. 20052" maxlength="256" onkeypress="return (event.charCode > 64 &&
+                        event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.charCode > 47 && event.charCode < 58) || (event.charCode == 46) || 
+                        (event.charCode == 44)  || (event.charCode == 32)">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="program">Program</label>
+                    <select name="program" class="form-control" required>
+                        <option value="masters">Masters</option>
+                        <option value="phd">PhD</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="dept">Department</label>
+                    <input required name="dept" type="text" maxlength="256" class="form-control">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="adv">Advisor</label>
+                    <select name="adv" class="form-control" required>
+                        <?php
+
+                        $queryAdv = "select people.uid, people.fname, people.lname from staff join people on people.uid = staff.uid where staff.type = 4 or staff.type = 6 or staff.type = 8 or staff.type = 9;";
+                        			
+                        $adv = mysqli_query($dbc, $queryAdv);
+                        while ($rowAdv = mysqli_fetch_array($adv)) {
+                            ?>
+                                <option value="<?php echo $rowAdv['uid'];?>"><?php echo $rowAdv['fname'].' '.$rowAdv['lname'];?></option>
+                            <?php
+                        }
+                        ?>
+                    </select>
+                </div>
+            </div><div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="sem">Semester</label>
+                    <select name="sem" class="form-control" required>
+                        <option value="fall">Fall</option>
+                        <option value="spring">Spring</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="year">Year</label>	
+                    <input type="number" class="form-control" min="2020" max="2050" step="1" value="2020" name="year" required>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="gsem">Graduation Semester</label>
+                    <select name="gsem" class="form-control" required>
+                        <option value="fall">Fall</option>
+                        <option value="spring">Spring</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="gyear">Graduation Year</label>	
+                    <input type="number" class="form-control" min="2020" max="2050" step="1" value="2020" name="gyear" required>
+                </div>
+            </div>
+            <button type="submit" name="alumn" class="btn btn-primary">Submit</button>
 
         </form>
 
@@ -574,6 +882,25 @@
                 </div>
             </div>
             <button type="submit" name="delapp" class="btn btn-primary">Delete User</button>
+        </form>
+
+        <br>
+
+        <h1>Delete Student / Alumni</h1>
+        <p>Delete a staff member by specifying their username, uid, or both. The system will find and delete the staff member whose information best matches the provided information.</p>
+        <form method="POST" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="deluid">uid</label>
+                    <input name="deluid" type="text" class="form-control" maxlength="9" onkeypress="return (event.charCode > 47 && 
+                        event.charCode < 58)">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="delusername">Username</label>
+                    <input name="delusername" type="text" class="form-control" maxlength="256" onkeypress="return (event.charCode > 96 && event.charCode < 123) || (event.charCode > 47 && event.charCode < 58)">
+                </div>
+            </div>
+            <button type="submit" name="delstudent" class="btn btn-primary">Delete User</button>
         </form>
 
         <br>
