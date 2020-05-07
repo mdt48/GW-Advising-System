@@ -35,12 +35,12 @@
     if (isset($_SESSION['uid'])) {
       //query database for classes for this user
       $u_id = $_SESSION['uid'];
-      echo "\nPreviously-taken classes:";
+      echo "\n<p style = 'text-align:center;'><b>Previously-taken classes:</b></p>";
       $takes_query = mysqli_query($dbc, "SELECT * FROM transcript a JOIN course b ON a.cid = b.cid WHERE a.uid = '$u_id';");
       //print out classes
       if ($takes_query != false) {
         //print out table
-        echo "<table>";
+        echo "<table style = 'margin-left:auto;margin-right:auto;'>";
         echo "<tr><td><b>Class name</b></td><td><b>Department</b></td><td><b>Grade</b></td></tr>";        
         while ($takes_result = mysqli_fetch_array($takes_query)) {
           echo "<tr>";
@@ -54,22 +54,26 @@
         echo "ERROR: No classes have been found!";
       }
 
-      echo "\nClasses currently in progress:";
+      echo "\n</br><p style = 'text-align:center;'><b>Classes currently in progress:</b></p>";
 
       $takes_query = mysqli_query($dbc, "SELECT * FROM takes a JOIN course b ON a.cid = b.cid WHERE a.uid = '$u_id';");
       //print out classes
       if ($takes_query != false) {
-        //print out table
-        echo "<table>";
-        echo "<tr><td><b>Class name</b></td><td><b>Department</b></td><td><b>Grade</b></td></tr>";        
-        while ($takes_result = mysqli_fetch_array($takes_query)) {
-          echo "<tr>";
-          echo "<td>".$takes_result['subject']."</td>";
-          echo "<td>".$takes_result['department']."</td>";
-          echo "<td>".$takes_result['grade']."</td>";
-          echo "</tr>";
+        if (mysqli_num_rows($takes_query) != 0) {
+          //print out table
+          echo "<table style = 'margin-left:auto;margin-right:auto;'>";
+          echo "<tr><td><b>Class name</b></td><td><b>Department</b></td><td><b>Grade</b></td></tr>";        
+          while ($takes_result = mysqli_fetch_array($takes_query)) {
+            echo "<tr>";
+            echo "<td>".$takes_result['subject']."</td>";
+            echo "<td>".$takes_result['department']."</td>";
+            echo "<td>".$takes_result['grade']."</td>";
+            echo "</tr>";
+          }
+          echo "</table>";
+        } else {
+          echo"<p style = 'text-align:center;'>This student is currently not registered for any classes.</p>";
         }
-        echo "</table>";
       } else {
         echo "ERROR: No classes have been found!";
       }
@@ -78,7 +82,7 @@
     }
   ?>
   <br/>
-  <a href="index.php">Home</a>
+  <a href="index.php"><p style = 'text-align:center;'>Home</p></a>
 </body>
 
 <?php

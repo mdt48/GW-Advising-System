@@ -6,39 +6,67 @@
 		$dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME); 
 
         if (isset($_POST['hide'])) {
-
-			$uidP = $_POST['uid'];
-            $query = "DELETE FROM examScore WHERE uid = ".$uidP;
+            $query = "DELETE FROM examScore WHERE uid = ".$uid;
             $dbc->query($query);
-            $query = "DELETE FROM recs WHERE uid = ".$uidP;
+            $query = "DELETE FROM recs WHERE uid = ".$uid;
+            $dbc->query($query);
+            $query = "DELETE FROM degree WHERE uid = ".$uid;
+			$dbc->query($query);
+			$query = "DELETE FROM recReview WHERE studentuid = ".$uid;
+			$dbc->query($query);
+			$query = "DELETE FROM reviewForm WHERE studentuid = ".$uid;
+			$dbc->query($query);
+
+			$query = "SELECT adv, degProgram from applicant where uid = ".$uid;
+					
+			$data = mysqli_query($dbc, $query);
+		
+			$row = mysqli_fetch_array($data);
+
+			$query = "DELETE FROM applicant WHERE uid = ".$uid;
+			$dbc->query($query);
+
+			$query = "INSERT INTO student (uid, advisoruid, program) values (".$uid.", ".$row['adv'].", '".$row['degProgram']."')";
+			$dbc->query($query);
+
+			echo "<script>window.location.href='index.php';</script>";
+		}
+		else if (isset($_POST['matriculate'])) {
+			$uidP = $_POST['uid'];
+			
+			$query = "DELETE FROM recs WHERE uid = ".$uidP;
             $dbc->query($query);
             $query = "DELETE FROM degree WHERE uid = ".$uidP;
 			$dbc->query($query);
-			$query = "DELETE FROM recReview WHERE uid = ".$uidP;
+			$query = "DELETE FROM recReview WHERE studentuid = ".$uidP;
 			$dbc->query($query);
-			$query = "DELETE FROM reviewForm WHERE uid = ".$uidP;
-			$dbc->query($query);
-
-			$query = "SELECT adv from applicant where uid = ".$uidP;
-			$qD = mysqli_query($dbc. $query);
-			$row = mysqli_fetch_array($qD);
-
-			$query = "DELETE FROM applicant WHERE uid = ".$uidP;
+			$query = "DELETE FROM reviewForm WHERE studentuid = ".$uidP;
 			$dbc->query($query);
 
-			$query = "INSERT INTO student (uid, advisoruid) values (".$uidP.", ".$row['adv'].")";
-			$dbc->query($query);
+			$query = "SELECT adv, degProgram from applicant where uid = ".$uidP;
+					
+			$data = mysqli_query($dbc, $query);
+
 			
+		
+			$row = mysqli_fetch_array($data);
+
+			if ($row['degProgram'] == "md") {
+				$row['degProgram'] = "masters";
+			}
+
+			$query = "INSERT INTO student (uid, advisoruid, program) values (".$uidP.", ".$row['adv'].", '".$row['degProgram']."')";
+			$dbc->query($query);
+
+			$home_url = "queueMatriculate.php";
+				  
+			header('Location: ' . $home_url);
 		}
 		else {
         
 			$queryA = "select appStatus from applicant where uid = '$uid'";
 								
 			$dataA = mysqli_query($dbc, $queryA);
-
-			$queryS = "select type from staff where uid = '$uid'";
-								
-			$dataS = mysqli_query($dbc, $queryS);
 
 			//applicant view
 			if (mysqli_num_rows($dataA) == 1) {
@@ -119,8 +147,6 @@
 									<label for="address" id="ifYes">Address: </label>
 									<input type="text" id="ifYes"class="form-control" maxlength="255" id="address" name = "address" placeholder="Enter address" required>
 								</div>
-
-								<input type="hidden" id="uid" name="uid" value="<?php echo $uid; ?>"> <br>
 								<input type="hidden" id="hide" name="hide" value="1"> <br>
 								<input type="submit" value="Submit" name="submit" class="btn text-white btn-lg" style="background-color: #033b59;">
 						</div>
@@ -129,44 +155,6 @@
 								</p>
 						</div>
 					</div>
-					<?php
-				}
-			}
-			//staff view
-			else if (mysqli_num_rows($dataS) == 1) {
-				
-				$row = mysqli_fetch_array($dataS);
-				
-				if ($row['type'] == 1) {
-					$uidS = $_POST['uid']; 
-					?>
-					<header class = "bg py-5 mb-5" style = "background-color: #033b59;">
-					<div class = "container h-100">
-						<div class = "row h-100 align-items-center">
-							<div class = "col-lg-12">
-								<h1 class = "display-4 text-center text-white mt-5 mb-2">Matriculation</h1>
-								<p class = "lead mb-5 text-center text-white-50" id = button>
-									Currently matriculating student uid: <?php echo $uidS; ?>.
-								</p>
-							</div>
-						</div>
-					</div>
-				</header>
-				<div class = "container">
-					<div class = "row">
-					<form method = "post" action="<?php echo $_SERVER['PHP_SELF']; ?>" class = "FormF">
-					<div class="form-group">						
-							Has the student made a payment yet? : <br/> <br/>
-							<input type="radio" id="yes" name="matriculate" value="1">
-							<label for="yes">Yes</label><br>
-							<input type="radio" id="no" name="matriculates" value="0">
-							<label for="no">No</label><br>
-							<input type="hidden" id="uid" name="uid" value="<?php echo $uid; ?>"> <br>
-							<input type="submit" value="Submit" name="submit" class="btn text-white btn-lg" style="background-color: #033b59;">
-					</div>
-					</form>
-					</div>
-				</div>
 					<?php
 				}
 			}

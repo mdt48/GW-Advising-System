@@ -1,5 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>  
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<link rel = "stylesheet" href="/css/heroic-features.css" >
+<title> GW Graduate Program - System Administrator Dashboard </title>
+</head>
+
+<body data-gr-c-s-loaded = "true">
+
 <?php
-    require_once('navBar.php');
+  // Start the session
+   session_start();
+
+   // uid manual assignment for debugging 
+
+    require_once('connectvars.php');
     $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
     if (isset($_SESSION['uid'])) {
@@ -68,7 +84,7 @@
                 $lname = mysqli_real_escape_string($dbc, $_POST['lname']);
                 $address = mysqli_real_escape_string($dbc, $_POST['address']);
 
-                $query = "INSERT INTO people (ssn, username, email, birthDate, password, fname, lname, address) VALUES (".$ssn.", '".$username."', '".$email."', '".$date."', '".$password."', '".$fname."', '".$lname."', '".$address."')";
+                $query = "INSERT INTO people (ssn, username, email, birthDate, userPassword, fname, lname, userAddress) VALUES (".$ssn.", '".$username."', '".$email."', '".$date."', '".$password."', '".$fname."', '".$lname."', '".$address."')";
                 $data = mysqli_query($dbc, $query);
 
                 $query = "SELECT uid FROM people WHERE username = '".$_POST['username']."'";
@@ -144,7 +160,7 @@
                 $lname = mysqli_real_escape_string($dbc, $_POST['applname']);
                 $address = mysqli_real_escape_string($dbc, $_POST['appaddress']);
 
-                $query = "INSERT INTO people (ssn, username, email, birthDate, password, fname, lname, address) VALUES (".$ssn.", '".$username."', '".$email."', '".$date."', '".$password."', '".$fname."', '".$lname."', '".$address."')";
+                $query = "INSERT INTO people (ssn, username, email, birthDate, userPassword, fname, lname, userAddress) VALUES (".$ssn.", '".$username."', '".$email."', '".$date."', '".$password."', '".$fname."', '".$lname."', '".$address."')";
                 $data = mysqli_query($dbc, $query);
 
                 ?>
@@ -250,17 +266,15 @@
                 if (!empty($_POST['delusername']) && !empty($_POST['deluid'])) {
                     $uid = " OR ".$uid;
                 }
-                $query = "select people.uid from applicant, student, staff, people where applicant.uid =".$uid." or student.uid = ".$uid." or staff.uid = ".$uid;
+                $query = "SELECT people.uid FROM people JOIN applicant ON people.uid = applicant.uid WHERE ".$username.$uid;
                 $data = mysqli_query($dbc, $query);
                 echo mysqli_error($dbc);
 
-                if (mysqli_num_rows($data) == 0) {
+                if (mysqli_num_rows($data) == 1) {
 
                     $row = mysqli_fetch_array($data);
                     $uid = $row['uid'];
 
-                    $query = "DELETE FROM applicant WHERE uid = ".$uid;
-                    $data = mysqli_query($dbc, $query);
                     echo mysqli_error($dbc);
                     $query = "DELETE FROM degree WHERE uid = ".$uid;
                     $data = mysqli_query($dbc, $query);
@@ -277,6 +291,8 @@
                     $query = "DELETE FROM reviewForm WHERE studentuid = ".$uid;
                     $data = mysqli_query($dbc, $query);
                     echo mysqli_error($dbc);
+                    $query = "DELETE FROM applicant WHERE uid = ".$uid;
+                    $data = mysqli_query($dbc, $query);
                     $query = "DELETE FROM people WHERE uid = ".$uid;
                     $data = mysqli_query($dbc, $query);
                     echo mysqli_error($dbc);
@@ -309,7 +325,9 @@
                 </div>
                 <?php
             }
-        }    
+        }
+
+    
     ?>
 
     <div class="container">
@@ -366,16 +384,10 @@
                 <div class="form-group col-md-4">
                     <label for="type">Type of staff</label>
                     <select name="type" class="form-control">
-                        <option value="0">System Administrator</option>
+                        <option value="0">Regular staff</option>
                         <option value="1">Graduate Secretary</option>
                         <option value="2">CAC staff</option>
-                        <option value="3">Faculty Reviewer</option>
-                        <option value="4">Faculty Advisor</option>
-                        <option value="5">Faculty Instructor</option>
-                        <option value="6">Faculty Reviewer and Advisor</option>
-                        <option value="7">Faculty Reviewer and Instructor</option>
-                        <option value="8">Faculty Advisor and Instructor</option>
-                        <option value="9">Faculty Reviewer, Advisor, and Instructor</option>
+                        <option value="3">System Administrator</option>
                     </select>
                 </div>
                 <div class="form-group col-md-4">
