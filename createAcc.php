@@ -64,7 +64,7 @@
 						
 							mail($user_email, "GW Graduate Program Login Info", $msg);
 	
-							$home_url = "login.php";
+							$home_url = "login.html";
 			
 							header('Location: ' . $home_url);
 						}

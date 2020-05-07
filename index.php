@@ -127,6 +127,7 @@ if (isset($_SESSION['uid'])) {
 				else if ($row['type'] == 7) {
 					echo '<a href="queue.php"><h1>Applications</h1></a><br>';
 					echo '<a href="grades.php"><h1>View Grades</h1></a><br/>';
+					echo '<a href="view-rosters.php"><h1>View Rosters</h1></a><br/>';
 					echo '<a href="view-student-transcripts.php"><h1>View Student Transcripts</h1></a><br/>';
 				}
 				//fi&a

@@ -15,7 +15,7 @@
 			$query = "DELETE FROM reviewForm WHERE studentuid = ".$uid;
 			$dbc->query($query);
 
-			$query = "SELECT adv, degProgram from applicant where uid = ".$uid;
+			$query = "SELECT adv, degProgram, admissionYear from applicant where uid = ".$uid;
 					
 			$data = mysqli_query($dbc, $query);
 		
@@ -25,7 +25,7 @@
 				$row['degProgram'] = "masters";
 			}
 
-			$query = "INSERT INTO student (uid, advisoruid, program) values (".$uid.", ".$row['adv'].", '".$row['degProgram']."')";
+			$query = "INSERT INTO student (uid, advisoruid, program, ayear) values (".$uid.", ".$row['adv'].", '".$row['degProgram']."', ".$row['admissionYear']." )";
 			$dbc->query($query);
 
 			echo "<script>window.location.href='index.php';</script>";
@@ -52,7 +52,7 @@
 				$row['degProgram'] = "masters";
 			}
 
-			$query = "INSERT INTO student (uid, advisoruid, program) values (".$uidP.", ".$row['adv'].", '".$row['degProgram']."')";
+			$query = "INSERT INTO student (uid, advisoruid, program, ayear) values (".$uid.", ".$row['adv'].", '".$row['degProgram']."', ".$row['admissionYear']." )";
 			$dbc->query($query);
 
 			$home_url = "queueMatriculate.php";

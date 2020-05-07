@@ -487,9 +487,10 @@ insert into examScore values (00001236, 'total', 200, 1983);
 insert into examScore values (00001236, 'verbal', 100, 1983);
 insert into examScore values (00001236, 'quantitative', 100, 1983);
 
-insert into teaches values (6254, 'CSCI', 2020, 1, 'Spring', 4);
 insert into teaches values (6461, 'CSCI', 2020, 1, 'Spring', 1);
-insert into teaches values (6262, 'CSCI', 2020, 1, 'Spring', 10);
-insert into teaches values (6251, 'CSCI', 2020, 1, 'Spring', 9);
-insert into teaches values (6246, 'CSCI', 2020, 1, 'Spring', 3);
-insert into teaches values (6260, 'CSCI', 2020, 1, 'Spring', 4);
+insert into teaches values (6212, 'CSCI', 2020, 1, 'Spring', 9);
+insert into teaches values (6221, 'CSCI', 2020, 1, 'Spring', 9);
+insert into teaches values (6232, 'CSCI', 2020, 1, 'Spring', 9);
+insert into teaches values (6233, 'CSCI', 2020, 1, 'Spring', 4);
+insert into teaches values (6242, 'CSCI', 2020, 1, 'Spring', 4);
+insert into teaches values (6241, 'CSCI', 2020, 1, 'Spring', 7);
