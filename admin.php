@@ -495,8 +495,10 @@
 
         <br>
 
+        <div class="row">	<p>
+				<a class="btn text-white btn-lg" style = "background-color: #033b59;" href = "index.php">Go Back</a></p> </div>
+		<br> <br> <br>
     </div>
-
     <?php
 
             }

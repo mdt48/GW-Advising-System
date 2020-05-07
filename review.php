@@ -297,6 +297,9 @@ event.charCode < 91) || (event.charCode > 96 && event.charCode < 123) || (event.
 
     </form>
 </div>
+<div class="row">	<p>
+				<a class="btn text-white btn-lg" style = "background-color: #033b59;" href = "queue.php">Go Back</a></p> </div>
+		<br> <br> <br>
 
     <?php
 

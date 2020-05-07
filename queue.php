@@ -474,10 +474,6 @@
             <td><?php echo $row['email']; ?></td>
             <td><?php if ($row['appStatus'] == 1) echo "Incomplete"; else echo "Complete"; ?></td>
             <td><?php echo $subrow['count']; ?></td>
-            <?php 
-                if ($subrow['count'] == 0) {
-
-            ?>
             <form method="POST" action="editAcademic.php">
             <td><input type="hidden" name="uid" value="<?php echo $row['uid']; ?>">
             <button type="submit" name="update" class="btn btn-primary">Update</button></td>
@@ -504,7 +500,7 @@
                     <td><input type="hidden" name="uid" value="<?php echo $row['uid']; ?>"><button type="submit" name="update" class="btn btn-primary" disabled>Review</button></td>
                     </form>
                     <?php }
-             }
+             
                 if ($subrow['count'] >= 1) {
             ?>
             <form method="POST" action="decision.php">
