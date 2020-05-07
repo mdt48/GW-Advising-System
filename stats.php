@@ -125,10 +125,10 @@
             
             //total admitted
             if ($where == "") {
-                $spec = "where appStatus = 3 or appStatus = 4";
+                $spec = "where appStatus = 3 or appStatus = 4 or appStatus = 6";
             }
             else {
-                $spec = $where." and (appStatus = 3 or appStatus = 4)";
+                $spec = $where." and (appStatus = 3 or appStatus = 4 or appStatus = 6)";
             }
             $queryTA= "select count(*) as total from applicant ".$spec;
             $dataTA = mysqli_query($dbc, $queryTA);
@@ -158,10 +158,10 @@
 
             //average admitted score
             if ($where == "") {
-                $spec = "where examSubject = 'total' and (appStatus = 3 or appStatus = 4)";
+                $spec = "where examSubject = 'total' and (appStatus = 3 or appStatus = 4 or appStatus = 6)";
             }
             else {
-                $spec = $where." and examSubject = 'total' and (appStatus = 3 or appStatus = 4)";
+                $spec = $where." and examSubject = 'total' and (appStatus = 3 or appStatus = 4 or appStatus = 6)";
             }
             $queryAAd= "select round(avg(score), 2) as total from examScore join applicant on examScore.uid = applicant.uid ".$spec;
             $dataAAd = mysqli_query($dbc, $queryAAd);

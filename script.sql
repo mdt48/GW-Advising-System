@@ -90,10 +90,10 @@ CREATE TABLE degree (
 
 CREATE TABLE examScore (
   uid int,
-  examastersubject varchar(256),
+  examSubject varchar(256),
   score int,
   yearTake year,
-  PRIMARY KEY (uid,examastersubject),
+  PRIMARY KEY (uid,examSubject),
   FOREIGN KEY (uid) REFERENCES applicant (uid)
 );
 

@@ -150,7 +150,10 @@ if (isset($_SESSION['uid'])) {
 			echo '<a href="edit_user_info.php"><h1>Edit User Info</h1></a><br/>';
 			echo '<a href="register.php"><h1>Register</h1></a><br/>';
 			echo '<a href="view-classes.php"><h1>View Classes</h1></a><br/>';
+<<<<<<< HEAD
 			echo '<a href="apply_for_grad.php"><h1>Apply for Graduation</h1></a><br/>';
+=======
+>>>>>>> 1ad53dcfa8bf8c143e82f04cd9f88dca8b2a4e3c
 		}
 	}
 	?>
