@@ -53,7 +53,7 @@ if (isset($_SESSION['uid'])) {
 <div class = "container">
 	<?php 
 	
-		$queryA = "select uid from applicant where uid = '$uid'";
+		$queryA = "select uid from applicant where uid = '$uid' and uid not in (select uid from student)";
 							
 		$dataA = mysqli_query($dbc, $queryA);
 		
