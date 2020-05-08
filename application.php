@@ -212,7 +212,7 @@ if (isset($_POST['submit']))
             else {
                 $result = $dbc->query("SELECT recId FROM recs WHERE uid = '$uid' AND email = '$rec1Email'");
                 $row = $result->fetch_object();
-                $msg = "You have been asked to send a recommendation letter for " . $fname . " " . $lname . ". Your recID is " . $row->recId . ". Please click on the link to fill out the recommendation form." . "http://gwupyterhub.seas.gwu.edu/sp20DBp2-git-good/git-good/recommendation.html";;
+                $msg = "You have been asked to send a recommendation letter for " . $fname . " " . $lname . ". Your recID is " . $row->recId . ". Please click on the link to fill out the recommendation form." . "http://gwupyterhub.seas.gwu.edu/sp20DBp2-git-good/git-good/recommendation.html";
                 mail($rec1Email, "GW Graduate Program Letter of Recommendation Request", $msg);
             }
         }
