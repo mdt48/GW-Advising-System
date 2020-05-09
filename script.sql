@@ -208,6 +208,29 @@ CREATE TABLE teaches (
   FOREIGN KEY (cid, department, year, section, semester) references schedule(cid, department, year, section, semester)
 );
 
+CREATE TABLE courseForm (
+  uid int,
+  cid1 int,
+  dept1 varchar(4),
+  cid2 int,
+  dept2 varchar(4),
+  cid3 int,
+  dept3 varchar(4),
+  cid4 int,
+  dept4 varchar(4),
+  cid5 int,
+  dept5 varchar(4),
+  cid6 int,
+  dept6 varchar(4),
+  PRIMARY KEY (uid),
+  FOREIGN KEY (cid1, dept1) references course(cid, department),
+  FOREIGN KEY (cid2, dept2) references course(cid, department),
+  FOREIGN KEY (cid3, dept3) references course(cid, department),
+  FOREIGN KEY (cid4, dept4) references course(cid, department),
+  FOREIGN KEY (cid5, dept5) references course(cid, department),
+  FOREIGN KEY (cid6, dept6) references course(cid, department)
+);
+
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- courses 

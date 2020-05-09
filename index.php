@@ -112,6 +112,7 @@ if (isset($_SESSION['uid'])) {
 				//fa
 				else if ($row['type'] == 4) {
 					echo '<a href="view_all_students.php"><h1>View All Students</h1></a><br/>';
+					echo '<a href="reviewCourseForm.php"><h1>Review Course Forms</h1></a><br/>';
 				}
 				//fi
 				else if ($row['type'] == 5) {
@@ -122,6 +123,7 @@ if (isset($_SESSION['uid'])) {
 				else if ($row['type'] == 6) {
 					echo '<a href="queue.php"><h1>Applications</h1></a><br>';					
 					echo '<a href="view_all_students.php"><h1>View All Students</h1></a><br/>';
+					echo '<a href="reviewCourseForm.php"><h1>Review Course Forms</h1></a><br/>';
 				}
 				//fr&i
 				else if ($row['type'] == 7) {
@@ -135,6 +137,7 @@ if (isset($_SESSION['uid'])) {
 					echo '<a href="view_all_students.php"><h1>View All Students</h1></a><br/>';
 					echo '<a href="grades.php"><h1>View Grades</h1></a><br/>';
 					echo '<a href="view-student-transcripts.php"><h1>View Student Transcripts</h1></a><br/>';
+					echo '<a href="reviewCourseForm.php"><h1>Review Course Forms</h1></a><br/>';
 				}
 				//all three
 				else if ($row['type'] == 9) {
@@ -142,6 +145,7 @@ if (isset($_SESSION['uid'])) {
 					echo '<a href="view_all_students.php"><h1>View All Students</h1></a><br/>';
 					echo '<a href="grades.php"><h1>View Grades</h1></a><br/>';
 					echo '<a href="view-student-transcripts.php"><h1>View Student Transcripts</h1></a><br/>';
+					echo '<a href="reviewCourseForm.php"><h1>Review Course Forms</h1></a><br/>';
 				}
 				
 				echo '<a href="edit_user_info.php"><h1>Edit User Info</h1></a><br/>';
