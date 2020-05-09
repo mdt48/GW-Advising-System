@@ -1,4 +1,4 @@
-use mdt_;
+use git_good;
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS student CASCADE;
 DROP TABLE IF EXISTS form CASCADE;
@@ -148,11 +148,16 @@ CREATE TABLE course(
   PRIMARY KEY (`cid`, `department`)
 );
 
-CREATE TABLE prereqs(
-  cid int,
-  pcid int,
-  PRIMARY KEY (cid, pcid),
-  FOREIGN KEY (cid) REFERENCES course (cid)
+CREATE TABLE prereqs (
+	cid            int,
+	reqcid         int,
+	ismain          BOOLEAN,
+	dept            CHAR(4),
+	reqdept        CHAR(4),
+	PRIMARY KEY (cid, reqcid, dept),
+	FOREIGN KEY (cid, dept) references course(cid, department),
+	FOREIGN KEY (reqcid, reqdept) references course(cid, department)
+
 );
 
 CREATE TABLE transcript(
@@ -498,3 +503,19 @@ insert into teaches values (6262, 'CSCI', 2020, 1, 'Spring', 10);
 insert into teaches values (6251, 'CSCI', 2020, 1, 'Spring', 9);
 insert into teaches values (6246, 'CSCI', 2020, 1, 'Spring', 3);
 insert into teaches values (6260, 'CSCI', 2020, 1, 'Spring', 4);
+
+
+INSERT INTO prereqs VALUES (6233, 6232, true, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6242, 6241, true, "ECE", "ECE");
+INSERT INTO prereqs VALUES (6246, 6461, true, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6246, 6212, false, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6251, 6461, true, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6254, 6221, true, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6283, 6212, true, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6284, 6212, true, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6286, 6283, true, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6286, 6232, false, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6325, 6212, true, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6339, 6461, true, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6339, 6212, false, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6384, 6284, true, "CSCI", "CSCI");

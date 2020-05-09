@@ -50,7 +50,7 @@
   if(isset($_GET["uid"])) {
     $uid = $_GET["uid"];
   }
-
+ 
   $takenbefore = "SELECT * FROM transcript WHERE uid = '$uid' AND subject = '$dept' AND cid = '$c_id'";
   $takenquery = mysqli_query($dbc, $takenbefore);
 
@@ -67,7 +67,7 @@
   } else {
 
     //main prereq
-    $prereq = "SELECT * FROM prereqs WHERE c_id = '$c_id' AND department = '$dept'";
+    $prereq = "SELECT * FROM prereqs WHERE cid = '$c_id' AND dept = '$dept' AND ismain = true;";
     $prereqquery = mysqli_query($dbc, $prereq);
     if ($prereqquery != false) {
       $prereqrow = mysqli_fetch_array($prereqquery);
@@ -78,29 +78,31 @@
     if ($prereqrow) { //if there is main prereq
 
       //see if they have taken it
-      $req_dept = $prereqrow["department"];
-      $req_cid = $prereqrow["cid"];
-      $checkprereq = "SELECT * FROM transcript WHERE uid = '$uid' AND subject = '$req_dept' AND cid = '$req_cid'";
+      $req_dept = $prereqrow["reqdept"];
+      $req_cid = $prereqrow["reqcid"];
+      $checkprereq = "SELECT * FROM transcript WHERE uid = '$uid' AND subject = '$req_dept' AND cid = '$req_cid';";
       $checkprereqquery = mysqli_query($dbc, $checkprereq);
 
       if (!($row = mysqli_fetch_array($checkprereqquery))) {
         //they have not taken the main prereq
-        echo "You have not taken a prerequisite for this class: ".$req_dept." ".$req_cid;?><br><?php
+        echo "ERROR: You have not taken a prerequisite for this class: ".$req_dept." ".$req_cid;?><br><?php
         $cantake = false; //mark that they cannot take class
-      } else { //they have taken the main prereq check secondary
+      
 
         //secondary prereq
-        $prereq = "SELECT * FROM prereqs WHERE cid = '$cid' AND department = '$department'";
+        $prereq = "SELECT * FROM prereqs WHERE cid = '$c_id' AND dept = '$dept' AND ismain = false;";
         $prereqquery = mysqli_query($dbc, $prereq);
-        $prereqrow = mysqli_fetch_array($prereqquery);
+        if ($prereqquery != false) {
+          $prereqrow = mysqli_fetch_array($prereqquery);
+        } 
 
         if ($prereqrow) { //if there is a secondary prereq
-          $req_dept = $prereqrow["department"];
-          $req_cid = $prereqrow["cid"];
-          $checkprereq = "SELECT * FROM transcript WHERE uid = '$uid' AND subject = '$req_dept' AND cid = '$req_cid'";
+          $req_dept = $prereqrow["reqdept"];
+          $req_cid = $prereqrow["reqcid"];
+          $checkprereq = "SELECT * FROM transcript WHERE uid = '$uid' AND subject = '$req_dept' AND cid = '$req_cid';";
           $checkprereqquery = mysqli_query($dbc, $checkprereq);
           if (!($row = mysqli_fetch_array($checkprereqquery))) { //see if they have taken the prereq
-            echo "You have not taken a prerequisite for this class: ".$req_dept." ".$req_cid;?><br><?php
+            echo "ERROR: You have not taken a prerequisite for this class: ".$req_dept." ".$req_cid;?><br><?php
             $cantake = false; //mark that they cannot take class
           }
         }
