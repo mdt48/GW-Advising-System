@@ -54,7 +54,15 @@ session_start();
 		  </ul>
 		</div>
       </nav>
-      
+	  <?php 
+	  	require_once('connectvars.php');
+		$dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+		$query = "select th from thesis where uid = '$uid'";
+        print $query;
+		$result = $dbc->query($query);
+		$row = mysqli_fetch_array($result);
+		
+	  ?>
       <div class = "container h-100">
 		<div class = "row h-100 align-items-center">
 			<div class = "col-lg-12">
@@ -66,22 +74,27 @@ session_start();
             <span class="input-group-text">Thesis</span>
             <button type="submit" class="btn btn-primary btn-md float-left f1" id="save" name="btnLogin">Save/Exit</button>
         </div>
-        <textarea class="form-control" id="thesis" maxlength="250" placeholder = "MAX 250 Chars" aria-label="With textarea"></textarea>
+        <textarea class="form-control" id="thesis" maxlength="250" placeholder = "<?php echo $row['th']; ?>" aria-label="With textarea"></textarea>
     </div>
 </div>
 
 <script>
     $( "#save" ).click(function() {
-        alert("hellp");
+        
         var thesis = $('#thesis').val();
+		if (thesis === "" || thesis === null){
+			alert("The Field was blank, your thesis will not be updated");
+			return;
+		}
         $.ajax({
         url: "./insertThesis.php",
         type: "POST",
         data: {uid: <?php echo $uid; ?>, thesis: thesis},
         success: function(data){
-            
+            alert("Success");
         }
         });
+		location.reload();
     });
 </script>
 	
