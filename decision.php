@@ -47,7 +47,6 @@ else
             // Update application with final decision
             $decisionQuery = "UPDATE applicant SET appStatus = ".$_POST['appStatus'].", adv = ".$_POST['adv'].", accDate = '".$date."' WHERE uid = ".$_POST['uid'];
             $decisionData = mysqli_query($dbc, $decisionQuery);
-            echo $decisionQuery;
             header('Location: queue.php');
 
         }
@@ -415,7 +414,7 @@ $count++;
                 <div class="form-group col-md-12">
                 
                     <label for="adv">Advisor (if admitted)</label>
-                    <select name="adv" class="form-control">
+                    <select name="adv" class="form-control" required>
                         <?php
 
                         $queryAdv = "select people.uid, people.fname, people.lname from staff join people on people.uid = staff.uid where staff.type = 4 or staff.type = 6 or staff.type = 8 or staff.type = 9;";

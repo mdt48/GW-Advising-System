@@ -75,7 +75,12 @@
             if ($uidSelected == false && $lnameSelected == false) {
                 $where = "";
             }
-            $where = $where." order by ".$by." ".$order;
+            if ($by == "lname" || $by == "uid") {
+                $where = $where." order by people.".$by." ".$order;
+            }
+            else {
+                $where = $where." order by applicant.".$by." ".$order;
+            }
             $result = $result.", order by ".$by." ".$order;
         }
     ?>
@@ -93,6 +98,7 @@
             <option value="lname" selected hidden>By</option>                 
             <option value="lname">Last Name</option>
             <option value="appDate">Date</option>     
+            <option value="uid">UID</option>     
         </select>
             <input class="form-control mr-sm-2" name="submit" type="submit" id= "search_bar" aria-label="Search">
         </form> 
@@ -234,7 +240,13 @@
                 $result = $result.", last name is ".$lname;
             }
 
-            $where = $where." order by ".$by." ".$order;
+            if ($by == "lname" || $by == "uid") {
+                $where = $where." order by people.".$by." ".$order;
+            }
+            else {
+                $where = $where." order by applicant.".$by." ".$order;
+            }
+
             $result = $result.", order by ".$by." ".$order;
         }
     ?>
@@ -271,6 +283,7 @@
             <option value="lname" selected hidden>By</option>                 
             <option value="lname">Last Name</option>
             <option value="appDate">Date</option>     
+            <option value="uid">UID</option>    
         </select>
             <input class="form-control mr-sm-2" name="submit" type="submit" id= "search_bar" aria-label="Search">
         </form> 
@@ -370,7 +383,7 @@
             $uidP = $_POST['uid'];
             $lname = $_POST['lname'];
             $status = $_POST['status'];
-           
+            $order = $_POST['order'];
             $by = $_POST['by'];
 
             if ($program == "Program" || $program == "all") $programSelected = false;
@@ -428,8 +441,13 @@
                 $where = $where ." and lname like '%".$lname."%'";
                 $result = $result.", last name is ".$lname;
             }
+            if ($by == "lname" || $by == "uid") {
+                $where = $where." order by people.".$by." ".$order;
+            }
+            else {
+                $where = $where." order by applicant.".$by." ".$order;
+            }
 
-            $where = $where." order by ".$by." ".$order;
             $result = $result.", order by ".$by." ".$order;
         }
     ?>
@@ -465,7 +483,8 @@
         <select name="by" class="form-control mr-sm-2"  id= "search_bar" aria-label="Search"> 
             <option value="lname" selected hidden>By</option>                 
             <option value="lname">Last Name</option>
-            <option value="appDate">Date</option>     
+            <option value="appDate">Date</option>    
+            <option value="uid">UID</option>     
         </select>
             <input class="form-control mr-sm-2" name="submit" type="submit" id= "search_bar" aria-label="Search">
         </form> 
@@ -616,8 +635,12 @@
             if ($uidSelected == false && $lnameSelected == false) {
                 $where = "";
             }
-            
-            $where = $where." order by ".$by." ".$order;
+            if ($by == "lname" || $by == "uid") {
+                $where = $where." order by people.".$by." ".$order;
+            }
+            else {
+                $where = $where." order by applicant.".$by." ".$order;
+            }
             $result = $result.", order by ".$by." ".$order;
         }
     ?>
@@ -635,6 +658,7 @@
             <option value="lname" selected hidden>By</option>                 
             <option value="lname">Last Name</option>
             <option value="appDate">Date</option>     
+            <option value="uid">UID</option>     
         </select>
             <input class="form-control mr-sm-2" name="submit" type="submit" id= "search_bar" aria-label="Search">
         </form> 
