@@ -60,7 +60,7 @@ else
             <div class = "container h-100">
                 <div class = "row h-100 align-items-center">
                     <div class = "col-lg-12">
-                        <h1 class = "display-4 text-center text-white mt-5 mb-2">Update Decision</h1>
+                        <h1 class = "display-4 text-center text-white mt-5 mb-2">Make Decision</h1>
                     </div>
                 </div>
             </div>

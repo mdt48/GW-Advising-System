@@ -45,7 +45,7 @@
 			$query = "select adv, degProgram, admissionYear, admissionSemester from applicant where uid = ".$uidP;
 					
 			$data = mysqli_query($dbc, $query);
-		
+	
 			$row = mysqli_fetch_array($data);
 			
 			if ($row['degProgram'] == "md") {
