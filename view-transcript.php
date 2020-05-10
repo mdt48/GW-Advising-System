@@ -109,17 +109,24 @@
       if ($takes_query != false) {
         if (mysqli_num_rows($takes_query) != 0) {
           //print out table
-          echo('</script> <!-- F1 --> <table class="table" id="tab"><thead><tr><th scope="col">Class name</th> <th scope="col">Department</th><th scope="col">Grade</tr></thead><tbody>');     
+          echo('</script> <!-- F1 --> <table class="table" id="tab"><thead><tr><th scope="col">Class name</th> <th scope="col">Department</th><th scope="col">Grade</th><th scope="col"></th></tr></thead><tbody>');     
           while ($takes_result = mysqli_fetch_array($takes_query)) {
             echo "<tr>";
             echo "<td>".$takes_result['subject']."</td>";
             echo "<td>".$takes_result['department']."</td>";
             echo "<td>".$takes_result['grade']."</td>";
+            $thisCid = $takes_result['cid'];
+            echo('<td><form method = "POST"><input type = "submit" name = "$thisCid" value = "Drop Class"/></form></td>');
+            if (isset($_POST['$thisCid'])) {
+              $deleteQuery = "DELETE FROM takes WHERE uid = $u_id AND cid = $thisCid;";
+              mysqli_query($dbc, $deleteQuery);
+              header('Location: '.$_SERVER['REQUEST_URI']);
+            }
             echo "</tr>";
           }
           echo "</table>";
         } else {
-          echo"<p style = 'text-align:center;'>This student is currently not registered for any classes.</p>";
+          echo"<p style = 'text-align:center;'>You are currently not registered for any classes.</p>";
         }
       } else {
         echo "ERROR: No classes have been found!";

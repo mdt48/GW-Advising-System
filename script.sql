@@ -18,6 +18,8 @@ DROP TABLE IF EXISTS schedule CASCADE;
 DROP TABLE IF EXISTS takes cascade;
 DROP TABLE IF EXISTS teaches;
 DROP TABLE IF EXISTS people;
+DROP TABLE IF EXISTS thesis;
+DROP TABLE IF EXISTS courseForm CASCADE;
 
 
 CREATE TABLE form(
@@ -148,11 +150,16 @@ CREATE TABLE course(
   PRIMARY KEY (`cid`, `department`)
 );
 
-CREATE TABLE prereqs(
-  cid int,
-  pcid int,
-  PRIMARY KEY (cid, pcid),
-  FOREIGN KEY (cid) REFERENCES course (cid)
+CREATE TABLE prereqs (
+	cid            int,
+	reqcid         int,
+	ismain          BOOLEAN,
+	dept            CHAR(4),
+	reqdept        CHAR(4),
+	PRIMARY KEY (cid, reqcid, dept),
+	FOREIGN KEY (cid, dept) references course(cid, department),
+	FOREIGN KEY (reqcid, reqdept) references course(cid, department)
+
 );
 
 CREATE TABLE transcript(
@@ -201,6 +208,36 @@ CREATE TABLE teaches (
   uid int,
   PRIMARY KEY (cid, department, year, section, semester),
   FOREIGN KEY (cid, department, year, section, semester) references schedule(cid, department, year, section, semester)
+);
+
+CREATE TABLE courseForm (
+  uid int,
+  cid1 int,
+  dept1 varchar(4),
+  cid2 int,
+  dept2 varchar(4),
+  cid3 int,
+  dept3 varchar(4),
+  cid4 int,
+  dept4 varchar(4),
+  cid5 int,
+  dept5 varchar(4),
+  cid6 int,
+  dept6 varchar(4),
+  PRIMARY KEY (uid),
+  FOREIGN KEY (cid1, dept1) references course(cid, department),
+  FOREIGN KEY (cid2, dept2) references course(cid, department),
+  FOREIGN KEY (cid3, dept3) references course(cid, department),
+  FOREIGN KEY (cid4, dept4) references course(cid, department),
+  FOREIGN KEY (cid5, dept5) references course(cid, department),
+  FOREIGN KEY (cid6, dept6) references course(cid, department)
+);
+
+create table thesis (
+	uid int,
+    th varchar(250),
+    PRIMARY KEY (uid),
+    FOREIGN KEY (`uid`) references student(`uid`)
 );
 
 SET FOREIGN_KEY_CHECKS = 1;
@@ -370,6 +407,7 @@ insert into transcript values(16666666, "CSCI", 6284, "B", 2017, "masters");
 
 insert into people values (12345678, "Stevie", "pass", "Stevie", "Nicks", "address", "email@gwu.edu", "1990-02-20", 2173188);
 insert into student values (12345678, null , 0, 0, 6, "phd", null, "CSCI", 2017, "fall", null);
+insert into thesis values(12345678, "This is my thesis");
 insert into transcript values(12345678, "CSCI", 6221, "A", 2017, "phd");
 insert into transcript values(12345678, "CSCI", 6212, "A", 2017, "phd");
 insert into transcript values(12345678, "CSCI", 6461, "A", 2017, "phd");
@@ -466,7 +504,7 @@ insert into examScore values (66666666, 'quantitative', 170, 1983);
 
 insert into recs (uid, recName, job, relation, email, content, org) values (66666666, 'Daffy Duck', 'Duck', 'Acquaintance', 'dduck@aol.com', 'Not a rabbit, cannot complain', 'Toons');
 insert into recs (uid, recName, job, relation, email, content, org) values (66666666, 'Rogger Rabbit', 'Rock Star', 'Employer', 'rrabbit@hotmail.com', 'Wonderful man.', 'Wouldnt you like to know');
---insert into recs (uid, email) values (66666666, 'madonna@gmail.com');
+-- insert into recs (uid, email) values (66666666, 'madonna@gmail.com');
 
 insert into people (ssn, username, email, password, uid, fname, lname) values (555111111, 'larmstrong', 'larmstrong@gmail.com', 'pass', 00001234, 'Louis', 'Armstrong');
 
@@ -498,3 +536,19 @@ insert into teaches values (6262, 'CSCI', 2020, 1, 'Spring', 10);
 insert into teaches values (6251, 'CSCI', 2020, 1, 'Spring', 9);
 insert into teaches values (6246, 'CSCI', 2020, 1, 'Spring', 3);
 insert into teaches values (6260, 'CSCI', 2020, 1, 'Spring', 4);
+
+
+INSERT INTO prereqs VALUES (6233, 6232, true, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6242, 6241, true, "ECE", "ECE");
+INSERT INTO prereqs VALUES (6246, 6461, true, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6246, 6212, false, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6251, 6461, true, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6254, 6221, true, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6283, 6212, true, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6284, 6212, true, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6286, 6283, true, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6286, 6232, false, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6325, 6212, true, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6339, 6461, true, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6339, 6212, false, "CSCI", "CSCI");
+INSERT INTO prereqs VALUES (6384, 6284, true, "CSCI", "CSCI");
