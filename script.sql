@@ -1,4 +1,4 @@
-use git_good;
+use mdt_;
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS student CASCADE;
 DROP TABLE IF EXISTS form CASCADE;
@@ -18,6 +18,8 @@ DROP TABLE IF EXISTS schedule CASCADE;
 DROP TABLE IF EXISTS takes cascade;
 DROP TABLE IF EXISTS teaches;
 DROP TABLE IF EXISTS people;
+DROP TABLE IF EXISTS thesis;
+DROP TABLE IF EXISTS courseForm CASCADE;
 
 
 CREATE TABLE form(
@@ -231,6 +233,13 @@ CREATE TABLE courseForm (
   FOREIGN KEY (cid6, dept6) references course(cid, department)
 );
 
+create table thesis (
+	uid int,
+    th varchar(250),
+    PRIMARY KEY (uid),
+    FOREIGN KEY (`uid`) references student(`uid`)
+);
+
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- courses 
@@ -398,6 +407,7 @@ insert into transcript values(16666666, "CSCI", 6284, "B", 2017, "masters");
 
 insert into people values (12345678, "Stevie", "pass", "Stevie", "Nicks", "address", "email@gwu.edu", "1990-02-20", 2173188);
 insert into student values (12345678, null , 0, 0, 6, "phd", null, "CSCI", 2017, "fall", null);
+insert into thesis values(12345678, "This is my thesis");
 insert into transcript values(12345678, "CSCI", 6221, "A", 2017, "phd");
 insert into transcript values(12345678, "CSCI", 6212, "A", 2017, "phd");
 insert into transcript values(12345678, "CSCI", 6461, "A", 2017, "phd");
@@ -494,7 +504,7 @@ insert into examScore values (66666666, 'quantitative', 170, 1983);
 
 insert into recs (uid, recName, job, relation, email, content, org) values (66666666, 'Daffy Duck', 'Duck', 'Acquaintance', 'dduck@aol.com', 'Not a rabbit, cannot complain', 'Toons');
 insert into recs (uid, recName, job, relation, email, content, org) values (66666666, 'Rogger Rabbit', 'Rock Star', 'Employer', 'rrabbit@hotmail.com', 'Wonderful man.', 'Wouldnt you like to know');
---insert into recs (uid, email) values (66666666, 'madonna@gmail.com');
+-- insert into recs (uid, email) values (66666666, 'madonna@gmail.com');
 
 insert into people (ssn, username, email, password, uid, fname, lname) values (555111111, 'larmstrong', 'larmstrong@gmail.com', 'pass', 00001234, 'Louis', 'Armstrong');
 
