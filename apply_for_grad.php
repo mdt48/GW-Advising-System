@@ -213,7 +213,7 @@ session_start();
 							$gpa = 0;
 						}
 						echo '<script type="text/javascript">alert("'.$numBs.'");</script>';
-						if($CSCI_6212 && $CSCI_6221 && $CSCI_6461 && $gpa >= 3.0 && $credit_sum >= 30 && $numBs < 2 && $numOutsideCS <=2){
+						if($CSCI_6212 && $CSCI_6221 && $CSCI_6461 && $gpa >= 3.0 && $credit_sum >= 30 && $numBs <= 2 && $numOutsideCS <=2){
 							$query = "UPDATE student SET audited=1 WHERE uid='$uid';";
 							mysqli_query($dbc, $query);
 							echo '<script type="text/javascript">alert("The system has approved you for a Masters degree");</script>';
@@ -330,7 +330,7 @@ session_start();
 						$thesis = $row['thesis'];
 						
 						
-						if($gpa >= 3.5 && $credit_sum >=36 && $CS_credits >= 30 && $numBs <=1 && $thesis){
+						if($gpa >= 3.5 && $credit_sum >=36 && $CS_credits >= 30 && $numBs <= 1 && $thesis){
 							$query = "UPDATE student SET audited=1 WHERE uid='$uid';";
 							mysqli_query($dbc, $query);
 							echo '<script type="text/javascript">alert("The system has approved you for a PHD degree");</script>';
