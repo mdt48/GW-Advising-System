@@ -11,7 +11,7 @@
 	<div class = "container h-100">
 		<div class = "row h-100 align-items-center">
 			<div class = "col-lg-12">
-				<h1 class = "display-4 text-center text-white mt-5 mb-2">View Application</h1>
+				<h1 class = "display-4 text-center text-white mt-5 mb-2">Edit Application</h1>
 			</div>
 		</div>
     </div>
@@ -253,7 +253,7 @@
 					else {
 						$result = $dbc->query("SELECT recId FROM recs WHERE uid = '$uid' AND email = '$rec1Email'");
 						$row = $result->fetch_object();
-						$msg = "You have been asked to send a recommendation letter for " . $fname . " " . $lname . ". Your recID is " . $row->recId . ". Please click on the link to fill out the recommendation form." . "http://gwupyterhub.seas.gwu.edu/sp20DBp2-git-good/git-good/recommendation.html";
+						$msg = "You have been asked to send a recommendation letter for " . $fname . " " . $lname . ". Your recID is " . $row->recId . ". Please click on the link to fill out the recommendation form. http://gwupyterhub.seas.gwu.edu/~sp20DBp2-git-good/git-good/recommendation.html";
 						mail($rec1Email, "GW Graduate Program Letter of Recommendation Request", $msg);
 					}
 				}
@@ -265,7 +265,7 @@
 					else {
 						$result = $dbc->query("SELECT recId FROM recs WHERE uid = '$uid' AND email = '$rec2Email'");
 						$row = $result->fetch_object();
-						$msg = "You have been asked to send a recommendation letter for " . $fname . " " . $lname . ". Your recID is " . $row->recId . ". Please click on the link to fill out the recommendation form." . "http://gwupyterhub.seas.gwu.edu/sp20DBp2-git-good/git-good/recommendation.html";
+						$msg = "You have been asked to send a recommendation letter for " . $fname . " " . $lname . ". Your recID is " . $row->recId . ". Please click on the link to fill out the recommendation form. http://gwupyterhub.seas.gwu.edu/~sp20DBp2-git-good/git-good/recommendation.html";
 						mail($rec2Email, "GW Graduate Program Letter of Recommendation Request", $msg);
 					}
 				}
@@ -280,7 +280,7 @@
 					else {
 						$result = $dbc->query("SELECT recId FROM recs WHERE uid = '$uid' AND email = '$rec2Email'");
 						$row = $result->fetch_object();
-						$msg = "You have been asked to send a recommendation letter for " . $fname . " " . $lname . ". Your recID is " . $row->recId .  "Please click on the link to fill out the recommendation form." . "http://gwupyterhub.seas.gwu.edu/sp20DBp2-git-good/git-good/recommendation.html";
+						$msg = "You have been asked to send a recommendation letter for " . $fname . " " . $lname . ". Your recID is " . $row->recId .  "Please click on the link to fill out the recommendation form. http://gwupyterhub.seas.gwu.edu/~sp20DBp2-git-good/git-good/recommendation.html";
 						mail($rec3Email, "GW Graduate Program Letter of Recommendation Request", $msg);
 					}
 				}
