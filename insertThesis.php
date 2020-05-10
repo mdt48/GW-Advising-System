@@ -9,7 +9,7 @@
     echo $q;
     $res = $dbc->query($q);
     if (!$dbc->query($q)){
-        $q = "\nupdate thesis set th = '$thesis' where uid ='$id'";
+        $q = "update thesis set th = '$thesis' where uid ='$id'";
         echo $q;
         $dbc->query($q);
     }
