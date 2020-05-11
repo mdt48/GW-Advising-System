@@ -32,14 +32,14 @@ CREATE TABLE form(
 
 CREATE TABLE people (
   `uid` int AUTO_INCREMENT,
-  `username` VARCHAR(32),
+  `username` VARCHAR(32) unique,
   `password` VARCHAR(40),
   `fname` VARCHAR(32),
   `lname` VARCHAR(32),
   `address` VARCHAR(256),
   `email` VARCHAR(32),
   `birthDate` date,
-  `ssn` int unique, 
+  `ssn` int unique,
   PRIMARY KEY (`uid`)
 );
 
@@ -269,16 +269,16 @@ INSERT INTO course VALUES (6210,'MATH','Logic',2);
 
 
 -- staff
-insert into people (fname, lname, uid, username, password) values ('Bhagi', 'Narahari', 1, 'bnarahari', 'pass');
-insert into people (fname, lname, uid, username, password) values ('Admin', 'Admin', 2, 'admin', 'pass');
-insert into people (fname, lname, uid, username, password) values ('Gabe', 'Parmer', 3, 'gparmer', 'pass');
-insert into people (fname, lname, uid, username, password) values ('Tim', 'Wood', 4, 'twood', 'pass');
-insert into people (fname, lname, uid, username, password) values ('Shelly', 'Heller', 5, 'sheller', 'pass');
-insert into people (fname, lname, uid, username, password) values ('Sarah', 'Morin', 6, 'smorin', 'pass');
-insert into people (fname, lname, uid, username, password) values ('Kevin', 'Deems', 7, 'kdeems', 'pass');
-insert into people (fname, lname, uid, username, password) values ('Graduate', 'Secretary', 8, 'gs', 'pass');
-insert into people (fname, lname, uid, username, password) values ('Hyeong-Ah', 'Choi', 9, 'hchoi', 'pass');
-insert into people (fname, lname, uid, username, password) values ('Robert', 'Pless', 10, 'rpless', 'pass');
+insert into people (fname, lname, uid, username, password, email) values ('Bhagi', 'Narahari', 1, 'bnarahari', 'pass', 'pass');
+insert into people (fname, lname, uid, username, password, email) values ('Admin', 'Admin', 2, 'admin', 'pass', 'pass');
+insert into people (fname, lname, uid, username, password, email) values ('Gabe', 'Parmer', 3, 'gparmer', 'pass', 'pass');
+insert into people (fname, lname, uid, username, password, email) values ('Tim', 'Wood', 4, 'twood', 'pass', 'pass');
+insert into people (fname, lname, uid, username, password, email) values ('Shelly', 'Heller', 5, 'sheller', 'pass', 'pass');
+insert into people (fname, lname, uid, username, password, email) values ('Sarah', 'Morin', 6, 'smorin', 'pass', 'pass');
+insert into people (fname, lname, uid, username, password, email) values ('Kevin', 'Deems', 7, 'kdeems', 'pass', 'pass');
+insert into people (fname, lname, uid, username, password, email) values ('Graduate', 'Secretary', 8, 'gs', 'pass', 'pass');
+insert into people (fname, lname, uid, username, password, email) values ('Hyeong-Ah', 'Choi', 9, 'hchoi', 'pass', 'pass');
+insert into people (fname, lname, uid, username, password, email) values ('Robert', 'Pless', 10, 'rpless', 'pass', 'pass');
 
 insert into staff (uid, type) values (1, 9);
 insert into staff (uid, type) values (2, 0);
@@ -292,7 +292,7 @@ insert into staff (uid, type) values (9, 5);
 insert into staff (uid, type) values (10, 2);
 
 
-INSERT into people (uid, username, password, fname, lname) values (77777777, 'eclapton', 'pass', 'Eric', 'Clapton');
+INSERT into people (uid, username, password, fname, lname, email) values (77777777, 'eclapton', 'pass', 'Eric', 'Clapton', 'pass');
 INSERT into student values (77777777, 'alumni', 1, 1, 6, 'masters', 2014, 'CSCI', null, null, "spring");
 
 -- student trans
@@ -308,7 +308,7 @@ INSERT INTO transcript VALUES (77777777,'CSCI',6284,'B',2014,'masters');
 INSERT INTO transcript VALUES (77777777,'CSCI',6286,'B',2014,'masters');
 
 
-INSERT into people (uid, username, password, fname, lname) values (34567890, 'kcobain', 'pass', 'Kurt', 'Cobain');
+INSERT into people (uid, username, password, fname, lname, email) values (34567890, 'kcobain', 'pass', 'Kurt', 'Cobain', 'pass');
 INSERT into student values (34567890, 'alumni', 1, 1, 3, 'masters', 2015, 'CSCI', null, null, "spring");
 
 -- student trans

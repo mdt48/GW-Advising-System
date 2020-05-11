@@ -53,9 +53,10 @@ if (isset($_SESSION['uid'])) {
 <div class = "container">
 	<?php 
 	
-		$queryA = "select uid from applicant where uid = '$uid' and uid not in (select uid from student)";
+		$queryA = "select uid, appStatus from applicant where uid = '$uid' and uid not in (select uid from student)";
 							
 		$dataA = mysqli_query($dbc, $queryA);
+		$rowA = mysqli_fetch_array($dataA);
 		
 		$queryS = "select uid from staff where uid = '$uid'";
 							
@@ -67,7 +68,7 @@ if (isset($_SESSION['uid'])) {
 		if (mysqli_num_rows($dataA) == 1) {	
 			echo '<a href="status.php"><h1>View Application Status</h1></a><br/>';
 			echo '<a href="viewApp.php"><h1>View Application Contents</h1></a><br/>';
-			if (mysqli_num_rows($checkD) == 0) {
+			if (mysqli_num_rows($checkD) == 0 && $rowA['appStatus'] !=6  && $rowA['appStatus'] !=7) {
 				echo '<a href="editAcademic.php"><h1>Edit Academic Contents</h1></a><br/>';
 			}
 			echo '<a href="edit_user_info.php"><h1>Edit User Info</h1></a><br/>';
@@ -81,6 +82,7 @@ if (isset($_SESSION['uid'])) {
 				//admin
 				if ($row['type'] == 0) {
 					echo '<a href="admin.php"><h1>Add Users</h1></a><br/>';
+					echo '<a href="queueEdit.php"><h1>Edit / Delete Users</h1></a><br/>';
 					echo '<a href="queue.php"><h1>Applications</h1></a><br/>';
 					echo '<a href="queueMatriculate.php"><h1>Students to Matriculate</h1></a><br/>';
 					echo '<a href="stats.php"><h1>Report</h1></a><br/>';

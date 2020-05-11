@@ -19,6 +19,20 @@
 	<div class = "row">
 		<p>
 	<?php 
+		if (isset($_POST['update'])) {
+			$query = "DELETE FROM recs WHERE uid = ".$uid;
+            $dbc->query($query);
+            $query = "DELETE FROM degree WHERE uid = ".$uid;
+			$dbc->query($query);
+			$query = "DELETE FROM recReview WHERE studentuid = ".$uid;
+			$dbc->query($query);
+			$query = "DELETE FROM reviewForm WHERE studentuid = ".$uid;
+			$dbc->query($query);
+			
+            $decisionQuery = "UPDATE applicant SET appStatus = 6 WHERE uid = ".$_SESSION['uid'];
+            $decisionData = mysqli_query($dbc, $decisionQuery);
+		}
+		
 		$query = "select appStatus, transcript, admissionYear from applicant where uid = '$uid'";
 							
 		$data = mysqli_query($dbc, $query);
@@ -74,18 +88,32 @@
 			else if ($row['appStatus'] == 3) {
 				echo '<b>Congratulations!</b><br/><br/> Welcome to <i>The George Washington University</i>.<br/> We are pleased to have you as an incoming student. <br/><br/> As part of our decision we have decided to support your academic desires with financial aid. Details about this will come in the next few weeks.<br/>
 				<br/>Go buff and blue! <br/> <br/> Want to Matriculate? Send us your tuition payment via a mailed check or press the button below.';
-				echo '			
-				<br/><br/>
-				<a class="btn text-white btn-lg" style = "background-color: #033b59;" href = "accept.php">Press Here!</a>';
+				echo '<br/><br/></p>';
+				?>
+				<form  action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
+				<a class="btn text-white btn-lg" style = "background-color: #033b59;" href = "accept.php">Matriculate</a>';
+				<button type="submit" name="update" class="btn text-white btn-lg" style = "background-color: #033b59;">Decline</button></td>
+				</form>
+				<?php
 			}
 			else if ($row['appStatus'] == 4) {
 				echo '<b>Congratulations!</b><br/><br/> Welcome to <i>The George Washington University</i>.<br/> We are pleased to have you as an incoming student. <br/><br/>Go buff and blue! <br/> <br/> Want to Matriculate? Send us your tuition payment via a mailed check or press the button below.';
-				echo '			
-				<br/><br/>
+				echo '<br/><br/></p>';
+				?>
+				<form class="form-inline" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
 				<a class="btn text-white btn-lg" style = "background-color: #033b59;" href = "accept.php">Matriculate</a>';
+				<button type="submit" name="update" class="btn text-white btn-lg" style = "background-color: #033b59;">Decline</button></td>
+				</form>
+				<?php
 			}
 			else if ($row['appStatus'] == 5){
 				echo 'Thank you for applying to <i>The George Washington University</i>.<br/>At this moment we are unable to receive you as a student.<br/>Please contact us if you have any questions about our decision process.';
+			}
+			else if ($row['appStatus'] == 6){
+				echo 'Thank you for applying to <i>The George Washington University</i>.<br/>You have declined matriculation to this semester.';
+			}
+			else if ($row['appStatus'] == 7){
+				echo 'Thank you for applying to <i>The George Washington University</i>.<br/>You have not paid matriculation by the deadline and we must rescind your admission.';
 			}
 			else {
 				echo 'Missing more than transcript and / or recommendations. Please complete the application at your earliest convenience.';
@@ -94,7 +122,7 @@
 	?>
 	<br/><br/>
 			<a class="btn text-white btn-lg" style = "background-color: #033b59;" href = "index.php">Go Back</a>
-		</p>
+		
 	</div>
 </div>
 

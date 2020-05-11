@@ -285,6 +285,10 @@
 					}
 				}
 			}	
+		$query = 'DELETE FROM recReview WHERE studentuid = '.$uid;
+		$dbc->query($query);
+		$query = 'DELETE FROM reviewForm WHERE studentuid = '.$uid;
+		$dbc->query($query);
 		
 		if ($flag == true)
         {   
