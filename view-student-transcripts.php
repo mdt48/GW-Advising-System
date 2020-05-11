@@ -124,7 +124,9 @@
 	}
 	echo("</tbody>
 	  </table>");
-	echo('<h1><span class="badge badge-primary">Total GPA: '.$gpa.'</span></h1>');
+	if (isset($gpa)) {
+		echo('<h1><span class="badge badge-primary">Total GPA: '.$gpa.'</span></h1>');
+	}
   ?>
   <br></br><a href="index.php"><p style="text-align:center">Home</p></a>
 </body>  

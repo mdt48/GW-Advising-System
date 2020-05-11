@@ -116,8 +116,9 @@
             echo "<td>".$takes_result['department']."</td>";
             echo "<td>".$takes_result['grade']."</td>";
             $thisCid = $takes_result['cid'];
-            echo('<td><form method = "POST"><input type = "submit" name = "$thisCid" value = "Drop Class"/></form></td>');
-            if (isset($_POST['$thisCid'])) {
+            echo($thisCid);
+            echo('<td><form method = "POST"><input type = "submit" name = "'.$thisCid.'" value = "Drop Class"/></form></td>');
+            if (isset($_POST[''.$thisCid.''])) {
               $deleteQuery = "DELETE FROM takes WHERE uid = $u_id AND cid = $thisCid;";
               mysqli_query($dbc, $deleteQuery);
               header('Location: '.$_SERVER['REQUEST_URI']);
